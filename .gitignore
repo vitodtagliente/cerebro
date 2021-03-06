@@ -6,6 +6,16 @@ yarn-debug.log*
 yarn-error.log*
 lerna-debug.log*
 
+# Typescript
+node_modules/
+bin/
+obj/
+vs/
+package-lock.json
+*.js
+*.map
+.vs/
+
 # Diagnostic reports (https://nodejs.org/api/report.html)
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 
