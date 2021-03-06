@@ -17,10 +17,22 @@ export default abstract class Behaviour
     }
 
     /**
+     * Retrieve the behaviour's name
+     * @return The name of the behaviour
+     */
+    public get name(): string
+    {
+        return this.constructor.name;
+    }
+
+    /**
      * Retrieve the application
      * @return The application
      */
-    public get app() { return this._app; }
+    public get app(): Application
+    {
+        return this._app;
+    }
 
     /**
      * Bind a method to a router callback

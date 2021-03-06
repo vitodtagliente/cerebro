@@ -1,8 +1,10 @@
 import * as bodyParser from 'body-parser';
 import * as cors from 'cors';
 import * as express from 'express';
+
 import Behaviour from './behaviour';
 import Controller from './controller';
+import Endpoint from './endpoint';
 import Service from './service';
 
 import Logger from 'cerebro-logger';
@@ -11,7 +13,7 @@ import Middleware from './middleware';
 import LogMiddleware from './middlewares/log';
 import Respond from './middlewares/respond';
 
-enum ApplicationState
+export enum ApplicationState
 {
     Uninitialized = 'uninitialized',
     Initializing = 'initializing',
@@ -21,13 +23,13 @@ enum ApplicationState
     Error = 'error'
 }
 
-class DatabaseConfig {
+export class DatabaseConfig {
     name?: string = process.env.connectioName || 'default';
     connection?: string = process.env.connection || 'mongodb://127.0.0.1/overdrive';
     type?: string = process.env.connectionType || 'mongodb';
 }
 
-class ApplicationConfig {
+export class ApplicationConfig {
     name?: string = 'cerebro';
     version?: number = 1.0;
     env?: string = process.env.env || "development";
@@ -58,6 +60,8 @@ export default class Application
     private _behaviours: Array<Behaviour> = [];
     /// The list of services
     private _services: Array<Service> = [];
+    /// The list of endpoints
+    private _endpoints: Array<any> = [];
 
     /**
      * constructor
@@ -183,19 +187,24 @@ export default class Application
     }
 
     /**
-     * Register a behaviour/controller/service to the application
+     * Register a behaviour/controller/endpoint/service to the application
      * @param behaviour The behaviour to register
      */
     public register<T extends Behaviour>(ctor: { new(...args): T }): void
     {
         const behaviour: T = new ctor(this);
+
         if (behaviour instanceof Controller)
         {
-            this._controllers.push(behaviour);
+            this._controllers.push(<Controller>behaviour);
         }
         else if (behaviour instanceof Service)
         {
-            this._services.push(behaviour);
+            this._services.push(<Service>behaviour);
+        }
+        else if (behaviour instanceof Endpoint)
+        {
+            this._endpoints.push(behaviour);
         }
         else
         {
@@ -212,13 +221,6 @@ export default class Application
      */
     public service<T extends Service>(ctor: { new(...args): T }): Service
     {
-        for (const service of this._services)
-        {
-            if (typeof (service) == typeof (ctor))
-            {
-                return service;
-            }
-        }
-        return null;
+        return this._services.find(service => service instanceof ctor);
     }
 }
