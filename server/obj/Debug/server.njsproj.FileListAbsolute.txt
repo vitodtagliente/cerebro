@@ -1,0 +1,2 @@
+C:\Users\HackJ\Desktop\cerebro\server\obj\Debug\server.njsproj.CoreCompileInputs.cache
+C:\Users\HackJ\Desktop\cerebro\server\bin\Microsoft.NodejsTools.WebRole.dll

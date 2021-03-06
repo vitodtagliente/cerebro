@@ -1,0 +1,3 @@
+C:\Users\HackJ\Desktop\cerebro\framework\cerebro-logger\obj\Debug\cerebro-logger.njsprojAssemblyReference.cache
+C:\Users\HackJ\Desktop\cerebro\framework\cerebro-logger\obj\Debug\cerebro-logger.njsproj.CoreCompileInputs.cache
+C:\Users\HackJ\Desktop\cerebro\framework\cerebro-logger\bin\Microsoft.NodejsTools.WebRole.dll

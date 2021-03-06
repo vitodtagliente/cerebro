@@ -1,0 +1,21 @@
+{
+  "name": "cerebro-security",
+  "version": "0.0.0",
+  "description": "cerebro-security",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^3.0.0",
+    "@types/node": "^8.0.14",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "bcrypt": "^5.0.1"
+  }
+}

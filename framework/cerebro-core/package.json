@@ -1,0 +1,27 @@
+{
+  "name": "cerebro-core",
+  "version": "0.0.0",
+  "description": "cerebro-core",
+  "main": "server.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "@types/body-parser": "^1.19.0",
+    "@types/cors": "^2.8.10",
+    "@types/express": "^4.17.11",
+    "@types/express-serve-static-core": "^4.17.18",
+    "@types/node": "^8.0.14",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "body-parser": "^1.19.0",
+    "cerebro-logger": "file:../cerebro-logger",
+    "cors": "^2.8.5",
+    "express": "^4.17.1"
+  }
+}

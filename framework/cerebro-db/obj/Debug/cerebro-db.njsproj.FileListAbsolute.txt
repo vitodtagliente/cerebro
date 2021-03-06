@@ -1,0 +1,2 @@
+C:\Users\HackJ\Desktop\cerebro\framework\cerebro-db\obj\Debug\cerebro-db.njsproj.CoreCompileInputs.cache
+C:\Users\HackJ\Desktop\cerebro\framework\cerebro-db\bin\Microsoft.NodejsTools.WebRole.dll
