@@ -1,4 +1,4 @@
-import { Application, ApplicationState, Controller, Endpoint, Method, Service, StatusCode } from 'cerebro-core';
+import { Application, ApplicationState, Controller, Endpoint, HTTP, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 
 class FooController extends Controller
@@ -36,14 +36,14 @@ class FooEndpoint extends Endpoint<FooRequest, FooResponse>
 {
     public constructor(app: Application)
     {
-        super(app, "/foo", Method.GET, {}, {});
+        super(app, "/foo", HTTP.Method.GET, {}, {});
     }
 
-    protected async serve(request: FooRequest, response: FooResponse): Promise<StatusCode>
+    protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode>
     {
         Logger.log("endpoint -> " + request.text);
         response.text = "fffofofofofof";
-        return StatusCode.OK;
+        return HTTP.StatusCode.OK;
     }
 }
 

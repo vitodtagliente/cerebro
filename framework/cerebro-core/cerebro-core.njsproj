@@ -55,7 +55,7 @@
     <TypeScriptCompile Include="middlewares\log.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="middlewares\respond.ts">
+    <TypeScriptCompile Include="router.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="service.ts">

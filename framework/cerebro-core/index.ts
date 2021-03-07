@@ -1,8 +1,10 @@
 import Application, { ApplicationConfig, DatabaseConfig, ApplicationState } from './application';
 import Controller from './controller';
-import Endpoint, { Method } from './endpoint';
+import Endpoint from './endpoint';
+import Router from './router';
 import Service from './service';
-import StatusCode from 'cerebro-status';
+
+import * as HTTP from 'cerebro-http';
 
 export
 {
@@ -12,7 +14,7 @@ export
     DatabaseConfig,
     Controller,
     Endpoint,
-    Method,
+    HTTP,
+    Router,
     Service,
-    StatusCode
 };

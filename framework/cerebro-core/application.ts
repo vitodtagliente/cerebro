@@ -5,13 +5,13 @@ import * as express from 'express';
 import Behaviour from './behaviour';
 import Controller from './controller';
 import Endpoint from './endpoint';
+import Router from './router';
 import Service from './service';
 
 import Logger from 'cerebro-logger';
 import Middleware from './middleware';
 
 import LogMiddleware from './middlewares/log';
-import Respond from './middlewares/respond';
 
 export enum ApplicationState
 {
@@ -42,18 +42,21 @@ export class ApplicationConfig {
         // default React cross origin
         "http://localhost:3000"
     ]
+    logRequests?: boolean = true;
 };
 
 export default class Application
 {
     /// The express application
-    private _context = null;
+    private _context: express.Application = null;
     /// The server configuration
     private _config: ApplicationConfig = null;
     /// The state of the application
     private _state: ApplicationState = ApplicationState.Uninitialized;
-    /// HTTP server
+    /// The HTTP server
     private _http = null;
+    /// The router
+    private _router: Router = null;
     /// The list of controllers
     private _controllers: Array<Controller> = [];
     /// The list of behaviours
@@ -82,9 +85,18 @@ export default class Application
      * Get the application context
      * @return The application context
      */
-    public get context()
+    public get context(): express.Application
     {
         return this._context;
+    }
+
+    /**
+     * Get the router
+     * @return The router
+     */
+    public get router(): Router
+    {
+        return this._router;
     }
 
     /**
@@ -112,12 +124,17 @@ export default class Application
         this._state = ApplicationState.Initializing;
         // create the express application
         this._context = express();
+        // initialize the router
+        this._router = new Router(this._context);
         // parse application/x-www-form-urlencoded
         this._context.use(bodyParser.urlencoded({ extended: false }));
         // parse application/json
         this._context.use(bodyParser.json());
         // log every request
-        this.use(new LogMiddleware());
+        if (this._config.logRequests)
+        {
+            this.use(LogMiddleware);
+        }
         // add the respond method
         // this.use(Respond);
         // allow cross origin requests        
@@ -181,8 +198,9 @@ export default class Application
      * Use a middleware
      * @param middleware The middleware to use
      */
-    public use<T extends Middleware>(middleware: T): void
+    public use<T extends Middleware>(ctor: { new(...args): T }): void
     {
+        const middleware: T = new ctor();
         this._context.use(middleware.run.bind(middleware));
     }
 
@@ -211,7 +229,7 @@ export default class Application
             this._behaviours.push(behaviour);
         }
 
-        behaviour.register(this._context);
+        behaviour.register(this._router);
     }
 
     /**

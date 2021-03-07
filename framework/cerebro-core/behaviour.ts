@@ -1,4 +1,5 @@
 import Application from './application';
+import Router from './router';
 
 export default abstract class Behaviour
 {
@@ -45,7 +46,7 @@ export default abstract class Behaviour
 
     /**
      * Register the application behaviour
-     * @param router The express router
+     * @param router The router
      */
-    public abstract register(router): void;
+    public abstract register(router: Router): void;
 }

@@ -1,7 +1,7 @@
 {
-  "name": "cerebro-status",
+  "name": "cerebro-http",
   "version": "0.0.0",
-  "description": "cerebro-status",
+  "description": "cerebro-http",
   "main": "server.js",
   "author": {
     "name": ""
