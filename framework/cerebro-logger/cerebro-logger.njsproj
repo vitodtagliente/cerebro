@@ -40,6 +40,9 @@
     <Content Include="README.md" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="level.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="logger.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

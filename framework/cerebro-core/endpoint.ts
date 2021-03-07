@@ -40,12 +40,6 @@ export default abstract class Endpoint<RequestType, ResponseType> extends Behavi
 
     private async execute(req: express.Request, res: express.Response): Promise<void>
     {
-        Logger.log(
-            `[${Logger.Color.decorate(this.name, Logger.Color.Foreground.Blue)}` +
-            `(${Logger.Color.decorate(this._method, Logger.Color.Foreground.Cyan)}` +
-            `:${Logger.Color.decorate(this._url, Logger.Color.Foreground.Magenta)})]`,
-            'Endpoint');
-
         this._request = this._method == Method.POST
             ? req.body
             : req.params;

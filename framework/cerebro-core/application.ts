@@ -176,7 +176,7 @@ export default class Application
         this._http = this._context.listen(this._config.port, () =>
         {
             success();
-            Logger.log(`${Logger.Color.decorate('HTTP', Logger.Color.Foreground.Yellow)} Server listening on port ${Logger.Color.decorate(this._config.port.toString(), Logger.Color.Foreground.Magenta)}...`);
+            Logger.info(`${Logger.Color.decorate('HTTP', Logger.Color.Foreground.Yellow)} Server listening on port ${Logger.Color.decorate(this._config.port.toString(), Logger.Color.Foreground.Magenta)}...`);
         });
 
         this._state = ApplicationState.Running;

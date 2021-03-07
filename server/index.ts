@@ -1,13 +1,16 @@
-import { Application, ApplicationState, Controller, Endpoint, HTTP, Service } from 'cerebro-core';
+import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 
 class FooController extends Controller
 {
     public constructor(app: Application) { super(app); }
 
-    public register(router): void
+    public register(router: Router): void
     {
-        Logger.log("foo");
+        router.register('/', HTTP.Method.GET, (req, res) =>
+        {
+            res.status(HTTP.StatusCode.OK).send("Ciao");
+        });
     }
 }
 
@@ -41,7 +44,7 @@ class FooEndpoint extends Endpoint<FooRequest, FooResponse>
 
     protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode>
     {
-        Logger.log("endpoint -> " + request.text);
+        Logger.info("endpoint -> " + request.text);
         response.text = "fffofofofofof";
         return HTTP.StatusCode.OK;
     }
