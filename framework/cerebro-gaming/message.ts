@@ -6,21 +6,24 @@ export enum MessageType
     Disconnect = 'disconnect'
 }
 
-class Header
+export class MessageHeader
 {
     public type: MessageType.Uknown;
 }
 
-class Body
+export class MessageBody
 {
     public data: any;
 }
 
 export default class Message
 {
-    public readonly Header = Header;
-    public readonly Body = Body;
+    public constructor()
+    {
+        this.headder = new MessageHeader;
+        this.body = new MessageBody;
+    }
 
-    public headder: Header = new Header;
-    public body: Body = new Body;
+    public headder: MessageHeader;
+    public body: MessageBody;
 }

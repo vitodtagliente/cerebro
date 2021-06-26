@@ -1,6 +1,6 @@
 import * as dgram from 'dgram';
 import Logger from 'cerebro-logger';
-import NetworkLayer from "./network_layer";
+import NetworkLayer, { NetworkState, NetworkType } from "./network_layer";
 import { Encoding } from '.';
 
 enum Version
@@ -22,13 +22,13 @@ export default class NetworkLayerUDP extends NetworkLayer
 
     public constructor()
     {
-        super(NetworkLayer.Type.UDP);
+        super(NetworkType.UDP);
 
         this._socket = dgram.createSocket(Version.v4);
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
-            this._state = NetworkLayer.State.Error;
+            this._state = NetworkState.Error;
 
             Logger.error(`Fatal error, closing the socket...`);
             this._socket.close();
@@ -38,7 +38,7 @@ export default class NetworkLayerUDP extends NetworkLayer
         });
         this._socket.on(EventType.Listening, () =>
         {
-            this._state = NetworkLayer.State.Listening;
+            this._state = NetworkState.Listening;
             Logger.info(`Game Server listening at ${this._socket.address().address}:${Logger.Color.decorate(this._socket.address().port.toString(), Logger.Color.Foreground.Magenta)}`);
             this.onListening();
         });
@@ -52,7 +52,7 @@ export default class NetworkLayerUDP extends NetworkLayer
 
     public listen(port: number): void 
     {
-        if (this.state == NetworkLayer.State.Initialized)
+        if (this.state == NetworkState.Initialized)
         {
             this._socket.bind(port);
         }

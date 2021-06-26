@@ -1,22 +1,6 @@
+import Endpoint from "./endpoint";
 
-class Endpoint
-{
-    public static readonly InvalidAddress: string = '';
-    public static readonly InvalidPort: number = -1;
-
-    public constructor(_address: string, _port: number)
-    {
-        this.address = _address;
-        this.port = _port;
-    }
-
-    public address: string;
-    public port: number;
-
-    public get isValid() { return this.address != Endpoint.InvalidAddress && this.port != Endpoint.InvalidPort; }
-}
-
-class State
+export class UserState
 {
     public data: any;
 }
@@ -24,27 +8,22 @@ class State
 export type UniqueId = string;
 export const InvalidUniqueId: UniqueId = "";
 
-class User
+export class User
 {
-    public static readonly Endpoint = Endpoint;
-    public static readonly State = State;
-
     public constructor()
     {
         this.uniqueId = InvalidUniqueId;
         this.endpoint = new Endpoint(Endpoint.InvalidAddress, Endpoint.InvalidPort);
-        this.state = new State;
+        this.state = new UserState;
     }
 
     public uniqueId: UniqueId;
     public endpoint: Endpoint;
-    public state: State;
+    public state: UserState;
 }
 
 export default class UserManager
 {
-    public static readonly User = User;
-
     private static _idCounter: number = 0;
 
     private static _main: UserManager;
