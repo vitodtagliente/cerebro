@@ -1,11 +1,15 @@
 import * as dgram from 'dgram';
 import Logger from 'cerebro-logger';
+import { Encoding } from '.';
 
+export type ConnectionHandler = (socket: any) => void;
 export type ErrorHandler = (error: Error) => void;
 export type ListeningHandler = () => void;
 export type MessageHandler = (message: string) => void;
 
 enum EventType {
+    Close = 'close',
+    Connect = 'connect',
     Error = 'error',
     Listening = 'listening',
     Message = 'message'
@@ -20,6 +24,8 @@ export enum State {
 export default class GameServer {
     private _socket: dgram.Socket = null;
     private _state: State = State.Initialized;
+    public onConnect: ConnectionHandler = (socket: any) => { };
+    public onDisconnect: ConnectionHandler = (socket: any) => { };
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
     public onMessage: MessageHandler = (message: string) => { };
@@ -42,8 +48,18 @@ export default class GameServer {
             this.onListening();
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) => {
+            const decodedMessage: string = Encoding.decode(message);
             console.log(senderInfo);
-            this.onMessage(message)
+            this.onMessage(decodedMessage)
+        });
+
+        this._socket.on(EventType.Connect, (socket: any) => {
+            console.log("Connection");
+            console.log(socket);
+        });
+        this._socket.on(EventType.Close, (socket: any) => {
+            console.log("Disconnection");
+            console.log(socket);
         });
     }
 
