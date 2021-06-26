@@ -1,6 +1,6 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameServer } from 'cerebro-gaming';
+import { GameServer, NetworkType } from 'cerebro-gaming';
 
 class FooController extends Controller {
     public constructor(app: Application) { super(app); }
@@ -53,8 +53,5 @@ const state: ApplicationState = app.listen(() => {
 
 });
 
-const gameServer = new GameServer();
-gameServer.onMessage = (message: string) => {
-    console.log(message);
-};
+const gameServer = new GameServer(NetworkType.UDP);
 gameServer.listen(6000);

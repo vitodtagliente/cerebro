@@ -1,4 +1,4 @@
-import NetworkLayerUDP from "./network_layer_udp";
+import { Endpoint } from ".";
 
 export enum NetworkType
 {
@@ -8,7 +8,7 @@ export enum NetworkType
 
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
-type MessageHandler = (message: string) => void;
+type MessageHandler = (message: string, enddpoint: Endpoint) => void;
 
 export enum NetworkState
 {
@@ -19,24 +19,12 @@ export enum NetworkState
 
 export default abstract class NetworkLayer
 {
-    public static factory(type: NetworkType): NetworkLayer
-    {
-        switch (type)
-        {
-            case NetworkType.UDP:
-                return new NetworkLayerUDP();
-            case NetworkType.WebSockets:
-            default:
-                return null;
-        }
-    }
-
     private _type: NetworkType;
     protected _state: NetworkState;
 
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
-    public onMessage: MessageHandler = (message: string) => { };
+    public onMessage: MessageHandler = (message: string, endpoint: Endpoint) => { };
 
     public constructor(type: NetworkType)
     {

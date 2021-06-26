@@ -1,7 +1,8 @@
 import * as dgram from 'dgram';
 import Logger from 'cerebro-logger';
-import NetworkLayer, { NetworkState, NetworkType } from "./network_layer";
-import { Encoding } from '.';
+import NetworkLayer, { NetworkState, NetworkType } from '../network_layer';
+import Encoding from '../encoding';
+import Endpoint from '../endpoint';
 
 enum Version
 {
@@ -45,8 +46,7 @@ export default class NetworkLayerUDP extends NetworkLayer
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
             const decodedMessage: string = Encoding.decode(message);
-            console.log(senderInfo);
-            this.onMessage(decodedMessage)
+            this.onMessage(decodedMessage, new Endpoint(senderInfo.address, senderInfo.port));
         });
     }
 

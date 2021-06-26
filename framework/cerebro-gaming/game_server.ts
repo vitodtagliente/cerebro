@@ -1,5 +1,5 @@
-import { NetworkLayer } from ".";
-import { NetworkType } from "./network_layer";
+import NetworkLayer, { NetworkType } from "./network_layer";
+import NetworkLayerFactory from "./network_layer_factory";
 
 export default class GameServer
 {
@@ -7,15 +7,21 @@ export default class GameServer
 
     public constructor(type: NetworkType)
     {
-        this._network = NetworkLayer.factory(type);
-        this._network.onMessage = (message: string) =>
+        this._network = NetworkLayerFactory.get(type);
+        if (this._network)
         {
-            console.log(message);
-        };
+            this._network.onMessage = (message: string) =>
+            {
+                console.log(message);
+            };
+        }
     }
 
     public listen(port: number): void
     {
-        this._network.listen(port);
+        if (this._network)
+        {
+            this._network.listen(port);
+        }
     }
 }
