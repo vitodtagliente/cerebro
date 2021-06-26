@@ -8,7 +8,7 @@ export enum NetworkType
 
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
-type MessageHandler = (message: string, enddpoint: Endpoint) => void;
+type MessageHandler = (enddpoint: Endpoint, message: string) => void;
 
 export enum NetworkState
 {
@@ -24,7 +24,7 @@ export default abstract class NetworkLayer
 
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
-    public onMessage: MessageHandler = (message: string, endpoint: Endpoint) => { };
+    public onMessage: MessageHandler = (endpoint: Endpoint, message: string) => { };
 
     public constructor(type: NetworkType)
     {

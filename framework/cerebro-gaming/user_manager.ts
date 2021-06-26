@@ -47,16 +47,22 @@ export default class UserManager
     public add(user: User): boolean
     {
         if (user.uniqueId == InvalidUniqueId) return false;
-        if (this.find(user.uniqueId)) return false;
+        if (this.findByUniqueId(user.uniqueId)) return false;
 
         this._users.push(user);
         return true;
     }
 
-    public find(uniqueId: UniqueId): User
+    public findByUniqueId(uniqueId: UniqueId): User
     {
         if (uniqueId == InvalidUniqueId) return null;
         return this._users.find(user => user.uniqueId == uniqueId);
+    }
+
+    public findByEndpoint(endpoint: Endpoint): User
+    {
+        if (endpoint.isValid == false) return null;
+        return this._users.find(user => user.endpoint == endpoint);
     }
 
     public remove(uniqueId: UniqueId): void

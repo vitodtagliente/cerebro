@@ -46,7 +46,7 @@ export default class NetworkLayerUDP extends NetworkLayer
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
             const decodedMessage: string = Encoding.decode(message);
-            this.onMessage(decodedMessage, new Endpoint(senderInfo.address, senderInfo.port));
+            this.onMessage(new Endpoint(senderInfo.address, senderInfo.port), decodedMessage);
         });
     }
 
