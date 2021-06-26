@@ -40,7 +40,7 @@ export default class NetworkLayerUDP extends NetworkLayer
         this._socket.on(EventType.Listening, () =>
         {
             this._state = NetworkState.Listening;
-            Logger.info(`Game Server listening at ${this._socket.address().address}:${Logger.Color.decorate(this._socket.address().port.toString(), Logger.Color.Foreground.Magenta)}`);
+            Logger.info(`Game Server listening at ${this._socket.address().address}:${Logger.Color.decorate(this._socket.address().port.toString(), Logger.Color.Foreground.Magenta)}...`);
             this.onListening();
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
