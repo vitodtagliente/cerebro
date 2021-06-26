@@ -1,49 +1,41 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
+import { GameServer } from 'cerebro-gaming';
 
-class FooController extends Controller
-{
+class FooController extends Controller {
     public constructor(app: Application) { super(app); }
 
-    public register(router: Router): void
-    {
-        router.register('/', HTTP.Method.GET, (req, res) =>
-        {
+    public register(router: Router): void {
+        router.register('/', HTTP.Method.GET, (req, res) => {
             res.status(HTTP.StatusCode.OK).send("Ciao");
         });
     }
 }
 
-class FooService extends Service
-{
+class FooService extends Service {
     public constructor(app: Application) { super(app); }
 }
 
-class PooService extends Service
-{
+class PooService extends Service {
     public constructor(app: Application) { super(app); }
 }
 
-interface FooRequest
-{
+interface FooRequest {
     text?: string;
     description?: string;
 }
 
-interface FooResponse
-{
+interface FooResponse {
     text?: string;
 }
 
 class FooEndpoint extends Endpoint<FooRequest, FooResponse>
 {
-    public constructor(app: Application)
-    {
+    public constructor(app: Application) {
         super(app, "/foo", HTTP.Method.GET, {}, {});
     }
 
-    protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode>
-    {
+    protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode> {
         Logger.info("endpoint -> " + request.text);
         response.text = "fffofofofofof";
         return HTTP.StatusCode.OK;
@@ -57,7 +49,12 @@ app.register(FooService);
 app.register(PooService);
 app.register(FooEndpoint);
 const service: Service = app.service(FooService);
-const state: ApplicationState = app.listen(() =>
-{
+const state: ApplicationState = app.listen(() => {
 
 });
+
+const gameServer = new GameServer();
+gameServer.onMessage = (message: string) => {
+    console.log(message);
+};
+gameServer.listen(6000);
