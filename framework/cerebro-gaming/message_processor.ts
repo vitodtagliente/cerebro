@@ -46,7 +46,7 @@ export default class MessageProcessor
             return;
         }
 
-        const commandId: CommandId = structuredMessage.headder.type;
+        const commandId: CommandId = structuredMessage.header.type;
         const command = this._commandRegister.find(commandId);
         if (command == null)
         {

@@ -14,10 +14,10 @@ export default class Message
 {
     public constructor()
     {
-        this.headder = new MessageHeader;
+        this.header = new MessageHeader;
         this.body = new MessageBody;
     }
 
-    public headder: MessageHeader;
+    public header: MessageHeader;
     public body: MessageBody;
 }
