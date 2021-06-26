@@ -63,8 +63,6 @@ export default class GameServer {
         });
     }
 
-    private
-
     public listen(port: number): void {
         if (this.state == State.Initialized) {
             this._socket.bind(port);
