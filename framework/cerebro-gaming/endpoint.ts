@@ -13,4 +13,9 @@ export default class Endpoint
     public port: number;
 
     public get isValid() { return this.address != Endpoint.InvalidAddress && this.port != Endpoint.InvalidPort; }
+
+    public toString(): string 
+    {
+        return `{address: ${this.address}, port: ${this.port}}`;
+    }
 }

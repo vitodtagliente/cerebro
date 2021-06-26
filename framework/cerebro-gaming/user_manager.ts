@@ -2,7 +2,14 @@ import Endpoint from "./endpoint";
 
 export class UserState
 {
-    public data: any;
+    public constructor()
+    {
+        this.authenticated = false;
+        this.data = new Map<string, any>();
+    }
+
+    public authenticated: boolean;
+    public data: Map<string, any>;
 }
 
 export type UniqueId = string;
@@ -31,9 +38,10 @@ export default class UserManager
 
     private _users: Array<User>;
 
-    public construct()
+    public constructor()
     {
-        this._users = [];
+        UserManager._main = this;
+        this._users = new Array<User>();
     }
 
     public static create(endpoint: Endpoint): User 

@@ -1,3 +1,5 @@
+import Command from "./command";
+import CommandRegister from "./command_register";
 import Endpoint from "./endpoint";
 import MessageProcessor from "./message_processor";
 import NetworkLayer, { NetworkType } from "./network_layer";
@@ -6,14 +8,20 @@ import UserManager from "./user_manager";
 
 export default class GameServer
 {
+    private _commandRegister: CommandRegister;
     private _network: NetworkLayer;
     private _messageProcessor: MessageProcessor;
     private _userManager: UserManager;
 
     public constructor(type: NetworkType)
     {
+        this._commandRegister = new CommandRegister;
+        this._registerStandardCommands();
+
         this._userManager = new UserManager;
-        this._messageProcessor = new MessageProcessor(this._userManager);
+
+        this._messageProcessor = new MessageProcessor(this._userManager, this._commandRegister);
+        
         this._network = NetworkLayerFactory.get(type);
         if (this._network)
         {
@@ -27,5 +35,15 @@ export default class GameServer
         {
             this._network.listen(port);
         }
+    }
+
+    public register(command: Command): void
+    {
+        this._commandRegister.add(command);
+    }
+
+    private _registerStandardCommands()
+    {
+
     }
 }

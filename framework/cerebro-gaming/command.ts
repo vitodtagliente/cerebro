@@ -1,20 +1,31 @@
 import Message from "./message";
+import { User } from "./user_manager";
 
-class Config
+export type CommandId = string;
+
+export class CommandSettings
 {
-
+    public authentication: boolean = false;
 }
 
-export default class Command
+export default abstract class Command
 {
-    public readonly Config: Config;
+    public static readonly InvalidCommandId: CommandId = '';
 
-    private _message: Message;
+    private _id: CommandId;
+    private _settings: CommandSettings;
 
-    public constructor(message: Message)
+    public constructor(id: CommandId, settings: CommandSettings)
     {
-        this._message = message;
+        this._id = id;
+        this._settings = settings;
     }
 
-    public get message(): Message { return this._message; }
+    public get id(): CommandId { return this._id; }
+    public get settings(): CommandSettings { return this._settings; }
+
+    public execute(user: User, message: Message): void
+    {
+
+    }
 }

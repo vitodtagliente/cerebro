@@ -1,19 +1,13 @@
-
-export enum MessageType
-{
-    Uknown = '',
-    Connect = 'connect',
-    Disconnect = 'disconnect'
-}
+import { CommandId } from "./command";
 
 export class MessageHeader
 {
-    public type: MessageType.Uknown;
+    public type: CommandId;
 }
 
 export class MessageBody
 {
-    public data: any;
+    public data: string;
 }
 
 export default class Message
