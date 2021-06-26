@@ -1,31 +1,57 @@
 import NetworkLayerUDP from "./network_layer_udp";
 
-export enum NetworkType
+enum Type
 {
     UDP,
     WebSockets
 }
 
+type ErrorHandler = (error: Error) => void;
+type ListeningHandler = () => void;
+type MessageHandler = (message: string) => void;
+
+enum State
+{
+    Initialized,
+    Listening,
+    Error
+};
+
 export default abstract class NetworkLayer
 {
-    public static get(type: NetworkType): NetworkLayer
+    public static readonly Type = Type;
+    public static readonly State = State;
+
+    public static get(type: Type): NetworkLayer
     {
         switch (type)
         {
-            case NetworkType.UDP:
+            case Type.UDP:
                 return new NetworkLayerUDP();
-            case NetworkType.WebSockets:
+            case Type.WebSockets:
             default:
                 return null;
         }
     }
 
-    private _type: NetworkType;
+    private _type: Type;
+    protected _state: State;
 
-    public constructor(type: NetworkType)
+    public onError: ErrorHandler = () => { };
+    public onListening: ListeningHandler = () => { };
+    public onMessage: MessageHandler = (message: string) => { };
+
+    public constructor(type: Type)
     {
         this._type = type;
+        this._state = State.Initialized;
     }
 
-    public get type(): NetworkType { return this._type; }
+    public get type(): Type { return this._type; }
+    public get state(): State { return this._state; }
+
+    public listen(port: number): void
+    {
+
+    }
 }

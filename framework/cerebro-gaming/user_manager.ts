@@ -26,8 +26,8 @@ export const InvalidUniqueId: UniqueId = "";
 
 class User
 {
-    public readonly Endpoint = Endpoint;
-    public readonly State = State;
+    public static readonly Endpoint = Endpoint;
+    public static readonly State = State;
 
     public constructor()
     {
@@ -43,7 +43,7 @@ class User
 
 export default class UserManager
 {
-    public readonly User = User;
+    public static readonly User = User;
 
     private static _idCounter: number = 0;
 
