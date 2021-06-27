@@ -1,5 +1,6 @@
 import NetworkLayer, { NetworkType } from "./network_layer";
 import NetworkLayerUDP from "./network_layers/network_layer_udp";
+import NetworkLayerWS from "./network_layers/network_layer_ws";
 
 
 export default class NetworkLayerFactory 
@@ -11,6 +12,7 @@ export default class NetworkLayerFactory
             case NetworkType.UDP:
                 return new NetworkLayerUDP();
             case NetworkType.WebSockets:
+                return new NetworkLayerWS();
             default:
                 return null;
         }
