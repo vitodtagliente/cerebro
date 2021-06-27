@@ -17,6 +17,8 @@ Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-security", "framewo
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-http", "framework\cerebro-http\cerebro-http.njsproj", "{0D8C151D-7F77-476D-8B8F-F21F12E6F75E}"
 EndProject
+Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-gaming", "framework\cerebro-gaming\cerebro-gaming.njsproj", "{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -47,6 +49,10 @@ Global
 		{0D8C151D-7F77-476D-8B8F-F21F12E6F75E}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0D8C151D-7F77-476D-8B8F-F21F12E6F75E}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{0D8C151D-7F77-476D-8B8F-F21F12E6F75E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -57,6 +63,7 @@ Global
 		{E921479B-509B-4CF8-A9F9-6429296CADD4} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 		{0BF069B3-142C-4240-856B-A77651D31D35} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 		{0D8C151D-7F77-476D-8B8F-F21F12E6F75E} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
+		{4DF6AFC8-B439-4C0B-96BC-3A88AEA581CC} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AC0F11B8-1E66-43A7-B647-14A8BF5C3B94}

@@ -1,33 +1,5 @@
 import Endpoint from "./endpoint";
-
-export class UserState
-{
-    public constructor()
-    {
-        this.authenticated = false;
-        this.data = new Map<string, any>();
-    }
-
-    public authenticated: boolean;
-    public data: Map<string, any>;
-}
-
-export type UniqueId = string;
-export const InvalidUniqueId: UniqueId = "";
-
-export class User
-{
-    public constructor()
-    {
-        this.uniqueId = InvalidUniqueId;
-        this.endpoint = new Endpoint(Endpoint.InvalidAddress, Endpoint.InvalidPort);
-        this.state = new UserState;
-    }
-
-    public uniqueId: UniqueId;
-    public endpoint: Endpoint;
-    public state: UserState;
-}
+import { User, InvalidUniqueId, UniqueId } from "./user";
 
 export default class UserManager
 {

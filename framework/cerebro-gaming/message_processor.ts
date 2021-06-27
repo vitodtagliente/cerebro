@@ -1,9 +1,11 @@
+import { StatusCode } from "../cerebro-http";
 import Logger from "../cerebro-logger";
 import { CommandId } from "./command";
 import CommandRegister from "./command_register";
 import Endpoint from "./endpoint";
 import Message from "./message";
-import UserManager, { User } from "./user_manager";
+import { User } from "./user";
+import UserManager from "./user_manager";
 
 export default class MessageProcessor
 {
@@ -54,6 +56,10 @@ export default class MessageProcessor
             return;
         }
 
-        command.execute(user, structuredMessage);
+        const commandError: StatusCode = command.execute(user, structuredMessage);
+        if (commandError != StatusCode.OK)
+        {
+            Logger.error(`Failed to execute the command ${commandId} with error ${commandError}`);
+        }
     }
 }

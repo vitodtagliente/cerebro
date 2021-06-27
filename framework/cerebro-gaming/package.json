@@ -15,6 +15,7 @@
     "typescript": "^3.2.2"
   },
   "dependencies": {
+    "cerebro-http": "file:../cerebro-http",
     "cerebro-logger": "file:../cerebro-logger",
     "dgram": "^1.0.1"
   }

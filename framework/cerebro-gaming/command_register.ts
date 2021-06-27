@@ -1,6 +1,4 @@
 import Command, { CommandId } from "./command";
-import Message from "./message";
-import { User } from "./user_manager";
 
 export default class CommandRegister
 {
@@ -20,10 +18,5 @@ export default class CommandRegister
     {
         if (commandId == Command.InvalidCommandId) return null;
         return this._commands[commandId];
-    }
-
-    public execute(user: User, message: Message): void 
-    {
-        
     }
 }

@@ -1,5 +1,6 @@
 import Message from "./message";
-import { User } from "./user_manager";
+import { StatusCode } from 'cerebro-http';
+import { User } from "./user";
 
 export type CommandId = string;
 
@@ -24,8 +25,8 @@ export default abstract class Command
     public get id(): CommandId { return this._id; }
     public get settings(): CommandSettings { return this._settings; }
 
-    public execute(user: User, message: Message): void
+    public execute(user: User, message: Message): StatusCode
     {
-
+        return StatusCode.OK;
     }
 }
