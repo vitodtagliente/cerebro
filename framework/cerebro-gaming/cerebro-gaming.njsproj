@@ -44,9 +44,15 @@
     <TypeScriptCompile Include="game_object.ts" />
     <TypeScriptCompile Include="game_server.ts" />
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="world_map.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="math.ts" />
     <TypeScriptCompile Include="message.ts" />
     <TypeScriptCompile Include="message_processor.ts" />
+    <TypeScriptCompile Include="network_id.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="network_layer.ts" />
     <TypeScriptCompile Include="network_layers\network_layer_udp.ts" />
     <TypeScriptCompile Include="network_layer_factory.ts" />
@@ -54,6 +60,9 @@
     <TypeScriptCompile Include="session_manager.ts" />
     <TypeScriptCompile Include="user.ts" />
     <TypeScriptCompile Include="user_manager.ts" />
+    <TypeScriptCompile Include="world.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="commands\" />
