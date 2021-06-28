@@ -4,7 +4,9 @@ import MessageProcessor from "./message_processor";
 import NetworkLayer, { NetworkType } from "./network_layer";
 import NetworkLayerFactory from "./network_layer_factory";
 import UserManager from "./user_manager";
-import NetworkId from "./network_id";
+import NetworkId, { InvalidNetworkId } from "./network_id";
+import Logger from "cerebro-logger";
+import User from "./user";
 
 export default class GameServer
 {
@@ -20,12 +22,32 @@ export default class GameServer
 
         this._userManager = new UserManager;
 
-        this._messageProcessor = new MessageProcessor(this._userManager, this._commandRegister);
+        this._messageProcessor = new MessageProcessor(this._commandRegister);
 
         this._network = NetworkLayerFactory.get(type);
         if (this._network)
         {
-            this._network.onMessage = (socketId: NetworkId, message: string) => this._messageProcessor.process(socketId, message);
+            this._network.onMessage = (socketId: NetworkId, message: string) =>
+            {
+                if (socketId == InvalidNetworkId)
+                {
+                    Logger.error(`Invalid socketId[${socketId}], unable to process the message[${message}]`);
+                    return;
+                }
+
+                let user: User = this._userManager.find(socketId);
+                if (user == null)
+                {
+                    user = new User;
+                    if (!this._userManager.add(socketId, user))
+                    {
+                        Logger.error(`Failed to add the new user for socketId[${socketId}], unable to process the message[${message}]`);
+                        return;
+                    }
+                }
+
+                this._messageProcessor.process(user, message);
+            }
         }
     }
 

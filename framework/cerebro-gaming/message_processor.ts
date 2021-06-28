@@ -3,34 +3,19 @@ import Logger from "../cerebro-logger";
 import { CommandId } from "./command";
 import CommandRegister from "./command_register";
 import Message from "./message";
-import UserManager from "./user_manager";
 import User from "./user";
-import NetworkId from "./network_id";
 
 export default class MessageProcessor
 {
     private _commandRegister: CommandRegister;
-    private _userManager: UserManager;
 
-    public constructor(userManager: UserManager, commandRegister: CommandRegister)
+    public constructor(commandRegister: CommandRegister)
     {
-        this._userManager = userManager;
         this._commandRegister = commandRegister;
     }
 
-    public process(socketId: NetworkId, message: string): void
+    public process(user: User, message: string): void
     {
-        let user: User = this._userManager.find(socketId);
-        if (user == null)
-        {
-            user = new User;
-            if (!this._userManager.add(socketId, user))
-            {
-                Logger.error(`Failed to process the message '${message}' for user ${user.id}`);
-                return;
-            }
-        }
-
         let structuredMessage: Message = null;
         try
         {
