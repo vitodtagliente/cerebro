@@ -1,5 +1,5 @@
 
-export default class Job
+export default abstract class Job
 {
     public constructor()
     {
