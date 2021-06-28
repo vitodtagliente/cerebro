@@ -1,4 +1,4 @@
-import { Endpoint } from ".";
+import NetworkId from "./network_id";
 
 export enum NetworkType
 {
@@ -8,7 +8,7 @@ export enum NetworkType
 
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
-type MessageHandler = (enddpoint: Endpoint, message: string) => void;
+type MessageHandler = (socketId: NetworkId, message: string) => void;
 
 export enum NetworkState
 {
@@ -24,7 +24,7 @@ export default abstract class NetworkLayer
 
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
-    public onMessage: MessageHandler = (endpoint: Endpoint, message: string) => { };
+    public onMessage: MessageHandler = (socketId: NetworkId, message: string) => { };
 
     public constructor(type: NetworkType)
     {

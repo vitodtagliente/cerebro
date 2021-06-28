@@ -2,7 +2,16 @@ import * as dgram from 'dgram';
 import Logger from 'cerebro-logger';
 import NetworkLayer, { NetworkState, NetworkType } from '../network_layer';
 import Encoding from '../encoding';
-import Endpoint from '../endpoint';
+import NetworkId, { InvalidNetworkId, nextNetworkId } from '../network_id';
+
+type UdpSocketId = string;
+
+function getUdpSocketId(senderInfo: any): UdpSocketId
+{
+    const address: string = senderInfo.address;
+    const port: number = senderInfo.port;
+    return `udps_${address}:${port.toString()}`;
+}
 
 enum Version
 {
@@ -20,12 +29,14 @@ enum EventType
 export default class NetworkLayerUDP extends NetworkLayer
 {
     private _socket: dgram.Socket = null;
+    private _clients: Map<UdpSocketId, NetworkId>;
 
     public constructor()
     {
         super(NetworkType.UDP);
 
         this._socket = dgram.createSocket(Version.v4);
+        this._clients = new Map<UdpSocketId, NetworkId>();
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
@@ -45,8 +56,21 @@ export default class NetworkLayerUDP extends NetworkLayer
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
+            const udpId: UdpSocketId = getUdpSocketId(senderInfo);
+            let socketId: NetworkId = InvalidNetworkId;
+
+            if (this._clients.has(udpId))
+            {
+                socketId = this._clients[udpId];
+            }
+            else
+            {
+                socketId = nextNetworkId();
+                this._clients.set(udpId, socketId);
+            }
+
             const decodedMessage: string = Encoding.decode(message);
-            this.onMessage(new Endpoint(senderInfo.address, senderInfo.port), decodedMessage);
+            this.onMessage(socketId, decodedMessage);
         });
     }
 

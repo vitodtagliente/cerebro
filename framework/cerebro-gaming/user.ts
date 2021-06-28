@@ -20,11 +20,9 @@ export default class User
     public constructor()
     {
         this.id = nextNetworkId();
-        this.endpoint = new Endpoint(Endpoint.InvalidAddress, Endpoint.InvalidPort);
         this.state = new UserState;
     }
 
     public id: NetworkId;
-    public endpoint: Endpoint;
     public state: UserState;
 }
