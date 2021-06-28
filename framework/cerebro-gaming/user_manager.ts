@@ -1,36 +1,44 @@
+import NetworkId, { InvalidNetworkId } from "./network_id";
 import User from "./user";
-import { SocketId } from "./network_layer";
 
 export default class UserManager
 {
     private static _main: UserManager;
     public static get main() { return UserManager._main; }
 
-    private _users: Map<SocketId, User>;
+    private _users: Array<User>;
 
     public constructor()
     {
         UserManager._main = this;
-        this._users = new Map<SocketId, User>();
+        this._users = new Array<User>();
     }
 
-    public add(socketId: SocketId, user: User): void
+    public add(user: User): void
     {
-        if (this._users.has(socketId) == false)
+        if (user.id == InvalidNetworkId) return;
+
+        if (!this.find(user.id))
         {
-            this._users.set(socketId, user);
+            this._users.push(user);
         }
     }
 
-    public find(socketId: SocketId): User
+    public find(id: NetworkId): User
     {
-        return this._users[socketId];
+        if (id == InvalidNetworkId) return null;
+        return this._users.find(user => user.id == id);
     }
 
-    public remove(socketId: SocketId): void
+    public remove(id: NetworkId): void
     {
-        this._users.delete(socketId);
+        if (id == InvalidNetworkId) return;
+        const index: number = this._users.findIndex(user => user.id);
+        if (index > -1)
+        {
+            this._users.splice(index, 1);
+        }
     }
 
-    public get users(): Map<SocketId, User> { return this._users; }
+    public get users(): Array<User> { return this._users; }
 }

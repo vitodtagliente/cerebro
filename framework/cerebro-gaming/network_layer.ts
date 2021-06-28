@@ -7,9 +7,10 @@ export enum NetworkType
 
 export type SocketId = string;
 
+type ClientConnectionHandler = (socketId: SocketId) => void;
+type ClientMessageHandler = (socketId: SocketId, message: string) => void;
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
-type MessageHandler = (socketId: SocketId, message: string) => void;
 
 export enum NetworkState
 {
@@ -23,9 +24,11 @@ export default abstract class NetworkLayer
     private _type: NetworkType;
     protected _state: NetworkState;
 
+    public onClientConnection: ClientConnectionHandler = (socketId: SocketId) => { };
+    public onClientDisconnection: ClientConnectionHandler = (socketId: SocketId) => { };
+    public onClientMessage: ClientMessageHandler = (socketId: SocketId, message: string) => { };
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
-    public onMessage: MessageHandler = (socketId: SocketId, message: string) => { };
 
     public constructor(type: NetworkType)
     {

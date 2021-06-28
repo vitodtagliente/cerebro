@@ -27,16 +27,16 @@ export default class GameServer
         this._network = NetworkLayerFactory.get(type);
         if (this._network)
         {
-            this._network.onMessage = (socketId: SocketId, message: string) =>
+            this._network.onClientMessage = (socketId: SocketId, message: string) =>
             {
-                let user: User = this._userManager.find(socketId);
-                if (user == null)
-                {
-                    user = new User;
-                    this._userManager.add(socketId, user);
-                }
-
-                this._messageProcessor.process(user, message);
+                // let user: User = this._userManager.find(socketId);
+                // if (user == null)
+                // {
+                //     user = new User;
+                //     this._userManager.add(socketId, user);
+                // }
+                // 
+                // this._messageProcessor.process(user, message);
             }
         }
     }

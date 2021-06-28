@@ -7,23 +7,17 @@ function getSocketId(senderInfo: any): SocketId
 {
     const address: string = senderInfo.address;
     const port: number = senderInfo.port;
-    return `udps_${address}:${port.toString()}`;
+    return `udps_${address}:${port}`;
 }
 
-class Socket
+class SocketState
 {
-    public constructor(senderInfo: any)
+    public constructor()
     {
-        this.id = getSocketId(senderInfo);
-        this.address = senderInfo.address;
-        this.port = senderInfo.port;
-        this.timestamp = Date.now();
+        this.timespan = Date.now();
     }
 
-    public id: SocketId;
-    public address: string;
-    public port: number;
-    public timestamp: number;
+    public timespan: number;
 }
 
 enum Version
@@ -42,14 +36,14 @@ enum EventType
 export default class NetworkLayerUDP extends NetworkLayer
 {
     private _socket: dgram.Socket = null;
-    private _clients: Map<SocketId, Socket>;
+    private _clients: Map<SocketId, SocketState>;
 
     public constructor()
     {
         super(NetworkType.UDP);
 
         this._socket = dgram.createSocket(Version.v4);
-        this._clients = new Map<SocketId, Socket>();
+        this._clients = new Map<SocketId, SocketState>();
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
@@ -69,19 +63,11 @@ export default class NetworkLayerUDP extends NetworkLayer
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
-            let socketId: SocketId = getSocketId(senderInfo);
-            if (!this._clients.has(socketId))
-            {
-                this._clients.set(socketId, new Socket(senderInfo));
-            }
-            else
-            {
-                const socket: Socket = this._clients[socketId];
-                socket.timestamp = Date.now();
-            }
+            const socketId: SocketId = getSocketId(senderInfo);
+            this._clients.set(socketId, new SocketState);
 
             const decodedMessage: string = Encoding.decode(message);
-            this.onMessage(socketId, decodedMessage);
+            this.onClientMessage(socketId, decodedMessage);
         });
     }
 

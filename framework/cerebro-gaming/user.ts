@@ -1,5 +1,4 @@
-import Endpoint from "./endpoint";
-import NetworkId, { InvalidNetworkId, nextNetworkId } from "./network_id";
+import NetworkId, { nextNetworkId } from "./network_id";
 
 export class UserState
 {
