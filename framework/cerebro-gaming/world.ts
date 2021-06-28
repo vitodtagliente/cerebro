@@ -1,6 +1,5 @@
 import WorldMap, { WorldMapId, InvalidWorldMapId } from "./world_map";
 
-
 export default class World
 {
     private static _main: World = null;

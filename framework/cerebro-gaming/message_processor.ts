@@ -3,7 +3,7 @@ import Logger from "../cerebro-logger";
 import { CommandId } from "./command";
 import CommandRegister from "./command_register";
 import Message from "./message";
-import User from "./user";
+import { UserSession } from "./user_session_manager";
 
 export default class MessageProcessor
 {
@@ -14,7 +14,7 @@ export default class MessageProcessor
         this._commandRegister = commandRegister;
     }
 
-    public process(user: User, message: string): void
+    public process(userSession: UserSession, message: string): void
     {
         let structuredMessage: Message = null;
         try
@@ -23,13 +23,13 @@ export default class MessageProcessor
         }
         catch
         {
-            Logger.error(`Failed to parse the message '${message}' for user ${user.id}`);
+            Logger.error(`Failed to parse the message '${message}' for user ${userSession.user.id}`);
             return;
         }
 
         if (structuredMessage == null)
         {
-            Logger.error(`Failed to parse the message '${message}' for user ${user.id}`);
+            Logger.error(`Failed to parse the message '${message}' for user ${userSession.user.id}`);
             return;
         }
 
@@ -37,11 +37,11 @@ export default class MessageProcessor
         const command = this._commandRegister.find(commandId);
         if (command == null)
         {
-            Logger.warn(`Cannot find a command ${commandId} for processing the message '${message}' for user ${user.id}`);
+            Logger.warn(`Cannot find a command ${commandId} for processing the message '${message}' for user ${userSession.user.id}`);
             return;
         }
 
-        const commandError: StatusCode = command.execute(user, structuredMessage);
+        const commandError: StatusCode = command.execute(userSession, structuredMessage);
         if (commandError != StatusCode.OK)
         {
             Logger.error(`Failed to execute the command ${commandId} with error ${commandError}`);

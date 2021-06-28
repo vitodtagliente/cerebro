@@ -3,40 +3,46 @@ import CommandRegister from "./command_register";
 import MessageProcessor from "./message_processor";
 import NetworkLayer, { NetworkType, SocketId } from "./network_layer";
 import NetworkLayerFactory from "./network_layer_factory";
-import UserManager from "./user_manager";
-import NetworkId, { InvalidNetworkId } from "./network_id";
 import Logger from "cerebro-logger";
-import User from "./user";
+import UserSessionManager, { UserSession } from "./user_session_manager";
 
 export default class GameServer
 {
     private _commandRegister: CommandRegister;
     private _network: NetworkLayer;
     private _messageProcessor: MessageProcessor;
-    private _userManager: UserManager;
+    private _userSessionManager: UserSessionManager;
 
     public constructor(type: NetworkType)
     {
+        this._network = NetworkLayerFactory.get(type);
+        if (this._network == null)
+        {
+            Logger.error(`Cannot initialize the NetworkLAyer of type[${type}]`);
+            return;
+        }
+
         this._commandRegister = new CommandRegister;
         this._registerStandardCommands();
 
-        this._userManager = new UserManager;
+        this._userSessionManager = new UserSessionManager;
 
         this._messageProcessor = new MessageProcessor(this._commandRegister);
 
-        this._network = NetworkLayerFactory.get(type);
-        if (this._network)
+        this._network.onClientConnection = (socketId: SocketId) =>
         {
-            this._network.onClientMessage = (socketId: SocketId, message: string) =>
-            {
-                const user: User = this._userManager.findOrCreate(socketId);
-                if (user == null)
-                {
-                    Logger.error(`Cannot find or create an user for socketId[${socketId}]`);
-                    return;
-                }
-                this._messageProcessor.process(user, message);
-            }
+            this._userSessionManager.create(socketId);
+        };
+
+        this._network.onClientDisconnection = (socketId: SocketId) =>
+        {
+            this._userSessionManager.destroy(socketId);
+        };
+
+        this._network.onClientMessage = (socketId: SocketId, message: string) =>
+        {
+            const userSession: UserSession = this._userSessionManager.get(socketId);
+            this._messageProcessor.process(userSession, message);
         }
     }
 

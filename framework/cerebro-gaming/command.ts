@@ -1,7 +1,7 @@
 import Message from "./message";
 import { StatusCode } from 'cerebro-http';
 import Logger from "cerebro-logger";
-import User from "./user";
+import { UserSession } from "./user_session_manager";
 
 export type CommandId = string;
 
@@ -31,22 +31,22 @@ export default abstract class Command
     public get id(): CommandId { return this._id; }
     public get settings(): CommandSettings { return this._settings; }
 
-    public execute(user: User, message: Message): StatusCode
+    public execute(userSession: UserSession, message: Message): StatusCode
     {
         if (message.header.type != this.id)
         {
-            Logger.error(`The user[${user.id}] has tried to execute the command[${this.id}] passing a message of different type[${message.header.type}]`);
+            Logger.error(`The user[${userSession.user.id}] has tried to execute the command[${this.id}] passing a message of different type[${message.header.type}]`);
             return StatusCode.InternalServerError;
         }
 
-        if (this.settings.authentication && user.state.authenticated == false)
+        if (this.settings.authentication && userSession.authenticated == false)
         {
-            Logger.error(`The user[${user.id}] has tried to execute the command[${this.id}] with no authentication`);
+            Logger.error(`The user[${userSession.user.id}] has tried to execute the command[${this.id}] with no authentication`);
             return StatusCode.Unauthorized;
         }
 
-        return this._execute(user, message);
+        return this._execute(userSession, message);
     }
 
-    protected abstract _execute(user: User, message: Message): StatusCode;
+    protected abstract _execute(userSession: UserSession, message: Message): StatusCode;
 }

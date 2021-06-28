@@ -12,11 +12,13 @@
   },
   "devDependencies": {
     "@types/node": "^8.0.14",
+    "@types/ws": "^7.4.5",
     "typescript": "^3.2.2"
   },
   "dependencies": {
     "cerebro-http": "file:../cerebro-http",
     "cerebro-logger": "file:../cerebro-logger",
-    "dgram": "^1.0.1"
+    "dgram": "^1.0.1",
+    "ws": "^7.5.0"
   }
 }

@@ -5,12 +5,10 @@ export class UserState
     public constructor()
     {
         this.name = 'Unknown';
-        this.authenticated = false;
         this.data = new Map<string, any>();
     }
 
     public name: string;
-    public authenticated: boolean;
     public data: Map<string, any>;
 }
 

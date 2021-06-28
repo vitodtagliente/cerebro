@@ -54,6 +54,9 @@
     <TypeScriptCompile Include="network_layers\network_layer_ws.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="user_session_manager.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="world_map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -69,7 +72,6 @@
     <TypeScriptCompile Include="service.ts" />
     <TypeScriptCompile Include="session_manager.ts" />
     <TypeScriptCompile Include="user.ts" />
-    <TypeScriptCompile Include="user_manager.ts" />
     <TypeScriptCompile Include="world.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

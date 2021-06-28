@@ -1,7 +1,7 @@
 import { StatusCode } from "cerebro-http";
 import Command, { CommandId, CommandSettings } from "../command";
 import Message from "../message";
-import User from "../user";
+import { UserSession } from "../user_session_manager";
 
 const commandId: CommandId = "auth";
 
@@ -19,10 +19,10 @@ export class AuthenticationCommand extends Command
         super(commandId, settings);
     }
 
-    protected _execute(user: User, message: Message): StatusCode
+    protected _execute(userSession: UserSession, message: Message): StatusCode
     {
-        user.state.name = message.body.data[MessageData.Username];
-        user.state.authenticated = true;
+        userSession.authenticated = true;
+        userSession.user.state.name = message.body.data[MessageData.Username];
 
         return StatusCode.OK;
     }
