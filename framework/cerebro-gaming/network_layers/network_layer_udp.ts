@@ -1,16 +1,29 @@
 import * as dgram from 'dgram';
 import Logger from 'cerebro-logger';
-import NetworkLayer, { NetworkState, NetworkType } from '../network_layer';
+import NetworkLayer, { NetworkState, NetworkType, SocketId } from '../network_layer';
 import Encoding from '../encoding';
-import NetworkId, { InvalidNetworkId, nextNetworkId } from '../network_id';
 
-type UdpSocketId = string;
-
-function getUdpSocketId(senderInfo: any): UdpSocketId
+function getSocketId(senderInfo: any): SocketId
 {
     const address: string = senderInfo.address;
     const port: number = senderInfo.port;
     return `udps_${address}:${port.toString()}`;
+}
+
+class Socket
+{
+    public constructor(senderInfo: any)
+    {
+        this.id = getSocketId(senderInfo);
+        this.address = senderInfo.address;
+        this.port = senderInfo.port;
+        this.timestamp = Date.now();
+    }
+
+    public id: SocketId;
+    public address: string;
+    public port: number;
+    public timestamp: number;
 }
 
 enum Version
@@ -29,14 +42,14 @@ enum EventType
 export default class NetworkLayerUDP extends NetworkLayer
 {
     private _socket: dgram.Socket = null;
-    private _clients: Map<UdpSocketId, NetworkId>;
+    private _clients: Map<SocketId, Socket>;
 
     public constructor()
     {
         super(NetworkType.UDP);
 
         this._socket = dgram.createSocket(Version.v4);
-        this._clients = new Map<UdpSocketId, NetworkId>();
+        this._clients = new Map<SocketId, Socket>();
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
@@ -56,17 +69,15 @@ export default class NetworkLayerUDP extends NetworkLayer
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
-            const udpId: UdpSocketId = getUdpSocketId(senderInfo);
-            let socketId: NetworkId = InvalidNetworkId;
-
-            if (this._clients.has(udpId))
+            let socketId: SocketId = getSocketId(senderInfo);
+            if (!this._clients.has(socketId))
             {
-                socketId = this._clients[udpId];
+                this._clients.set(socketId, new Socket(senderInfo));
             }
             else
             {
-                socketId = nextNetworkId();
-                this._clients.set(udpId, socketId);
+                const socket: Socket = this._clients[socketId];
+                socket.timestamp = Date.now();
             }
 
             const decodedMessage: string = Encoding.decode(message);

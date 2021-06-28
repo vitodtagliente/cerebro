@@ -10,6 +10,11 @@ export class CommandSettings
     public authentication: boolean = false;
 }
 
+export class CommandResponse
+{
+    public code: StatusCode = StatusCode.OK;
+}
+
 export default abstract class Command
 {
     public static readonly InvalidCommandId: CommandId = '';

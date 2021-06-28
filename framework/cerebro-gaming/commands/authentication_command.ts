@@ -5,6 +5,11 @@ import User from "../user";
 
 const commandId: CommandId = "auth";
 
+enum MessageData
+{
+    Username = 'username'
+}
+
 export class AuthenticationCommand extends Command
 {
     public constructor()
@@ -16,6 +21,9 @@ export class AuthenticationCommand extends Command
 
     protected _execute(user: User, message: Message): StatusCode
     {
+        user.state.name = message.body.data[MessageData.Username];
+        user.state.authenticated = true;
+
         return StatusCode.OK;
     }
 }

@@ -1,4 +1,3 @@
-import NetworkId from "./network_id";
 
 export enum NetworkType
 {
@@ -6,9 +5,11 @@ export enum NetworkType
     WebSockets
 }
 
+export type SocketId = string;
+
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
-type MessageHandler = (socketId: NetworkId, message: string) => void;
+type MessageHandler = (socketId: SocketId, message: string) => void;
 
 export enum NetworkState
 {
@@ -24,7 +25,7 @@ export default abstract class NetworkLayer
 
     public onError: ErrorHandler = () => { };
     public onListening: ListeningHandler = () => { };
-    public onMessage: MessageHandler = (socketId: NetworkId, message: string) => { };
+    public onMessage: MessageHandler = (socketId: SocketId, message: string) => { };
 
     public constructor(type: NetworkType)
     {
