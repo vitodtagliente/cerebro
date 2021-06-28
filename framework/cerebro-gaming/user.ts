@@ -1,4 +1,4 @@
-import NetworkId, { nextNetworkId } from "./network_id";
+import NetworkId, { nextNetworkId, InvalidNetworkId } from "./network_id";
 
 export class UserState
 {
@@ -16,9 +16,9 @@ export class UserState
 
 export default class User
 {
-    public constructor()
+    public constructor(id?: NetworkId)
     {
-        this.id = nextNetworkId();
+        this.id = id != InvalidNetworkId ? id : nextNetworkId();
         this.state = new UserState;
     }
 

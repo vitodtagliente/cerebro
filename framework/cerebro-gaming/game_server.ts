@@ -29,14 +29,13 @@ export default class GameServer
         {
             this._network.onClientMessage = (socketId: SocketId, message: string) =>
             {
-                // let user: User = this._userManager.find(socketId);
-                // if (user == null)
-                // {
-                //     user = new User;
-                //     this._userManager.add(socketId, user);
-                // }
-                // 
-                // this._messageProcessor.process(user, message);
+                const user: User = this._userManager.findOrCreate(socketId);
+                if (user == null)
+                {
+                    Logger.error(`Cannot find or create an user for socketId[${socketId}]`);
+                    return;
+                }
+                this._messageProcessor.process(user, message);
             }
         }
     }

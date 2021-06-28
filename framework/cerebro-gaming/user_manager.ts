@@ -30,6 +30,17 @@ export default class UserManager
         return this._users.find(user => user.id == id);
     }
 
+    public findOrCreate(id: NetworkId): User
+    {
+        if (id == InvalidNetworkId) return null;
+        let user: User = this._users.find(user => user.id == id);
+        if (user == null)
+        {
+            this._users.push(new User(id));
+        }
+        return user;
+    }
+
     public remove(id: NetworkId): void
     {
         if (id == InvalidNetworkId) return;
