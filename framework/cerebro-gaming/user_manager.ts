@@ -1,5 +1,6 @@
 import Endpoint from "./endpoint";
-import { User, InvalidUniqueId, UniqueId } from "./user";
+import NetworkId, { InvalidNetworkId } from "./network_id";
+import User from "./user";
 
 export default class UserManager
 {
@@ -19,24 +20,23 @@ export default class UserManager
     public static create(endpoint: Endpoint): User 
     {
         const user: User = new User;
-        user.uniqueId = (++UserManager._idCounter).toString();
         user.endpoint = endpoint;
         return user;
     }
 
     public add(user: User): boolean
     {
-        if (user.uniqueId == InvalidUniqueId) return false;
-        if (this.findByUniqueId(user.uniqueId)) return false;
+        if (user.id == InvalidNetworkId) return false;
+        if (this.findByUniqueId(user.id)) return false;
 
         this._users.push(user);
         return true;
     }
 
-    public findByUniqueId(uniqueId: UniqueId): User
+    public findByUniqueId(id: NetworkId): User
     {
-        if (uniqueId == InvalidUniqueId) return null;
-        return this._users.find(user => user.uniqueId == uniqueId);
+        if (id == InvalidNetworkId) return null;
+        return this._users.find(user => user.id == id);
     }
 
     public findByEndpoint(endpoint: Endpoint): User
@@ -45,11 +45,11 @@ export default class UserManager
         return this._users.find(user => user.endpoint == endpoint);
     }
 
-    public remove(uniqueId: UniqueId): void
+    public remove(id: NetworkId): void
     {
-        if (uniqueId == InvalidUniqueId) return;
+        if (id == InvalidNetworkId) return;
 
-        const index: number = this._users.findIndex(user => user.uniqueId == uniqueId);
+        const index: number = this._users.findIndex(user => user.id == id);
         if (index > -1)
         {
             this._users.splice(index, 1);

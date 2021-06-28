@@ -20,23 +20,23 @@ export default class WorldMap
 
     public add(gameObject: GameObject): void
     {
-        if (this.find(gameObject.networkId) == null)
+        if (this.find(gameObject.id) == null)
         {
             this._gameObjects.push(gameObject);
         }
     }
 
-    public find(networkId: NetworkId): GameObject
+    public find(gameObjectId: NetworkId): GameObject
     {
-        if (networkId == InvalidNetworkId) return null;
-        return this._gameObjects.find(gameObject => gameObject.networkId == networkId);
+        if (gameObjectId == InvalidNetworkId) return null;
+        return this._gameObjects.find(gameObject => gameObject.id == gameObjectId);
     }
 
-    public remove(networkId: NetworkId): void
+    public remove(gameObjectId: NetworkId): void
     {
-        if (networkId == InvalidNetworkId) return;
+        if (gameObjectId == InvalidNetworkId) return;
 
-        const index: number = this._gameObjects.findIndex(gameObject => gameObject.networkId == networkId);
+        const index: number = this._gameObjects.findIndex(gameObject => gameObject.id == gameObjectId);
         if (index > -1)
         {
             this._gameObjects.splice(index, 1);

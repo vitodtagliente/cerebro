@@ -35,6 +35,9 @@
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="command.ts" />
+    <TypeScriptCompile Include="commands\authentication_command.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="commands\connect_command.ts" />
     <TypeScriptCompile Include="commands\disconnect_command.ts" />
     <TypeScriptCompile Include="command_register.ts" />
@@ -43,6 +46,12 @@
     <TypeScriptCompile Include="game_object.ts" />
     <TypeScriptCompile Include="game_server.ts" />
     <TypeScriptCompile Include="index.ts" />
+    <TypeScriptCompile Include="job.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="job_scheduler.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="network_layers\network_layer_ws.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

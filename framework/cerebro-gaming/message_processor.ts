@@ -4,8 +4,8 @@ import { CommandId } from "./command";
 import CommandRegister from "./command_register";
 import Endpoint from "./endpoint";
 import Message from "./message";
-import { User } from "./user";
 import UserManager from "./user_manager";
+import User from "./user";
 
 export default class MessageProcessor
 {

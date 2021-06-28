@@ -21,7 +21,7 @@ export default class GameServer
         this._userManager = new UserManager;
 
         this._messageProcessor = new MessageProcessor(this._userManager, this._commandRegister);
-        
+
         this._network = NetworkLayerFactory.get(type);
         if (this._network)
         {
@@ -37,8 +37,9 @@ export default class GameServer
         }
     }
 
-    public register(command: Command): void
+    public register<T extends Command>(ctor: { new(...args): T }): void
     {
+        const command: T = new ctor();
         this._commandRegister.add(command);
     }
 

@@ -11,7 +11,7 @@ export default class CommandRegister
 
     public add(command: Command): void 
     {
-
+        this._commands.set(command.id, command);
     }
 
     public find(commandId: CommandId): Command

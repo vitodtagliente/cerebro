@@ -1,14 +1,32 @@
 import NetworkId, { nextNetworkId } from "./network_id";
 import { Transform } from "./math";
+import User from "./user";
+
+export class GameObjectState
+{
+    public constructor()
+    {
+        this.user = null;
+        this.data = new Map<string, any>();
+    }
+
+    public user: User;
+    public data: Map<string, any>;
+
+    public get isUserControlled() { return this.user != null; }
+}
 
 export default class GameObject
 {
     public constructor()
     {
-        this.networkId = nextNetworkId();
+        this.id = nextNetworkId();
         this.transform = new Transform;
+        this.state = new GameObjectState;
     }
 
-    public networkId: NetworkId;
+    public id: NetworkId;
+    public prefabId: string;
     public transform: Transform;
+    public state: GameObjectState;
 }

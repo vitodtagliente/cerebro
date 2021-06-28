@@ -1,6 +1,7 @@
 import Message from "./message";
 import { StatusCode } from 'cerebro-http';
-import { User } from "./user";
+import Logger from "cerebro-logger";
+import User from "./user";
 
 export type CommandId = string;
 
@@ -27,6 +28,20 @@ export default abstract class Command
 
     public execute(user: User, message: Message): StatusCode
     {
-        return StatusCode.OK;
+        if (message.header.type != this.id)
+        {
+            Logger.error(`The user[${user.id}] has tried to execute the command[${this.id}] passing a message of different type[${message.header.type}]`);
+            return StatusCode.InternalServerError;
+        }
+
+        if (this.settings.authentication && user.state.authenticated == false)
+        {
+            Logger.error(`The user[${user.id}] has tried to execute the command[${this.id}] with no authentication`);
+            return StatusCode.Unauthorized;
+        }
+
+        return this._execute(user, message);
     }
+
+    protected abstract _execute(user: User, message: Message): StatusCode;
 }
