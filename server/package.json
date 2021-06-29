@@ -14,7 +14,7 @@
   "main": "index.js",
   "dependencies": {
     "cerebro-core": "file:../framework/cerebro-core",
-    "cerebro-gaming": "file:../framework/cerebro-gaming",
+    "cerebro-gameserver": "file:../framework/cerebro-gameserver",
     "cerebro-http": "file:../framework/cerebro-http",
     "cerebro-logger": "file:../framework/cerebro-logger",
     "debug": "^2.2.0",

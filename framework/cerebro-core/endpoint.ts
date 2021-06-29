@@ -14,7 +14,7 @@ export default abstract class Endpoint<RequestType, ResponseType> extends Behavi
     /// The request
     private _request: RequestType;
     /// The response
-    private _response: ResponseType; 
+    private _response: ResponseType;
 
     /**
      * Constructor
@@ -43,10 +43,10 @@ export default abstract class Endpoint<RequestType, ResponseType> extends Behavi
         this._request = this._method == Method.POST
             ? req.body
             : req.params;
-        
+
         const code: StatusCode = await this.serve(this._request, this._response);
         res.status(code).json(this._response);
     }
 
-    protected abstract async serve(request: RequestType, response: ResponseType): Promise<StatusCode>;
+    protected async serve(request: RequestType, response: ResponseType): Promise<StatusCode> { return StatusCode.OK; };
 }

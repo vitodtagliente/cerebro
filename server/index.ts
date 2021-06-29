@@ -1,6 +1,6 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameServer, NetworkType } from 'cerebro-gaming';
+import { GameServer, NetworkType } from 'cerebro-gameserver';
 
 class FooController extends Controller {
     public constructor(app: Application) { super(app); }

@@ -1,7 +1,7 @@
 {
-  "name": "cerebro-gaming",
+  "name": "cerebro-gameserver",
   "version": "0.0.0",
-  "description": "cerebro-gaming",
+  "description": "cerebro-gameserver",
   "main": "server.js",
   "author": {
     "name": ""

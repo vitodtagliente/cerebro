@@ -66,7 +66,7 @@ export default class Schema
 
     /// Find one record
     /// @param condition - The condition
-    /// òreturn - The record if exists
+    /// ï¿½return - The record if exists
     public async findOne(condition: string): Promise<Model>
     {
         return null;
