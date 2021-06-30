@@ -1,7 +1,8 @@
 import { StatusCode } from "../cerebro-http";
 import Logger from "../cerebro-logger";
-import { CommandId } from "./command";
+import { BaseCommand, CommandId } from "./command";
 import CommandRegister from "./command_register";
+import Encoding from "./encoding";
 import Message from "./message";
 import { UserSession } from "./user_session_manager";
 
@@ -19,7 +20,7 @@ export default class MessageProcessor
         let structuredMessage: Message = null;
         try
         {
-            structuredMessage = Message.parse(message);
+            structuredMessage = Encoding.parse<Message>(message);
         }
         catch
         {
@@ -34,7 +35,7 @@ export default class MessageProcessor
         }
 
         const commandId: CommandId = structuredMessage.header.type;
-        const command = this._commandRegister.find(commandId);
+        const command: BaseCommand = this._commandRegister.find(commandId);
         if (command == null)
         {
             Logger.warn(`Cannot find a command ${commandId} for processing the message '${message}' for user ${userSession.user.id}`);

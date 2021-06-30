@@ -1,4 +1,4 @@
-import Command from "./command";
+import { BaseCommand } from "./command";
 import CommandRegister from "./command_register";
 import MessageProcessor from "./message_processor";
 import NetworkLayer, { NetworkType, SocketId } from "./network_layer";
@@ -62,7 +62,7 @@ export default class GameServer
         }
     }
 
-    public register<T extends Command>(ctor: { new(...args): T }): void
+    public register<T extends BaseCommand>(ctor: { new(...args): T }): void
     {
         const command: T = new ctor();
         this._commandRegister.add(command);

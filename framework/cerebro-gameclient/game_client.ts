@@ -1,7 +1,8 @@
-import Logger from "../cerebro-logger";
+import { StatusCode } from "cerebro-http";
+import Logger from "cerebro-logger";
 import Encoding from "./encoding";
 import Message from "./message";
-import NetworkLayer, { NetworkType } from "./network_layer";
+import NetworkLayer, { NetworkState, NetworkType } from "./network_layer";
 import NetworkLayerFactory from "./network_layer_factory";
 
 type ConnectionHandler = () => void;
@@ -41,11 +42,25 @@ export default class GameClient
 
     public send(message: Message): void
     {
-        if (this._network)
+        if (this._network && this._network.state == NetworkState.Connected)
         {
-            const json: string = Message.stringify(message);
+            const json: string = Encoding.stringify(message);
             const encodedMessage: string = Encoding.encode(json);
             this._network.send(encodedMessage);
         }
+    }
+
+    public call<RequestType, ResponseType>(commandId: string, request: RequestType, response?: ResponseType): StatusCode
+    {
+        if (this._network && this._network.state == NetworkState.Connected)
+        {
+            const message: Message = new Message;
+            message.header.type = commandId;
+            message.body = Encoding.stringify(request);
+
+            this.send(message);
+            return StatusCode.OK;
+        }
+        return StatusCode.BadRequest;
     }
 }

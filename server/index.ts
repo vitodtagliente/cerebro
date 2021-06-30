@@ -56,21 +56,23 @@ const state: ApplicationState = app.listen(() => {
 });
 */
 
+const AuthentiationCommandId: string = 'auth';
+
+class AutheticationRequest
+{
+    public username: string;
+}
+
 const server: GameServer = new GameServer(ServerNetworkType.WebSockets);
 server.onListening = () =>
 {
     const client: GameClient = new GameClient(ClientNetworkType.WebSockets);
     client.onConnection = () =>
     {
-        const message: ClientMessage = new ClientMessage;
-        message.header.type = 'auth';
-        message.body.data.set('username', 'vito');
-        
-        client.send(message);
+        const request: AutheticationRequest = new AutheticationRequest;
+        request.username = 'Vito';
 
-        message.body.data.set('username', 'foo');
-
-        client.send(message);
+        client.call<AutheticationRequest, void>(AuthentiationCommandId, request);
         
         client.close();
     };
