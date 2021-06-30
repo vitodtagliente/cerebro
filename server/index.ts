@@ -67,6 +67,10 @@ server.onListening = () =>
         message.body.data.set('username', 'vito');
         
         client.send(message);
+
+        message.body.data.set('username', 'foo');
+
+        client.send(message);
         
         client.close();
     };

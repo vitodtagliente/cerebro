@@ -43,6 +43,7 @@ export default class Message
     public header: MessageHeader;
     public body: MessageBody;
 
+    // https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
     public static stringify(message: Message): string
     {
         function replacer(key, value)
@@ -62,6 +63,7 @@ export default class Message
         return JSON.stringify(message, replacer);
     }
 
+    // https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
     public static parse(data: string): Message
     {
         function reviver(key, value)
