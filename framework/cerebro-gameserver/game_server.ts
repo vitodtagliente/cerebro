@@ -6,8 +6,15 @@ import NetworkLayerFactory from "./network_layer_factory";
 import Logger from "cerebro-logger";
 import UserSessionManager, { UserSession } from "./user_session_manager";
 
+// standard commands
+import { AuthenticationCommand } from "./commands/authentication_command";
+
+type ListeningHandler = () => void;
+
 export default class GameServer
 {
+    public onListening: ListeningHandler = () => { };
+
     private _commandRegister: CommandRegister;
     private _network: NetworkLayer;
     private _messageProcessor: MessageProcessor;
@@ -50,6 +57,7 @@ export default class GameServer
     {
         if (this._network)
         {
+            this._network.onListening = this.onListening;
             this._network.listen(port);
         }
     }
@@ -62,6 +70,6 @@ export default class GameServer
 
     private _registerStandardCommands()
     {
-
+        this.register(AuthenticationCommand);
     }
 }

@@ -19,7 +19,7 @@ export default class MessageProcessor
         let structuredMessage: Message = null;
         try
         {
-            structuredMessage = JSON.parse(message);
+            structuredMessage = Message.parse(message);
         }
         catch
         {

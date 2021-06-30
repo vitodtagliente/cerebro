@@ -11,7 +11,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>ea5109b2-6c70-48c0-add4-d535521943ac</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>app.ts</StartupFile>
+    <StartupFile>index.ts</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -29,10 +29,36 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <None Include="app.ts" />
+    <None Include="index.ts" />
     <Content Include="package.json" />
     <Content Include="README.md" />
     <Content Include="tsconfig.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="encoding.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="game_client.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="message.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="network_layer.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="network_layers\network_layer_ws.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="network_layer_factory.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="session.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="network_layers\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

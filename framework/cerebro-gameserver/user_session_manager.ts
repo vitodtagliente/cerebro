@@ -5,7 +5,7 @@ export class UserSession
 {
     public constructor()
     {
-        this.authenticated = true;
+        this.authenticated = false;
         this.user = new User;
         this.data = new Map<string, string>();
     }
@@ -31,7 +31,7 @@ export default class UserSessionManager
     {
         if (this._sessions.has(socketId))
         {
-            return this._sessions[socketId];
+            return this._sessions.get(socketId);
         }
 
         const session: UserSession = new UserSession;
@@ -48,7 +48,7 @@ export default class UserSessionManager
     {
         if (this._sessions.has(socketId))
         {
-            return this._sessions[socketId];
+            return this._sessions.get(socketId);
         }
         return this.create(socketId);
     }

@@ -14,9 +14,9 @@ export class UserState
 
 export default class User
 {
-    public constructor(id?: NetworkId)
+    public constructor()
     {
-        this.id = id != InvalidNetworkId ? id : nextNetworkId();
+        this.id = nextNetworkId();
         this.state = new UserState;
     }
 

@@ -17,6 +17,6 @@ export default class CommandRegister
     public find(commandId: CommandId): Command
     {
         if (commandId == Command.InvalidCommandId) return null;
-        return this._commands[commandId];
+        return this._commands.get(commandId);
     }
 }

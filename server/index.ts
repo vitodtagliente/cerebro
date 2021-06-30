@@ -1,6 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameServer, NetworkType } from 'cerebro-gameserver';
+import { GameServer, NetworkType as ServerNetworkType } from 'cerebro-gameserver';
+import { GameClient, Message as ClientMessage, NetworkType as ClientNetworkType } from 'cerebro-gameclient';
 
 class FooController extends Controller {
     public constructor(app: Application) { super(app); }
@@ -42,6 +43,7 @@ class FooEndpoint extends Endpoint<FooRequest, FooResponse>
     }
 }
 
+/*
 const app: Application = new Application();
 app.initialize();
 app.register(FooController);
@@ -52,6 +54,23 @@ const service: Service = app.service(FooService);
 const state: ApplicationState = app.listen(() => {
 
 });
+*/
 
-const gameServer = new GameServer(NetworkType.UDP);
-gameServer.listen(6000);
+const server: GameServer = new GameServer(ServerNetworkType.WebSockets);
+server.onListening = () =>
+{
+    const client: GameClient = new GameClient(ClientNetworkType.WebSockets);
+    client.onConnection = () =>
+    {
+        const message: ClientMessage = new ClientMessage;
+        message.header.type = 'auth';
+        message.body.data.set('username', 'vito');
+        
+        client.send(message);
+        
+        client.close();
+    };
+
+    client.connect('127.0.0.1', 6000);    
+};
+server.listen(6000);

@@ -1,4 +1,5 @@
 import { StatusCode } from "cerebro-http";
+import Logger from "cerebro-logger";
 import Command, { CommandId, CommandSettings } from "../command";
 import Message from "../message";
 import { UserSession } from "../user_session_manager";
@@ -22,7 +23,8 @@ export class AuthenticationCommand extends Command
     protected _execute(userSession: UserSession, message: Message): StatusCode
     {
         userSession.authenticated = true;
-        userSession.user.state.name = message.body.data[MessageData.Username];
+        userSession.user.state.name = message.body.data.get(MessageData.Username);
+        Logger.info(`user[${userSession.user.id}] authenticated with name[${userSession.user.state.name}]`);
 
         return StatusCode.OK;
     }
