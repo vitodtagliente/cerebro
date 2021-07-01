@@ -2,7 +2,7 @@
   "name": "cerebro-core",
   "version": "0.0.0",
   "description": "cerebro-core",
-  "main": "server.js",
+  "main": "index.js",
   "author": {
     "name": ""
   },

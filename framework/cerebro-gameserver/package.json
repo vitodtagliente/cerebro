@@ -2,7 +2,7 @@
   "name": "cerebro-gameserver",
   "version": "0.0.0",
   "description": "cerebro-gameserver",
-  "main": "server.js",
+  "main": "index.js",
   "author": {
     "name": ""
   },

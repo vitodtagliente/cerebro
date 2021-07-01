@@ -2,7 +2,7 @@
   "name": "cerebro-http",
   "version": "0.0.0",
   "description": "cerebro-http",
-  "main": "server.js",
+  "main": "index.js",
   "author": {
     "name": ""
   },
