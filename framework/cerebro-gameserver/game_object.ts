@@ -1,4 +1,4 @@
-import NetworkId, { nextNetworkId } from "./network_id";
+import { NetworkId, nextNetworkId } from "../cerebro-netcore";
 import { Transform } from "./math";
 import User from "./user";
 

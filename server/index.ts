@@ -1,6 +1,6 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameServer, NetworkType as ServerNetworkType } from 'cerebro-gameserver';
+import { GameServer, NetworkProtocol } from 'cerebro-gameserver';
 import { GameClient, Message as ClientMessage, NetworkType as ClientNetworkType } from 'cerebro-gameclient';
 
 class FooController extends Controller {
@@ -63,7 +63,7 @@ class AutheticationRequest
     public username: string;
 }
 
-const server: GameServer = new GameServer(ServerNetworkType.WebSockets);
+const server: GameServer = new GameServer(NetworkProtocol.WebSockets);
 server.onListening = () =>
 {
     const client: GameClient = new GameClient(ClientNetworkType.WebSockets);

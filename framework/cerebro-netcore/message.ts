@@ -8,6 +8,7 @@ enum Version
 export enum MessageHeaderField
 {
     Version = 'version',
+    Command = 'command'
 }
 
 export class MessageHeader

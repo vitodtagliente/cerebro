@@ -18,6 +18,7 @@
   "dependencies": {
     "cerebro-http": "file:../cerebro-http",
     "cerebro-logger": "file:../cerebro-logger",
+    "cerebro-netcore": "file:../cerebro-netcore",
     "dgram": "^1.0.1",
     "ws": "^7.5.0"
   }

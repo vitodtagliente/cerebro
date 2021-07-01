@@ -1,4 +1,4 @@
-import NetworkId, { nextNetworkId, InvalidNetworkId } from "./network_id";
+import { NetworkId, nextNetworkId } from "../cerebro-netcore";
 
 export class UserState
 {

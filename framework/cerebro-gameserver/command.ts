@@ -1,8 +1,7 @@
-import Message from "./message";
 import { StatusCode } from 'cerebro-http';
 import Logger from "cerebro-logger";
+import { Encoding, Message, MessageHeaderField } from '../cerebro-netcore';
 import { UserSession } from "./user_session_manager";
-import Encoding from "./encoding";
 
 export type CommandId = string;
 export const InvalidCommandId: CommandId = '';
@@ -49,9 +48,9 @@ export default abstract class Command<RequestType, ResponseType> extends BaseCom
 
     public execute(userSession: UserSession, message: Message): StatusCode
     {
-        if (message.header.type != this.id)
+        if (message.header.fields.get(MessageHeaderField.Command) != this.id)
         {
-            Logger.error(`The user[${userSession.user.id}] has tried to execute the command[${this.id}] passing a message of different type[${message.header.type}]`);
+            Logger.error(`The user[${userSession.user.id}] has tried to execute the command[${this.id}] passing a message of different type[${message.header.fields.get(MessageHeaderField.Command)}]`);
             return StatusCode.InternalServerError;
         }
 

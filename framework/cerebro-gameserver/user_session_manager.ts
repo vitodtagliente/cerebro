@@ -1,4 +1,4 @@
-import { SocketId } from "./network_layer";
+import { SocketId } from "../cerebro-netcore";
 import User from "./user";
 
 export class UserSession

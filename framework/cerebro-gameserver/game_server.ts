@@ -1,10 +1,9 @@
 import { BaseCommand } from "./command";
 import CommandRegister from "./command_register";
-import MessageProcessor from "./message_processor";
-import NetworkLayer, { NetworkType, SocketId } from "./network_layer";
-import NetworkLayerFactory from "./network_layer_factory";
 import Logger from "cerebro-logger";
+import MessageProcessor from "./message_processor";
 import UserSessionManager, { UserSession } from "./user_session_manager";
+import { NetworkProtocol, NodeFactory, Server, SocketId } from 'cerebro-netcore';
 
 // standard commands
 import { AuthenticationCommand } from "./commands/authentication_command";
@@ -16,16 +15,16 @@ export default class GameServer
     public onListening: ListeningHandler = () => { };
 
     private _commandRegister: CommandRegister;
-    private _network: NetworkLayer;
+    private _socket: Server;
     private _messageProcessor: MessageProcessor;
     private _userSessionManager: UserSessionManager;
 
-    public constructor(type: NetworkType)
+    public constructor(protocol: NetworkProtocol)
     {
-        this._network = NetworkLayerFactory.get(type);
-        if (this._network == null)
+        this._socket = NodeFactory.server(protocol);
+        if (this._socket == null)
         {
-            Logger.error(`Cannot initialize the NetworkLAyer of type[${type}]`);
+            Logger.error(`Cannot initialize the server with protocol[${protocol}]`);
             return;
         }
 
@@ -36,17 +35,17 @@ export default class GameServer
 
         this._messageProcessor = new MessageProcessor(this._commandRegister);
 
-        this._network.onClientConnection = (socketId: SocketId) =>
+        this._socket.onClientConnection = (socketId: SocketId) =>
         {
             this._userSessionManager.create(socketId);
         };
 
-        this._network.onClientDisconnection = (socketId: SocketId) =>
+        this._socket.onClientDisconnection = (socketId: SocketId) =>
         {
             this._userSessionManager.destroy(socketId);
         };
 
-        this._network.onClientMessage = (socketId: SocketId, message: string) =>
+        this._socket.onClientMessage = (socketId: SocketId, message: string) =>
         {
             const userSession: UserSession = this._userSessionManager.get(socketId);
             this._messageProcessor.process(userSession, message);
@@ -55,10 +54,10 @@ export default class GameServer
 
     public listen(port: number): void
     {
-        if (this._network)
+        if (this._socket)
         {
-            this._network.onListening = this.onListening;
-            this._network.listen(port);
+            this._socket.onListening = this.onListening;
+            this._socket.listen(port);
         }
     }
 

@@ -1,5 +1,5 @@
+import { NetworkId, InvalidNetworkId } from "cerebro-netcore";
 import GameObject from "./game_object";
-import NetworkId, { InvalidNetworkId } from "./network_id";
 
 export type WorldMapId = string;
 export const InvalidWorldMapId: WorldMapId = '';

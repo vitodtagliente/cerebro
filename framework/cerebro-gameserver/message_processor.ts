@@ -1,9 +1,8 @@
 import { StatusCode } from "../cerebro-http";
 import Logger from "../cerebro-logger";
+import { Encoding, Message, MessageHeaderField } from "../cerebro-netcore";
 import { BaseCommand, CommandId } from "./command";
 import CommandRegister from "./command_register";
-import Encoding from "./encoding";
-import Message from "./message";
 import { UserSession } from "./user_session_manager";
 
 export default class MessageProcessor
@@ -34,7 +33,12 @@ export default class MessageProcessor
             return;
         }
 
-        const commandId: CommandId = structuredMessage.header.type;
+        if (structuredMessage.header.fields.has(MessageHeaderField.Command) == false)
+        {
+            return;
+        }
+
+        const commandId: CommandId = structuredMessage.header.fields.get(MessageHeaderField.Command);
         const command: BaseCommand = this._commandRegister.find(commandId);
         if (command == null)
         {
