@@ -32,17 +32,22 @@ export class BaseCommand
     public get id(): CommandId { return this._id; }
     public get settings(): CommandSettings { return this._settings; }
 
-    execute(userSession: UserSession, message: Message, responseTypeCtor?: any): StatusCode { return StatusCode.NotImplemented; }
+    execute(userSession: UserSession, message: Message): StatusCode { return StatusCode.NotImplemented; }
 }
 
 export default abstract class Command<RequestType, ResponseType> extends BaseCommand
 {
-    public constructor(id: CommandId, settings: CommandSettings)
+    private _request: RequestType;
+    private _response: ResponseType;
+
+    public constructor(id: CommandId, settings: CommandSettings, request: RequestType, response: ResponseType)
     {
         super(id, settings);
+        this._request = request;
+        this._response = response;
     }
 
-    public execute(userSession: UserSession, message: Message, responseTypeCtor: { new(...args): ResponseType }): StatusCode
+    public execute(userSession: UserSession, message: Message): StatusCode
     {
         if (message.header.type != this.id)
         {
@@ -56,13 +61,9 @@ export default abstract class Command<RequestType, ResponseType> extends BaseCom
             return StatusCode.Unauthorized;
         }
 
-        let request: RequestType = null;
-        let response: ResponseType = null;
-
         try
         {
-            request = Encoding.parse<RequestType>(message.body);
-            // response = new responseTypeCtor;
+            this._request = Encoding.parse<RequestType>(message.body);
         }
         catch
         {
@@ -70,7 +71,11 @@ export default abstract class Command<RequestType, ResponseType> extends BaseCom
             return StatusCode.BadRequest;
         }
 
-        return this._execute(userSession, request, response);
+        const error: StatusCode = this._execute(userSession, this._request, this._response);
+
+
+
+        return error;
     }
 
     protected abstract _execute(userSession: UserSession, request: RequestType, response: ResponseType): StatusCode;

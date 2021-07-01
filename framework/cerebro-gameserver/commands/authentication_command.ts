@@ -21,7 +21,8 @@ export class AuthenticationCommand extends Command<Request, Response>
     {
         const settings: CommandSettings = new CommandSettings;
         settings.requireAuthentication = false;
-        super(commandId, settings);
+
+        super(commandId, settings, new Request, new Response);
     }
 
     protected _execute(userSession: UserSession, request: Request, response: Response): StatusCode

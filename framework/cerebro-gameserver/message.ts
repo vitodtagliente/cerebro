@@ -1,4 +1,5 @@
 import { CommandId } from "./command";
+import NetworkId, { nextNetworkId } from "./network_id";
 
 enum Version
 {
@@ -10,14 +11,23 @@ export enum MessageHeaderField
     Version = 'version',
 }
 
+export enum MessageType
+{
+    Unknown = '',
+    Request = 'request',
+    Response = 'response'
+}
+
 export class MessageHeader
 {
     public constructor()
     {
+        this.id = nextNetworkId()
         this.fields = new Map<string, string>();
         this.fields.set(MessageHeaderField.Version, Version.v1.toString());
     }
 
+    public id: NetworkId;
     public type: CommandId;
     public fields: Map<string, string>;
 }
