@@ -41,6 +41,9 @@
     <TypeScriptCompile Include="level.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="math.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="network_object.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

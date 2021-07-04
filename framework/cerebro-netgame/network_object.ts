@@ -1,5 +1,6 @@
 import { InvalidNetworkId, NetworkId, nextNetworkId } from 'cerebro-netcore';
 import Component, { ComponentType } from './component';
+import { Math } from './math';
 
 export class NetworkObjectState
 {
@@ -15,12 +16,14 @@ export default class NetworkObject
 {
     private _id: NetworkId;
     public state: NetworkObjectState;
+    public transform: Math.Transform;
     public _components: Array<Component>;
 
-    public constructor(id = InvalidNetworkId)
+    public constructor(id: NetworkId = InvalidNetworkId)
     {
         this._id = id == InvalidNetworkId ? nextNetworkId() : id;
         this.state = new NetworkObjectState;
+        this.transform = new Math.Transform;
         this._components = new Array<Component>();
     }
 

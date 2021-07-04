@@ -2,13 +2,13 @@ import { InvalidNetworkId, NetworkId, nextNetworkId } from "../cerebro-netcore";
 
 export type ComponentType = string;
 
-export default abstract class Component
+export default class Component
 {
     private _id: NetworkId;
     private _type: ComponentType;
     public data: Map<string, string>;
 
-    public constructor(type: ComponentType, id: NetworkId)
+    public constructor(type: ComponentType, id: NetworkId = InvalidNetworkId)
     {
         this._type = type;
         this._id = id == InvalidNetworkId ? nextNetworkId() : id;
