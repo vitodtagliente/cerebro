@@ -1,5 +1,6 @@
 import * as WS from 'ws';
 import Encoding from '../encoding';
+import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
 import { nextNetworkId } from '../network_id';
 import Server, { ServerState } from '../server';
@@ -66,5 +67,28 @@ export default class ServerWS extends Server
                 this.onClientMessage(socketId, decodedMessage);
             });
         });
+    }
+
+    public send(socketId: SocketId, message: any | Message): void
+    {
+        if (this._socket && this._state == ServerState.Listening)
+        {
+            const socket: WS = this._clients.get(socketId);
+            if (socket)
+            {
+                let data: string;
+                if (typeof message === typeof Message)
+                {
+                    const json: string = Encoding.stringify(message);
+                    const encodedMessage: string = Encoding.encode(json);
+                    data = encodedMessage;
+                }
+                else
+                {
+                    data = message;
+                }
+                socket.send(data);
+            }
+        }
     }
 }

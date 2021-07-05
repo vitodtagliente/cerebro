@@ -1,3 +1,4 @@
+import Message from "./message";
 import { NetworkProtocol } from "./network";
 
 type ConnectionHandler = () => void;
@@ -35,4 +36,5 @@ export default abstract class Client
     public abstract close(): void;
 
     public abstract send(message: any): void;
+    public abstract send(message: Message): void;
 }

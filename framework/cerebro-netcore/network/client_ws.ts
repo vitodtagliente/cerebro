@@ -1,6 +1,7 @@
 import * as WS from 'ws';
 import Client, { ClientState } from '../client';
 import Encoding from '../encoding';
+import Message from '../message';
 import { NetworkProtocol } from '../network';
 
 enum EventType
@@ -58,11 +59,22 @@ export default class ClientWS extends Client
         }
     }
 
-    public send(message: any): void
+    public send(message: any | Message): void
     {
         if (this._socket && this._state == ClientState.Connected)
         {
-            this._socket.send(message);
+            let data: string;
+            if (typeof message === typeof Message)
+            {
+                const json: string = Encoding.stringify(message);
+                const encodedMessage: string = Encoding.encode(json);
+                data = encodedMessage;
+            }
+            else
+            {
+                data = message;
+            }
+            this._socket.send(data);
         }
     }
 }

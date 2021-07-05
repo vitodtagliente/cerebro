@@ -1,3 +1,4 @@
+import Message from "./message";
 import { NetworkProtocol, SocketId } from "./network";
 
 type ClientConnectionHandler = (socketId: SocketId) => void;
@@ -33,4 +34,7 @@ export default abstract class Server
     public get state(): ServerState { return this._state; }
 
     public abstract listen(port: number): void;
+
+    public abstract send(socketId: SocketId, message: any): void;
+    public abstract send(socketId: SocketId, message: Message): void;
 }

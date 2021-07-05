@@ -1,5 +1,6 @@
 import * as dgram from 'dgram';
 import Encoding from '../encoding';
+import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
 import Server, { ServerState } from '../server';
 
@@ -76,6 +77,30 @@ export default class ServerUDP extends Server
         if (this.state == ServerState.Initialized)
         {
             this._socket.bind(port);
+        }
+    }
+
+    public send(socketId: SocketId, message: any | Message): void
+    {
+        if (this._socket && this._state == ServerState.Listening)
+        {
+            console.assert(false, "Not implemented");
+            const socket: dgram.Socket = null; // = this._clients.get(socketId);
+            if (socket)
+            {
+                let data: string;
+                if (typeof message === typeof Message)
+                {
+                    const json: string = Encoding.stringify(message);
+                    const encodedMessage: string = Encoding.encode(json);
+                    data = encodedMessage;
+                }
+                else
+                {
+                    data = message;
+                }
+                socket.send(data);
+            }
         }
     }
 }

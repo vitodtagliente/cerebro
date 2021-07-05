@@ -1,11 +1,7 @@
 import Command, { CommandId } from "./command";
 
-
 export default class CommandRegister
 {
-    private static _main: CommandRegister = null;
-    public static get main(): CommandRegister { return this._main; }
-
     private _commands: Map<CommandId, Command>;
 
     public constructor()
