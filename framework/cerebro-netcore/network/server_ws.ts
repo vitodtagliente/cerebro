@@ -34,7 +34,7 @@ export default class ServerWS extends Server
         this._socket = new WS.Server({ port });
 
         this._state = ServerState.Listening;
-        console.log(`Game Server listening at ${this._socket.address().toString()}...`);
+        console.log(`Game Server listening at port ${port}...`);
         this.onListening();
 
         this._socket.on(EventType.Error, (error: Error) =>
