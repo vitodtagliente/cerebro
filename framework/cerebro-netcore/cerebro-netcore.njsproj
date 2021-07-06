@@ -35,6 +35,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="command.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -54,6 +57,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="connection_factory.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="server.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="server_connection.ts">
@@ -78,6 +84,12 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="user.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="user_session.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="user_session_manager.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>
