@@ -22,6 +22,8 @@ export default class CommandProcessor
 
     public process(message: Message): void
     {
+        this._requests.tick();
+
         if (message.header.fields.has(MessageHeaderField.Command) == false)
         {
             return;
