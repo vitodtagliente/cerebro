@@ -35,19 +35,7 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
-    <TypeScriptCompile Include="command.ts" />
-    <TypeScriptCompile Include="commands\authentication_command.ts" />
-    <TypeScriptCompile Include="commands\connect_command.ts" />
-    <TypeScriptCompile Include="commands\disconnect_command.ts" />
-    <TypeScriptCompile Include="command_register.ts" />
-    <TypeScriptCompile Include="game_server.ts" />
     <TypeScriptCompile Include="index.ts" />
-    <TypeScriptCompile Include="message_processor.ts" />
-    <TypeScriptCompile Include="user.ts" />
-    <TypeScriptCompile Include="user_session_manager.ts" />
-  </ItemGroup>
-  <ItemGroup>
-    <Folder Include="commands\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>

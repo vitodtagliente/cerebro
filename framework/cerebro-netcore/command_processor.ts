@@ -4,6 +4,7 @@ import Encoding from "./encoding";
 import Message, { MessageHeaderField } from "./message";
 import NetworkId from "./network_id";
 import TimeMap from "./time_map";
+import UserSession from "./user_session";
 
 type ResponseHandler<ResponseType> = (error: number, response?: ResponseType) => void;
 
@@ -20,7 +21,7 @@ export default class CommandProcessor
 
     public get register(): CommandRegister { return this._register; }
 
-    public process(message: Message): void
+    public process(userSession: UserSession, message: Message): void
     {
         this._requests.tick();
 
@@ -37,7 +38,7 @@ export default class CommandProcessor
             return;
         }
 
-        const commandResponse: CommandResponse = command.execute(message);
+        const commandResponse: CommandResponse = command.execute(userSession, message);
 
         const requestId: NetworkId = message.header.id;
         if (this._requests.has(requestId))

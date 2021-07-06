@@ -61,7 +61,7 @@ export default class Server
             }
 
             this.onClientMessage(userSession, message);
-            this._commandProcessor.process(message);
+            this._commandProcessor.process(userSession, message);
         }
 
         this.onInitializing();
@@ -85,15 +85,4 @@ export default class Server
             this._socket.close();
         }
     }
-
-    // public register<T extends BaseCommand>(ctor: { new(...args): T }): void
-    // {
-    //     const command: T = new ctor();
-    //     this._commandRegister.add(command);
-    // }
-    // 
-    // private _registerStandardCommands()
-    // {
-    //     this.register(AuthenticationCommand);
-    // }
 }

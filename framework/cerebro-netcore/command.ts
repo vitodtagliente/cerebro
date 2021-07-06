@@ -1,4 +1,5 @@
 import Message from "./message";
+import UserSession from "./user_session";
 
 export type CommandId = string;
 
@@ -35,5 +36,5 @@ export default abstract class Command
     public get id(): CommandId { return this._id; }
     public get settings(): CommandSettings { return this._settings; }
 
-    public abstract execute(message: Message): CommandResponse;
+    public abstract execute(userSession: UserSession, message: Message): CommandResponse;
 }
