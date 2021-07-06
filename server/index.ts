@@ -1,42 +1,51 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameServer, NetworkProtocol } from 'cerebro-gameserver';
 import { GameClient, Message as ClientMessage, NetworkType as ClientNetworkType } from 'cerebro-gameclient';
+import { Server, NetworkProtocol } from 'cerebro-netcore';
 
-class FooController extends Controller {
+class FooController extends Controller
+{
     public constructor(app: Application) { super(app); }
 
-    public register(router: Router): void {
-        router.register('/', HTTP.Method.GET, (req, res) => {
+    public register(router: Router): void
+    {
+        router.register('/', HTTP.Method.GET, (req, res) =>
+        {
             res.status(HTTP.StatusCode.OK).send("Ciao");
         });
     }
 }
 
-class FooService extends Service {
+class FooService extends Service
+{
     public constructor(app: Application) { super(app); }
 }
 
-class PooService extends Service {
+class PooService extends Service
+{
     public constructor(app: Application) { super(app); }
 }
 
-interface FooRequest {
+interface FooRequest
+{
     text?: string;
     description?: string;
 }
 
-interface FooResponse {
+interface FooResponse
+{
     text?: string;
 }
 
 class FooEndpoint extends Endpoint<FooRequest, FooResponse>
 {
-    public constructor(app: Application) {
+    public constructor(app: Application)
+    {
         super(app, "/foo", HTTP.Method.GET, {}, {});
     }
 
-    protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode> {
+    protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode>
+    {
         Logger.info("endpoint -> " + request.text);
         response.text = "fffofofofofof";
         return HTTP.StatusCode.OK;
@@ -63,7 +72,7 @@ class AutheticationRequest
     public username: string;
 }
 
-const server: GameServer = new GameServer(NetworkProtocol.WebSockets);
+const server: Server = new Server(NetworkProtocol.WebSockets);
 server.onListening = () =>
 {
     const client: GameClient = new GameClient(ClientNetworkType.WebSockets);
@@ -73,10 +82,10 @@ server.onListening = () =>
         request.username = 'Vito';
 
         client.call<AutheticationRequest, void>(AuthentiationCommandId, request);
-        
+
         client.close();
     };
 
-    client.connect('127.0.0.1', 6000);    
+    client.connect('127.0.0.1', 6000);
 };
 server.listen(6000);

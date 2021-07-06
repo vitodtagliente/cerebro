@@ -1,3 +1,4 @@
+/*
 const commandId: CommandId = "auth";
 
 export class Request
@@ -30,3 +31,4 @@ export class AuthenticationCommand extends Command<Request, Response>
         return StatusCode.OK;
     }
 }
+*/

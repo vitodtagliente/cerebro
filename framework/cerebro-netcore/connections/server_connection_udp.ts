@@ -107,7 +107,7 @@ export default class ServerConnectionUDP extends ServerConnection
                 {
                     data = message;
                 }
-                socket.send(data);
+                // TODO: socket.send(data);
             }
         }
     }
