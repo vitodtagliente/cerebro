@@ -6,15 +6,18 @@ import Client, { ClientState } from "./client";
 import Server, { ServerState } from "./server";
 import NodeFactory from "./node_factory";
 import User, { UserState } from "./user";
-import Command from "./command";
+import Command, { CommandResponse } from "./command";
 import CommandRegister from "./command_register";
+import CommandProcessor from "./command_processor";
 
 export
 {
     Client,
     ClientState,
     Command,
+    CommandProcessor,
     CommandRegister,
+    CommandResponse,
     Encoding,
     Message,
     MessageHeader,

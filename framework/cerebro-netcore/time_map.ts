@@ -35,4 +35,9 @@ export default class TimeMap<K, V>
     {
         return null;
     }
+
+    public delete(key: K): boolean
+    {
+        return true;
+    }
 }

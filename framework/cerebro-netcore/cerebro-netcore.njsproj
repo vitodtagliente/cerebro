@@ -53,9 +53,6 @@
     <TypeScriptCompile Include="client.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="message_processor.ts">
-      <SubType>Code</SubType>
-    </TypeScriptCompile>
     <TypeScriptCompile Include="node_factory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

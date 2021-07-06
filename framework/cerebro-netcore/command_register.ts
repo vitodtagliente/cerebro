@@ -25,4 +25,9 @@ export default class CommandRegister
     {
         return this._commands.get(commandId);
     }
+
+    public has(commandId: CommandId): boolean
+    {
+        return this._commands.has(commandId);
+    }
 }

@@ -9,6 +9,18 @@ export class CommandSettings
     public requireUserSession: boolean = false;
 }
 
+export class CommandResponse
+{
+    public statusCode: number;
+    public data: any;
+
+    public constructor(statusCode: number = 200, data?: any)
+    {
+        this.statusCode = statusCode;
+        this.data = data;
+    }
+}
+
 export default abstract class Command
 {
     private _id: CommandId;
@@ -23,5 +35,5 @@ export default abstract class Command
     public get id(): CommandId { return this._id; }
     public get settings(): CommandSettings { return this._settings; }
 
-    public abstract execute(message: Message): number;
+    public abstract execute(message: Message): CommandResponse;
 }

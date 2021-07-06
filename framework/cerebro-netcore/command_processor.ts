@@ -1,16 +1,21 @@
-import Command, { CommandId } from "./command";
+import Command, { CommandId, CommandResponse } from "./command";
 import CommandRegister from "./command_register";
-import Message, { MessageHeader, MessageHeaderField } from "./message";
+import Encoding from "./encoding";
+import Message, { MessageHeaderField } from "./message";
+import NetworkId from "./network_id";
+import TimeMap from "./time_map";
 
-type ResponseHandler = (message: Message) => void;
+type ResponseHandler<ResponseType> = (error: number, response?: ResponseType) => void;
 
 export default class CommandProcessor
 {
     private _register: CommandRegister;
+    private _requests: TimeMap<NetworkId, Function>;
 
     public constructor()
     {
         this._register = new CommandRegister;
+        this._requests = new TimeMap<NetworkId, Function>();
     }
 
     public get register(): CommandRegister { return this._register; }
@@ -30,26 +35,40 @@ export default class CommandProcessor
             return;
         }
 
-        /*
-            require response? 
-            no)
-            send(socket, message): void
+        const commandResponse: CommandResponse = command.execute(message);
 
-            yes)
-            send(socket, message(id:X)) 
-            wait processing (timed)
-            receive message(id:X)
-            return response          
-         */ 
+        const requestId: NetworkId = message.header.id;
+        if (this._requests.has(requestId))
+        {
+            const callback: Function = this._requests.get(requestId);
+            this._requests.delete(requestId);
+
+            if (callback)
+            {
+                callback(commandResponse.statusCode, commandResponse.data);
+            }
+        }
     }
 
-    public send(message: Message, callback?: ResponseHandler): boolean
+    public request<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): Message
     {
-        if (message.header.fields.has(MessageHeaderField.Command))
+        const command: Command = this.register.find(commandId);
+        if (command == null)
         {
-            // send it
-            return true;
+            console.error(`Cannot find the command[${commandId}]`);
+            return;
         }
-        return false;
+
+        // encode the request
+        const message: Message = new Message;
+        message.header.fields.set(MessageHeaderField.Command, commandId);
+        message.body = Encoding.stringify(request);
+
+        if (command.settings.requireResponse)
+        {
+            this._requests.set(message.header.id, callback);
+        }
+
+        return message;
     }
 }
