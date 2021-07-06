@@ -80,6 +80,14 @@ export default class ServerConnectionUDP extends ServerConnection
         }
     }
 
+    public close(): void
+    {
+        if (this.state == ServerConnectionState.Initialized)
+        {
+            this._socket.close();
+        }
+    }
+
     public send(socketId: SocketId, message: any | Message): void
     {
         if (this._socket && this._state == ServerConnectionState.Listening)

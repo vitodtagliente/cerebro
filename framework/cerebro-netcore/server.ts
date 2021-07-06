@@ -3,17 +3,18 @@ import CommandRegister from "./command_register";
 import ConnectionFactory from "./connection_factory";
 import Message from "./message";
 import { NetworkProtocol, SocketId } from "./network";
-import ServerConnection from "./server_connection";
+import ServerConnection, { ServerConnectionState } from "./server_connection";
 import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
 
-type ListeningHandler = () => void;
+type EventHandler = () => void;
 type ConnectionHandler = (userSession: UserSession) => void;
 type MessageHandler = (userSession: UserSession, message: Message) => void;
 
 export default class Server
 {
-    public onListening: ListeningHandler = () => { };
+    public onInitializing: EventHandler = () => { };
+    public onListening: EventHandler = () => { };
     public onClientConnection: ConnectionHandler = (userSession: UserSession) => { };
     public onClientDisconnection: ConnectionHandler = (userSession: UserSession) => { };
     public onClientMessage: MessageHandler = (userSession: UserSession, message: Message) => { };
@@ -62,6 +63,8 @@ export default class Server
             this.onClientMessage(userSession, message);
             this._commandProcessor.process(message);
         }
+
+        this.onInitializing();
     }
 
     public get register(): CommandRegister { return this._commandProcessor.register; }
@@ -72,6 +75,14 @@ export default class Server
         {
             this._socket.onListening = this.onListening;
             this._socket.listen(port);
+        }
+    }
+
+    public close(): void
+    {
+        if (this._socket)
+        {
+            this._socket.close();
         }
     }
 

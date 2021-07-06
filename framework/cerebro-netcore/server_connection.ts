@@ -34,6 +34,7 @@ export default abstract class ServerConnection
     public get state(): ServerConnectionState { return this._state; }
 
     public abstract listen(port: number): void;
+    public abstract close(): void;
 
     public abstract send(socketId: SocketId, message: any): void;
     public abstract send(socketId: SocketId, message: Message): void;
