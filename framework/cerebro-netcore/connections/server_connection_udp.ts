@@ -2,7 +2,7 @@ import * as dgram from 'dgram';
 import Encoding from '../encoding';
 import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
-import Server, { ServerState } from '../server';
+import ServerConnection, { ServerConnectionState } from '../server_connection';
 
 function getSocketId(senderInfo: any): SocketId
 {
@@ -34,7 +34,7 @@ enum EventType
     Message = 'message'
 }
 
-export default class ServerUDP extends Server
+export default class ServerConnectionUDP extends ServerConnection
 {
     private _socket: dgram.Socket = null;
     private _clients: Map<SocketId, SocketState>;
@@ -48,7 +48,7 @@ export default class ServerUDP extends Server
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
-            this._state = ServerState.Error;
+            this._state = ServerConnectionState.Error;
 
             console.error(`Fatal error, closing the socket...`);
             this._socket.close();
@@ -58,7 +58,7 @@ export default class ServerUDP extends Server
         });
         this._socket.on(EventType.Listening, () =>
         {
-            this._state = ServerState.Listening;
+            this._state = ServerConnectionState.Listening;
             console.log(`Game Server listening at ${this._socket.address().address}:${this._socket.address().port.toString()}...`);
             this.onListening();
         });
@@ -74,7 +74,7 @@ export default class ServerUDP extends Server
 
     public listen(port: number): void 
     {
-        if (this.state == ServerState.Initialized)
+        if (this.state == ServerConnectionState.Initialized)
         {
             this._socket.bind(port);
         }
@@ -82,7 +82,7 @@ export default class ServerUDP extends Server
 
     public send(socketId: SocketId, message: any | Message): void
     {
-        if (this._socket && this._state == ServerState.Listening)
+        if (this._socket && this._state == ServerConnectionState.Listening)
         {
             console.assert(false, "Not implemented");
             const socket: dgram.Socket = null; // = this._clients.get(socketId);

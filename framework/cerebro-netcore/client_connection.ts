@@ -5,7 +5,7 @@ type ConnectionHandler = () => void;
 type MessageHandler = (message: string) => void;
 type ErrorHandler = (error: Error) => void;
 
-export enum ClientState
+export enum ClientConnectionState
 {
     Initialized,
     Connected,
@@ -13,10 +13,10 @@ export enum ClientState
     Error
 };
 
-export default abstract class Client
+export default abstract class ClientConnection
 {
     private _protocol: NetworkProtocol;
-    protected _state: ClientState;
+    protected _state: ClientConnectionState;
 
     public onConnection: ConnectionHandler = () => { };
     public onDisconnection: ConnectionHandler = () => { };
@@ -26,11 +26,11 @@ export default abstract class Client
     public constructor(protocol: NetworkProtocol)
     {
         this._protocol = protocol;
-        this._state = ClientState.Initialized;
+        this._state = ClientConnectionState.Initialized;
     }
 
     public get protocol(): NetworkProtocol { return this._protocol; }
-    public get state(): ClientState { return this._state; }
+    public get state(): ClientConnectionState { return this._state; }
 
     public abstract connect(address: string, port: number): void;
     public abstract close(): void;

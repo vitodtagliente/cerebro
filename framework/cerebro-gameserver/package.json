@@ -20,6 +20,7 @@
     "cerebro-logger": "file:../cerebro-logger",
     "cerebro-netcore": "file:../cerebro-netcore",
     "cerebro-netgame": "file:../cerebro-netgame",
+    "cerebro-netshared": "file:../cerebro-netshared",
     "dgram": "^1.0.1",
     "ws": "^7.5.0"
   }

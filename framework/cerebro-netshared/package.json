@@ -1,0 +1,21 @@
+{
+  "name": "cerebro-netshared",
+  "version": "0.0.0",
+  "description": "cerebro-netshared",
+  "main": "index.js",
+  "author": {
+    "name": ""
+  },
+  "scripts": {
+    "build": "tsc --build",
+    "clean": "tsc --build --clean"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.7",
+    "typescript": "^4.0.5"
+  },
+  "dependencies": {
+    "cerebro-netcore": "file:../cerebro-netcore",
+    "cerebro-netgame": "file:../cerebro-netgame"
+  }
+}

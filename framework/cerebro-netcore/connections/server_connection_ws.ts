@@ -3,7 +3,7 @@ import Encoding from '../encoding';
 import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
 import { nextNetworkId } from '../network_id';
-import Server, { ServerState } from '../server';
+import ServerConnection, { ServerConnectionState } from '../server_connection';
 
 enum EventType
 {
@@ -14,7 +14,7 @@ enum EventType
     Message = 'message'
 }
 
-export default class ServerWS extends Server
+export default class ServerConnectionWS extends ServerConnection
 {
     private _socket: WS.Server = null;
     private _clients: Map<SocketId, WS>;
@@ -27,20 +27,20 @@ export default class ServerWS extends Server
 
     public listen(port: number): void 
     {
-        if (this.state != ServerState.Initialized)
+        if (this.state != ServerConnectionState.Initialized)
         {
             return;
         }
 
         this._socket = new WS.Server({ port });
 
-        this._state = ServerState.Listening;
+        this._state = ServerConnectionState.Listening;
         console.log(`Game Server listening at port ${port}...`);
         this.onListening();
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
-            this._state = ServerState.Error;
+            this._state = ServerConnectionState.Error;
 
             console.log(`Fatal error, closing the socket...`);
             this._socket.close();
@@ -71,7 +71,7 @@ export default class ServerWS extends Server
 
     public send(socketId: SocketId, message: any | Message): void
     {
-        if (this._socket && this._state == ServerState.Listening)
+        if (this._socket && this._state == ServerConnectionState.Listening)
         {
             const socket: WS = this._clients.get(socketId);
             if (socket)

@@ -6,17 +6,17 @@ type ClientMessageHandler = (socketId: SocketId, message: string) => void;
 type ErrorHandler = (error: Error) => void;
 type ListeningHandler = () => void;
 
-export enum ServerState
+export enum ServerConnectionState
 {
     Initialized,
     Listening,
     Error
 };
 
-export default abstract class Server
+export default abstract class ServerConnection
 {
     private _protocol: NetworkProtocol;
-    protected _state: ServerState;
+    protected _state: ServerConnectionState;
 
     public onClientConnection: ClientConnectionHandler = (socketId: SocketId) => { };
     public onClientDisconnection: ClientConnectionHandler = (socketId: SocketId) => { };
@@ -27,11 +27,11 @@ export default abstract class Server
     public constructor(protocol: NetworkProtocol)
     {
         this._protocol = protocol;
-        this._state = ServerState.Initialized;
+        this._state = ServerConnectionState.Initialized;
     }
 
     public get protocol(): NetworkProtocol { return this._protocol; }
-    public get state(): ServerState { return this._state; }
+    public get state(): ServerConnectionState { return this._state; }
 
     public abstract listen(port: number): void;
 

@@ -1,5 +1,5 @@
 import * as WS from 'ws';
-import Client, { ClientState } from '../client';
+import ClientConnection, { ClientConnectionState } from '../client_connection';
 import Encoding from '../encoding';
 import Message from '../message';
 import { NetworkProtocol } from '../network';
@@ -11,7 +11,7 @@ enum EventType
     Message = 'message'
 }
 
-export default class ClientWS extends Client
+export default class ClientConnectionWS extends ClientConnection
 {
     private _socket: WS = null;
 
@@ -22,7 +22,7 @@ export default class ClientWS extends Client
 
     public connect(address: string, port: number): void 
     {
-        if (this.state != ClientState.Initialized)
+        if (this.state != ClientConnectionState.Initialized)
         {
             return;
         }
@@ -32,13 +32,13 @@ export default class ClientWS extends Client
 
         this._socket.on(EventType.Connection, () =>
         {
-            this._state = ClientState.Connected;
+            this._state = ClientConnectionState.Connected;
             console.log(`Connected to the host: ${endpoint}`);
             this.onConnection();
         });
         this._socket.on(EventType.Disconnection, () =>
         {
-            this._state = ClientState.Closed;
+            this._state = ClientConnectionState.Closed;
             console.log(`Connection closed!`);
             this.onDisconnection();
         });
@@ -51,17 +51,17 @@ export default class ClientWS extends Client
 
     public close(): void
     {
-        if (this._socket && this._state == ClientState.Connected)
+        if (this._socket && this._state == ClientConnectionState.Connected)
         {
             console.log(`Closing the connection...`);
             this._socket.close();
-            this._state = ClientState.Closed;
+            this._state = ClientConnectionState.Closed;
         }
     }
 
     public send(message: any | Message): void
     {
-        if (this._socket && this._state == ClientState.Connected)
+        if (this._socket && this._state == ClientConnectionState.Connected)
         {
             let data: string;
             if (typeof message === typeof Message)

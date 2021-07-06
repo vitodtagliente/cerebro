@@ -3,7 +3,7 @@ import CommandRegister from "./command_register";
 import Logger from "cerebro-logger";
 import MessageProcessor from "./message_processor";
 import UserSessionManager, { UserSession } from "./user_session_manager";
-import { NetworkProtocol, NodeFactory, Server, SocketId } from 'cerebro-netcore';
+import { NetworkProtocol, ConnectionFactory, ServerConnection, SocketId } from 'cerebro-netcore';
 
 // standard commands
 import { AuthenticationCommand } from "./commands/authentication_command";
@@ -15,13 +15,13 @@ export default class GameServer
     public onListening: ListeningHandler = () => { };
 
     private _commandRegister: CommandRegister;
-    private _socket: Server;
+    private _socket: ServerConnection;
     private _messageProcessor: MessageProcessor;
     private _userSessionManager: UserSessionManager;
 
     public constructor(protocol: NetworkProtocol)
     {
-        this._socket = NodeFactory.server(protocol);
+        this._socket = ConnectionFactory.server(protocol);
         if (this._socket == null)
         {
             Logger.error(`Cannot initialize the server with protocol[${protocol}]`);
