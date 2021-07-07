@@ -1,4 +1,4 @@
-import { CommandId } from "./command";
+import { CommandId, CommandResponse } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
 import ConnectionFactory from "./connection_factory";
@@ -64,7 +64,11 @@ export default class Server
             }
 
             this.onClientMessage(userSession, message);
-            this._commandProcessor.process(userSession, message);
+            const response: CommandResponse = this._commandProcessor.process(userSession, message);
+            if (response)
+            {
+                // TODO
+            }
         }
 
         this.onInitializing();

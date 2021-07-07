@@ -64,7 +64,7 @@ export default class ClientConnectionWS extends ClientConnection
         if (this._socket && this._state == ClientConnectionState.Connected)
         {
             let data: string;
-            if (typeof message === typeof Message)
+            if (message instanceof Message)
             {
                 const json: string = Encoding.stringify(message);
                 const encodedMessage: string = Encoding.encode(json);

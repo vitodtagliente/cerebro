@@ -16,12 +16,12 @@ export default class CommandProcessor
     public constructor()
     {
         this._register = new CommandRegister;
-        this._requests = new TimeMap<NetworkId, Function>();
+        this._requests = new TimeMap<NetworkId, Function>(20000); // 20s
     }
 
     public get register(): CommandRegister { return this._register; }
 
-    public process(userSession: UserSession, message: Message): void
+    public process(userSession: UserSession, message: Message): CommandResponse
     {
         this._requests.tick();
 
@@ -40,6 +40,8 @@ export default class CommandProcessor
 
         const commandResponse: CommandResponse = command.execute(userSession, message);
 
+        // is it my request?
+        // if yes, execute the callback
         const requestId: NetworkId = message.header.id;
         if (this._requests.has(requestId))
         {
@@ -51,6 +53,16 @@ export default class CommandProcessor
                 callback(commandResponse.statusCode, commandResponse.data);
             }
         }
+        // if no, send the command response to the requester
+        else
+        {
+            if (command.settings.requireResponse)
+            {
+                return commandResponse;
+            }
+        }
+
+        return null;
     }
 
     public request<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): Message
