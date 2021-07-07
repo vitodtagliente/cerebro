@@ -1,7 +1,6 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { GameClient, Message as ClientMessage, NetworkType as ClientNetworkType } from 'cerebro-gameclient';
-import { Server, NetworkProtocol } from 'cerebro-netcore';
+import { Server, NetworkProtocol, Client } from 'cerebro-netcore';
 
 class FooController extends Controller
 {
@@ -75,13 +74,15 @@ class AutheticationRequest
 const server: Server = new Server(NetworkProtocol.WebSockets);
 server.onListening = () =>
 {
-    const client: GameClient = new GameClient(ClientNetworkType.WebSockets);
+    const client: Client = new Client(NetworkProtocol.WebSockets);
     client.onConnection = () =>
     {
         const request: AutheticationRequest = new AutheticationRequest;
         request.username = 'Vito';
 
-        client.call<AutheticationRequest, void>(AuthentiationCommandId, request);
+        client.call(AuthentiationCommandId, request, (data: any) => { 
+            console.log(data);
+        });
 
         client.close();
     };
