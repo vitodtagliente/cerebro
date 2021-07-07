@@ -1,5 +1,6 @@
-/*
-const commandId: CommandId = "auth";
+import { Command, CommandId, CommandResponse, CommandSettings, Message, UserSession } from 'cerebro-netcore';
+
+export const commandId: CommandId = "auth";
 
 export class Request
 {
@@ -11,24 +12,25 @@ export class Response
 
 }
 
-export class AuthenticationCommand extends Command<Request, Response>
+export default class AuthenticationCommand extends Command
 {
     public constructor()
     {
         const settings: CommandSettings = new CommandSettings;
         settings.requireAuthentication = false;
 
-        super(commandId, settings, new Request, new Response);
+        super(commandId, settings);
     }
 
-    protected _execute(userSession: UserSession, request: Request, response: Response): StatusCode
+    public execute(userSession: UserSession, message: Message): CommandResponse
     {
         userSession.authenticated = true;
-        userSession.user.state.name = request.username;
+        // userSession.user.state.name = request.username;
+        // 
+        // Logger.info(`user[${userSession.user.id}] authenticated with name[${userSession.user.state.name}]`);
+        // 
+        // return StatusCode.OK;
 
-        Logger.info(`user[${userSession.user.id}] authenticated with name[${userSession.user.state.name}]`);
-
-        return StatusCode.OK;
+        return null;
     }
 }
-*/

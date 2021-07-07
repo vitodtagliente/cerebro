@@ -1,6 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client } from 'cerebro-netcore';
+import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest } from 'cerebro-netshared';
 
 class FooController extends Controller
 {
@@ -64,23 +65,18 @@ const state: ApplicationState = app.listen(() => {
 });
 */
 
-const AuthentiationCommandId: string = 'auth';
-
-class AutheticationRequest
-{
-    public username: string;
-}
-
 const server: Server = new Server(NetworkProtocol.WebSockets);
+server.register.add(new AuthenticationCommand);
 server.onListening = () =>
 {
     const client: Client = new Client(NetworkProtocol.WebSockets);
+    client.register.add(new AuthenticationCommand);
     client.onConnection = () =>
     {
-        const request: AutheticationRequest = new AutheticationRequest;
+        const request: AuthenticationRequest = new AuthenticationRequest;
         request.username = 'Vito';
 
-        client.call(AuthentiationCommandId, request, (data: any) => { 
+        client.call(AuthenticationCommandId, request, (data: any) => {
             console.log(data);
         });
 

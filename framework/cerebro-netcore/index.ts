@@ -6,7 +6,7 @@ import ClientConnection, { ClientConnectionState } from "./client_connection";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
 import ConnectionFactory from "./connection_factory";
 import Client from "./client";
-import Command, { CommandResponse } from "./command";
+import Command, { CommandId, CommandResponse, CommandSettings } from "./command";
 import CommandRegister from "./command_register";
 import CommandProcessor from "./command_processor";
 import Server from "./server";
@@ -20,9 +20,11 @@ export
     ClientConnection,
     ClientConnectionState,
     Command,
+    CommandId,
     CommandProcessor,
     CommandRegister,
     CommandResponse,
+    CommandSettings,
     Encoding,
     Message,
     MessageHeader,

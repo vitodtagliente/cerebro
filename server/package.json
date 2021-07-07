@@ -18,6 +18,7 @@
     "cerebro-logger": "file:../framework/cerebro-logger",
     "cerebro-netcore": "file:../framework/cerebro-netcore",
     "cerebro-netgame": "file:../framework/cerebro-netgame",
+    "cerebro-netshared": "file:../framework/cerebro-netshared",
     "debug": "^2.2.0",
     "express": "^4.14.0"
   },
