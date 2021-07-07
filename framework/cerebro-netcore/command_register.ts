@@ -1,17 +1,17 @@
-import Command, { CommandId } from "./command";
+import BaseCommand, { CommandId } from "./command";
 
 export default class CommandRegister
 {
-    private _commands: Map<CommandId, Command>;
+    private _commands: Map<CommandId, BaseCommand>;
 
     public constructor()
     {
-        this._commands = new Map<CommandId, Command>();
+        this._commands = new Map<CommandId, BaseCommand>();
     }
 
-    public get commands(): Map<CommandId, Command> { return this._commands; }
+    public get commands(): Map<CommandId, BaseCommand> { return this._commands; }
 
-    public add(command: Command): void
+    public add(command: BaseCommand): void
     {
         this._commands.set(command.id, command);
     }
@@ -21,7 +21,7 @@ export default class CommandRegister
         this._commands.delete(commandId);
     }
 
-    public find(commandId: CommandId): Command
+    public find(commandId: CommandId): BaseCommand
     {
         return this._commands.get(commandId);
     }

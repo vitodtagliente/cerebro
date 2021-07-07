@@ -1,4 +1,4 @@
-import Command, { CommandId, CommandPhase, CommandResponse } from "./command";
+import BaseCommand, { CommandId, CommandPhase, CommandResponse } from "./command";
 import CommandRegister from "./command_register";
 import Encoding from "./encoding";
 import Message, { MessageHeaderField } from "./message";
@@ -31,7 +31,7 @@ export default class CommandProcessor
         }
 
         const commandId: CommandId = message.header.fields.get(MessageHeaderField.Command);
-        const command: Command = this.register.find(commandId);
+        const command: BaseCommand = this.register.find(commandId);
         if (command == null)
         {
             console.log(`Cannot find a command ${commandId} for processing the message '${message}'`);
@@ -63,7 +63,7 @@ export default class CommandProcessor
                 const responseMessage: Message = new Message;
                 responseMessage.header = message.header;
                 message.header.fields.set(MessageHeaderField.CommandPhase, CommandPhase.Response);
-                responseMessage.body = Encoding.stringify(CommandResponse);
+                responseMessage.body = Encoding.stringify(commandResponse);
                 return responseMessage;
             }
         }
@@ -73,7 +73,7 @@ export default class CommandProcessor
 
     public request<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): Message
     {
-        const command: Command = this.register.find(commandId);
+        const command: BaseCommand = this.register.find(commandId);
         if (command == null)
         {
             console.error(`Cannot find the command[${commandId}]`);

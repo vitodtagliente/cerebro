@@ -6,7 +6,7 @@ import ClientConnection, { ClientConnectionState } from "./client_connection";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
 import ConnectionFactory from "./connection_factory";
 import Client from "./client";
-import Command, { CommandId, CommandPhase, CommandResponse, CommandSettings } from "./command";
+import { Command, CommandId, CommandPhase, CommandResponse, CommandSettings } from "./command";
 import CommandRegister from "./command_register";
 import CommandProcessor from "./command_processor";
 import Server from "./server";
