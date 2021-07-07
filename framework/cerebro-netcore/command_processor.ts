@@ -59,7 +59,7 @@ export default class CommandProcessor
         if (command == null)
         {
             console.error(`Cannot find the command[${commandId}]`);
-            return;
+            return null;
         }
 
         // encode the request

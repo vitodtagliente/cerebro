@@ -1,3 +1,4 @@
+import { CommandId } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
 import ConnectionFactory from "./connection_factory";
@@ -10,6 +11,8 @@ import UserSessionManager from "./user_session_manager";
 type EventHandler = () => void;
 type ConnectionHandler = (userSession: UserSession) => void;
 type MessageHandler = (userSession: UserSession, message: Message) => void;
+
+type ResponseHandler<ResponseType> = (error: number, response?: ResponseType) => void;
 
 export default class Server
 {
@@ -84,5 +87,17 @@ export default class Server
         {
             this._socket.close();
         }
+    }
+
+    public call<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): void
+    {
+        const message: Message = this._commandProcessor.request(commandId, request, callback);
+        if (message == null)
+        {
+            console.error(`Failed to call the command[${commandId}]`);
+            return;
+        }
+
+        // this.send(message);
     }
 }
