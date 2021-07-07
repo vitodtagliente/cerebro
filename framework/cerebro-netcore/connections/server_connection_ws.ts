@@ -85,7 +85,7 @@ export default class ServerConnectionWS extends ServerConnection
             if (socket)
             {
                 let data: string;
-                if (typeof message === typeof Message)
+                if (message instanceof Message)
                 {
                     const json: string = Encoding.stringify(message);
                     const encodedMessage: string = Encoding.encode(json);

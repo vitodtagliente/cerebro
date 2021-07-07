@@ -1,4 +1,4 @@
-import Command, { CommandId, CommandResponse } from "./command";
+import Command, { CommandId, CommandPhase, CommandResponse } from "./command";
 import CommandRegister from "./command_register";
 import Encoding from "./encoding";
 import Message, { MessageHeaderField } from "./message";
@@ -21,7 +21,7 @@ export default class CommandProcessor
 
     public get register(): CommandRegister { return this._register; }
 
-    public process(userSession: UserSession, message: Message): CommandResponse
+    public process(userSession: UserSession, message: Message): Message
     {
         this._requests.tick();
 
@@ -48,9 +48,10 @@ export default class CommandProcessor
             const callback: Function = this._requests.get(requestId);
             this._requests.delete(requestId);
 
-            if (callback)
+            if (callback && message.header.fields.get(MessageHeaderField.CommandPhase) == CommandPhase.Response)
             {
-                callback(commandResponse.statusCode, commandResponse.data);
+                // callback(commandResponse.statusCode, commandResponse.data);
+                callback(commandResponse.statusCode);
             }
         }
         // if no, send the command response to the requester
@@ -58,7 +59,12 @@ export default class CommandProcessor
         {
             if (command.settings.requireResponse)
             {
-                return commandResponse;
+                // encode the response
+                const responseMessage: Message = new Message;
+                responseMessage.header = message.header;
+                message.header.fields.set(MessageHeaderField.CommandPhase, CommandPhase.Response);
+                responseMessage.body = Encoding.stringify(CommandResponse);
+                return responseMessage;
             }
         }
 
@@ -77,6 +83,7 @@ export default class CommandProcessor
         // encode the request
         const message: Message = new Message;
         message.header.fields.set(MessageHeaderField.Command, commandId);
+        message.header.fields.set(MessageHeaderField.CommandPhase, CommandPhase.Request);
         message.body = Encoding.stringify(request);
 
         if (command.settings.requireResponse)

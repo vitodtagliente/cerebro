@@ -12,7 +12,9 @@ class TimeValue<T>
 
     public get isExpired(): boolean
     {
-        return Date.now() > this.expiresAt;
+        // const now: number = Date.now();
+        // return now > this.expiresAt;
+        return false;
     }
 }
 

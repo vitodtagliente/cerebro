@@ -3,6 +3,12 @@ import UserSession from "./user_session";
 
 export type CommandId = string;
 
+export enum CommandPhase
+{
+    Request = 'request',
+    Response = 'response'
+}
+
 export class CommandSettings
 {
     public requireAuthentication: boolean = false;

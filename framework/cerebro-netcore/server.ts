@@ -64,10 +64,10 @@ export default class Server
             }
 
             this.onClientMessage(userSession, message);
-            const response: CommandResponse = this._commandProcessor.process(userSession, message);
+            const response: Message = this._commandProcessor.process(userSession, message);
             if (response)
             {
-                // TODO
+                this._socket.send(socketId, response);
             }
         }
 
