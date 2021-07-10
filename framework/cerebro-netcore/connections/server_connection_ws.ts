@@ -77,6 +77,11 @@ export default class ServerConnectionWS extends ServerConnection
         }
     }
 
+    public broadcast(message: any | Message): void
+    {
+
+    }
+
     public send(socketId: SocketId, message: any | Message): void
     {
         if (this._socket && this._state == ServerConnectionState.Listening)

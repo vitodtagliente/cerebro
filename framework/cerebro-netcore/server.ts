@@ -94,7 +94,7 @@ export default class Server
         }
     }
 
-    public async call<RequestType, ResponseType>(commandId: CommandId, request: RequestType): Promise<ResponseType>
+    public async call<RequestType, ResponseType>(userSession: UserSession, commandId: CommandId, request: RequestType): Promise<ResponseType>
     {
         return new Promise<ResponseType>((resolve: Function, reject: Function) =>
         {
@@ -119,8 +119,18 @@ export default class Server
             }
             else
             {
-                // this.send(message);
+                this.send(userSession, message);
             }
         });
+    }
+
+    public broadcast(message: any | Message): void
+    {
+
+    }
+
+    public send(userSession: UserSession, message: any | Message): void
+    {
+
     }
 }

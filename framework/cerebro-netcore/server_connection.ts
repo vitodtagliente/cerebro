@@ -36,6 +36,6 @@ export default abstract class ServerConnection
     public abstract listen(port: number): void;
     public abstract close(): void;
 
-    public abstract send(socketId: SocketId, message: any): void;
-    public abstract send(socketId: SocketId, message: Message): void;
+    public abstract broadcast(message: any | Message): void;
+    public abstract send(socketId: SocketId, message: any | Message): void;
 }
