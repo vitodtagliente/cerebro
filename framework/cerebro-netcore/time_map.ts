@@ -2,19 +2,17 @@
 class TimeValue<T>
 {
     public value: T;
-    public expiresAt: number;
+    public expiresAt: Date;
 
     public constructor(value: T, lifetime: number)
     {
         this.value = value;
-        this.expiresAt = new Date(Date.now() + lifetime).getTime();
+        this.expiresAt = new Date(Date.now() + lifetime);
     }
 
     public get isExpired(): boolean
     {
-        // const now: number = Date.now();
-        // return now > this.expiresAt;
-        return false;
+        return new Date() > this.expiresAt;
     }
 }
 
@@ -96,5 +94,19 @@ export default class TimeMap<K, V>
                 this.delete(key);
             }
         }
+    }
+
+    public keys(): Array<K>
+    {
+        const keys: Array<K> = new Array<K>();
+        for (const key of this._data.keys())
+        {
+            const value: TimeValue<V> = this._data.get(key);
+            if (!value.isExpired)
+            {
+                keys.push(key);
+            }
+        }
+        return keys;
     }
 }

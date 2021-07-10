@@ -3,22 +3,25 @@ import Encoding from '../encoding';
 import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
 import ServerConnection, { ServerConnectionState } from '../server_connection';
+import TimeMap from '../time_map';
 
-function getSocketId(senderInfo: any): SocketId
+class UdpSocket
 {
-    const address: string = senderInfo.address;
-    const port: number = senderInfo.port;
-    return `udps_${address}:${port}`;
-}
+    public id: SocketId;
+    public address: string;
+    public port: number;
 
-class SocketState
-{
-    public constructor()
+    public constructor(address: string, port: number)
     {
-        this.timespan = Date.now();
+        this.address = address;
+        this.port = port;
+        this.id = this._generateSocketId(address, port);
     }
 
-    public timespan: number;
+    private _generateSocketId(address: string, port: number): SocketId
+    {
+        return `udps_${address}:${port}`;
+    }
 }
 
 enum Version
@@ -37,14 +40,14 @@ enum EventType
 export default class ServerConnectionUDP extends ServerConnection
 {
     private _socket: dgram.Socket = null;
-    private _clients: Map<SocketId, SocketState>;
+    private _clients: TimeMap<SocketId, UdpSocket>;
 
     public constructor()
     {
         super(NetworkProtocol.UDP);
 
         this._socket = dgram.createSocket(Version.v4);
-        this._clients = new Map<SocketId, SocketState>();
+        this._clients = new TimeMap<SocketId, UdpSocket>(120000); // 2 mins
 
         this._socket.on(EventType.Error, (error: Error) =>
         {
@@ -64,11 +67,11 @@ export default class ServerConnectionUDP extends ServerConnection
         });
         this._socket.on(EventType.Message, (message: string, senderInfo: any) =>
         {
-            const socketId: SocketId = getSocketId(senderInfo);
-            this._clients.set(socketId, new SocketState);
+            const socket: UdpSocket = new UdpSocket(senderInfo.address, senderInfo.port);
+            this._clients.set(socket.id, socket);
 
             const decodedMessage: string = Encoding.decode(message);
-            this.onClientMessage(socketId, decodedMessage);
+            this.onClientMessage(socket.id, decodedMessage);
         });
     }
 
@@ -90,15 +93,36 @@ export default class ServerConnectionUDP extends ServerConnection
 
     public broadcast(message: any | Message): void
     {
+        if (this._socket && this._state == ServerConnectionState.Listening)
+        {
+            let data: string;
+            if (typeof message === typeof Message)
+            {
+                const json: string = Encoding.stringify(message);
+                const encodedMessage: string = Encoding.encode(json);
+                data = encodedMessage;
+            }
+            else
+            {
+                data = message;
+            }
 
+            for (const socketId of this._clients.keys())
+            {
+                const socket: UdpSocket = this._clients.get(socketId);
+                if (socket)
+                {
+                    this._socket.send(data, socket.port, socket.address);
+                }
+            }
+        }
     }
 
     public send(socketId: SocketId, message: any | Message): void
     {
         if (this._socket && this._state == ServerConnectionState.Listening)
         {
-            console.assert(false, "Not implemented");
-            const socket: dgram.Socket = null; // = this._clients.get(socketId);
+            const socket: UdpSocket = this._clients.get(socketId);
             if (socket)
             {
                 let data: string;
@@ -112,7 +136,7 @@ export default class ServerConnectionUDP extends ServerConnection
                 {
                     data = message;
                 }
-                // TODO: socket.send(data);
+                this._socket.send(data, socket.port, socket.address);
             }
         }
     }

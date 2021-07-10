@@ -79,7 +79,21 @@ export default class ServerConnectionWS extends ServerConnection
 
     public broadcast(message: any | Message): void
     {
-
+        if (this.state == ServerConnectionState.Listening)
+        {
+            let data: string;
+            if (message instanceof Message)
+            {
+                const json: string = Encoding.stringify(message);
+                const encodedMessage: string = Encoding.encode(json);
+                data = encodedMessage;
+            }
+            else
+            {
+                data = message;
+            }
+            this._socket.emit(data);
+        }
     }
 
     public send(socketId: SocketId, message: any | Message): void
