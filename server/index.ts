@@ -72,7 +72,8 @@ async function init(client: Client)
         const request: AuthenticationRequest = new AuthenticationRequest;
         request.username = 'Vito';
 
-        const response: AuthenticationResponse = await client.call<AuthenticationRequest, AuthenticationResponse>(AuthenticationCommandId, request);
+        const response: AuthenticationResponse = await client.call(AuthenticationCommandId, request);
+        console.log(response.foo);
 
         client.close();
     };

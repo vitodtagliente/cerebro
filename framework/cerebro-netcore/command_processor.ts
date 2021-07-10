@@ -17,6 +17,10 @@ export default class CommandProcessor
     {
         this._register = new CommandRegister;
         this._requests = new TimeMap<NetworkId, ResponseHandler>(20000); // 20s
+        this._requests.onExpire = (responseHandler: ResponseHandler) =>
+        {
+            responseHandler(null);
+        };
     }
 
     public get register(): CommandRegister { return this._register; }

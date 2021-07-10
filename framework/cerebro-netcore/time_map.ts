@@ -18,8 +18,12 @@ class TimeValue<T>
     }
 }
 
+type ExpireHandler<T> = (t: T) => void;
+
 export default class TimeMap<K, V>
 {
+    public onExpire: ExpireHandler<V> = (value: V) => { };
+
     private _data: Map<K, TimeValue<V>>;
     private _lifetime: number;
     private _tickTime: number;
@@ -60,6 +64,7 @@ export default class TimeMap<K, V>
         {
             if (value.isExpired)
             {
+                this.onExpire(value.value);
                 this.delete(key);
                 return null;
             }
@@ -87,6 +92,7 @@ export default class TimeMap<K, V>
             const value: TimeValue<V> = this._data.get(key);
             if (value.isExpired)
             {
+                this.onExpire(value.value);
                 this.delete(key);
             }
         }
