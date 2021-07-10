@@ -1,7 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client } from 'cerebro-netcore';
-import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest } from 'cerebro-netshared';
+import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
 class FooController extends Controller
 {
@@ -65,24 +65,26 @@ const state: ApplicationState = app.listen(() => {
 });
 */
 
-const server: Server = new Server(NetworkProtocol.WebSockets);
-server.register.add(new AuthenticationCommand);
-server.onListening = () =>
+async function init(client: Client)
 {
-    const client: Client = new Client(NetworkProtocol.WebSockets);
-    client.register.add(new AuthenticationCommand);
-    client.onConnection = () =>
+    client.onConnection = async () =>
     {
         const request: AuthenticationRequest = new AuthenticationRequest;
         request.username = 'Vito';
 
-        client.call(AuthenticationCommandId, request, (data: any) => {
-            console.log(data);
-        });
+        const response: AuthenticationResponse = await client.call<AuthenticationRequest, AuthenticationResponse>(AuthenticationCommandId, request);
 
         client.close();
     };
+}
 
+const server: Server = new Server(NetworkProtocol.WebSockets);
+server.register.add(new AuthenticationCommand);
+server.onListening = async () =>
+{
+    const client: Client = new Client(NetworkProtocol.WebSockets);
+    client.register.add(new AuthenticationCommand);
+    init(client);
     client.connect('127.0.0.1', 6000);
 };
 server.listen(6000);

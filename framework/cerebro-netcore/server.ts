@@ -2,6 +2,7 @@ import { CommandId, CommandResponse } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
 import ConnectionFactory from "./connection_factory";
+import Encoding from "./encoding";
 import Message from "./message";
 import { NetworkProtocol, SocketId } from "./network";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
@@ -93,15 +94,33 @@ export default class Server
         }
     }
 
-    public call<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): void
+    public async call<RequestType, ResponseType>(commandId: CommandId, request: RequestType): Promise<ResponseType>
     {
-        const message: Message = this._commandProcessor.request(commandId, request, callback);
-        if (message == null)
+        return new Promise<ResponseType>((resolve: Function, reject: Function) =>
         {
-            console.error(`Failed to call the command[${commandId}]`);
-            return;
-        }
+            const message: Message = this._commandProcessor.request(commandId, request, (commandResponse: CommandResponse) =>
+            {
+                if (commandResponse)
+                {
+                    const response: ResponseType = Encoding.tryParse<ResponseType>(commandResponse.data);
+                    if (response)
+                    {
+                        resolve(response);
+                    }
+                    else reject();
+                }
+                else reject();
+            });
 
-        // this.send(message);
+            if (message == null)
+            {
+                console.error(`Failed to call the command[${commandId}]`);
+                reject();
+            }
+            else
+            {
+                // this.send(message);
+            }
+        });
     }
 }

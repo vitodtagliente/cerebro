@@ -9,7 +9,7 @@ export class Request
 
 export class Response
 {
-
+    public foo: number = 9;
 }
 
 export default class AuthenticationCommand extends Command<Request, Response>
@@ -29,6 +29,8 @@ export default class AuthenticationCommand extends Command<Request, Response>
 
         console.info(`user[${userSession.user.id}] authenticated with name[${userSession.user.state.name}]`);
 
-        return new Response;
+        const response: Response = new Response;
+        response.foo = 17;
+        return response;
     }
 }

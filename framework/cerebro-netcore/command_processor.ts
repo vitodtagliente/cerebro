@@ -6,17 +6,17 @@ import NetworkId from "./network_id";
 import TimeMap from "./time_map";
 import UserSession from "./user_session";
 
-type ResponseHandler<ResponseType> = (error: number, response?: ResponseType) => void;
+type ResponseHandler = (commandResponse: CommandResponse) => void;
 
 export default class CommandProcessor
 {
     private _register: CommandRegister;
-    private _requests: TimeMap<NetworkId, Function>;
+    private _requests: TimeMap<NetworkId, ResponseHandler>;
 
     public constructor()
     {
         this._register = new CommandRegister;
-        this._requests = new TimeMap<NetworkId, Function>(20000); // 20s
+        this._requests = new TimeMap<NetworkId, ResponseHandler>(20000); // 20s
     }
 
     public get register(): CommandRegister { return this._register; }
@@ -38,8 +38,6 @@ export default class CommandProcessor
             return;
         }
 
-        const commandResponse: CommandResponse = command.execute(userSession, message);
-
         // is it my request?
         // if yes, execute the callback
         const requestId: NetworkId = message.header.id;
@@ -50,13 +48,14 @@ export default class CommandProcessor
 
             if (callback && message.header.fields.get(MessageHeaderField.CommandPhase) == CommandPhase.Response)
             {
-                // callback(commandResponse.statusCode, commandResponse.data);
-                callback(commandResponse.statusCode);
+                const commandResponse: CommandResponse = Encoding.tryParse<CommandResponse>(message.body);
+                callback(commandResponse);
             }
         }
         // if no, send the command response to the requester
         else
         {
+            const commandResponse: CommandResponse = command.execute(userSession, message);
             if (command.settings.requireResponse)
             {
                 // encode the response
@@ -71,7 +70,7 @@ export default class CommandProcessor
         return null;
     }
 
-    public request<RequestType, ResponseType>(commandId: CommandId, request: RequestType, callback: ResponseHandler<ResponseType>): Message
+    public request<RequestType>(commandId: CommandId, request: RequestType, callback: ResponseHandler): Message
     {
         const command: BaseCommand = this.register.find(commandId);
         if (command == null)

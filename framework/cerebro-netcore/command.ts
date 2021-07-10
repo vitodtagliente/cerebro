@@ -46,19 +46,6 @@ export default abstract class BaseCommand
     public abstract execute(userSession: UserSession, message: Message): CommandResponse;
 }
 
-function parse<T>(data: string): T
-{
-    try
-    {
-        return Encoding.parse<T>(data);
-    }
-    catch
-    {
-        console.warn(`Failed to parse the data[${data}]`);
-        return null;
-    }
-}
-
 export abstract class Command<RequestType, ResponseType> extends BaseCommand
 {
     public constructor(id: CommandId, settings: CommandSettings)
@@ -69,7 +56,7 @@ export abstract class Command<RequestType, ResponseType> extends BaseCommand
     public execute(userSession: UserSession, message: Message): CommandResponse
     {
         console.assert(
-            this.id != message.header.fields.get(MessageHeaderField.Command),
+            this.id == message.header.fields.get(MessageHeaderField.Command),
             `Cannot process the message with commandId[${message.header.fields.get(MessageHeaderField.Command)}]`
         );
 
@@ -79,7 +66,7 @@ export abstract class Command<RequestType, ResponseType> extends BaseCommand
             return new CommandResponse(401); // Unauthorized
         }
 
-        const request: RequestType = parse<RequestType>(message.body);
+        const request: RequestType = Encoding.tryParse<RequestType>(message.body);
         if (request == null)
         {
             console.error(`Failed to parse the request[${message.body}]`);

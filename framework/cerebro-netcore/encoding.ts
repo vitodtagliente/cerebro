@@ -56,4 +56,17 @@ export default class Encoding
 
         return JSON.parse(data, reviver);
     }
+
+    public static tryParse<T>(data: string): T
+    {
+        try
+        {
+            return Encoding.parse<T>(data);
+        }
+        catch
+        {
+            console.warn(`Failed to parse the data[${data}]`);
+            return null;
+        }
+    }
 }
