@@ -94,16 +94,12 @@ export default class Client
         {
             const message: Message = this._commandProcessor.request(commandId, request, (commandResponse: CommandResponse) =>
             {
+                let response: ResponseType = null;
                 if (commandResponse)
                 {
-                    const response: ResponseType = Encoding.tryParse<ResponseType>(commandResponse.data);
-                    if (response)
-                    {
-                        resolve(response);
-                    }
-                    else reject();
+                    response = Encoding.tryParse<ResponseType>(commandResponse.data);
                 }
-                else reject();
+                resolve(response);
             });
 
             if (message == null)
