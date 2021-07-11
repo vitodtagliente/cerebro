@@ -59,6 +59,9 @@
     <TypeScriptCompile Include="connection_factory.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="room.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="server.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

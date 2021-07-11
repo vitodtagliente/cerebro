@@ -13,6 +13,7 @@ import Server from "./server";
 import User, { UserState } from "./user";
 import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
+import { RoomId } from "./room";
 
 export
 {
@@ -36,6 +37,7 @@ export
     NetworkProtocol,
     nextNetworkId,
     ConnectionFactory,
+    RoomId,
     Server,
     ServerConnection,
     ServerConnectionState,

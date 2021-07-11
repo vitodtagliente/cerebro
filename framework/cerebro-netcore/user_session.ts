@@ -1,3 +1,4 @@
+import { RoomId } from "./room";
 import User from "./user";
 
 export default class UserSession
@@ -11,5 +12,6 @@ export default class UserSession
 
     public authenticated: boolean;
     public user: User;
+    public room: RoomId;
     public data: Map<string, string>;
 }

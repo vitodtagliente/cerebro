@@ -126,11 +126,18 @@ export default class Server
 
     public broadcast(message: any | Message): void
     {
-
+        if (this._socket)
+        {
+            this._socket.broadcast(message);
+        }
     }
 
     public send(userSession: UserSession, message: any | Message): void
     {
-
+        if (this._socket)
+        {
+            // TODO: userSession to socketId
+            // this._socket.send(, message);
+        }
     }
 }
