@@ -1,7 +1,8 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
-import { Server, NetworkProtocol, Client } from 'cerebro-netcore';
-import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
+import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
+import { NetworkObject, World, Level } from 'cerebro-netgame';
+// import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
 class FooController extends Controller
 {
@@ -65,27 +66,59 @@ const state: ApplicationState = app.listen(() => {
 });
 */
 
-async function init(client: Client)
-{
-    client.onConnection = async () =>
-    {
-        const request: AuthenticationRequest = new AuthenticationRequest;
-        request.username = 'Vito';
+// async function init(client: Client)
+// {
+//     client.onConnection = async () =>
+//     {
+//         const request: AuthenticationRequest = new AuthenticationRequest;
+//         request.username = 'Vito';
+//
+//         const response: AuthenticationResponse = await client.call(AuthenticationCommandId, request);
+//         console.log(response.foo);
+//
+//         client.close();
+//     };
+// }
+//
+// const server: Server = new Server(NetworkProtocol.WebSockets);
+// server.register.add(new AuthenticationCommand);
+// server.onListening = async () =>
+// {
+//     const client: Client = new Client(NetworkProtocol.WebSockets);
+//     client.register.add(new AuthenticationCommand);
+//     init(client);
+//     client.connect('127.0.0.1', 6000);
+// };
+// server.listen(6000);
 
-        const response: AuthenticationResponse = await client.call(AuthenticationCommandId, request);
-        console.log(response.foo);
-
-        client.close();
-    };
-}
+const world: World = new World;
+const MAIN_LEVEL: string = "MAIN_LEVEL";
 
 const server: Server = new Server(NetworkProtocol.WebSockets);
-server.register.add(new AuthenticationCommand);
 server.onListening = async () =>
 {
     const client: Client = new Client(NetworkProtocol.WebSockets);
-    client.register.add(new AuthenticationCommand);
-    init(client);
     client.connect('127.0.0.1', 6000);
+};
+server.onClientConnection = async (userSession: UserSession) =>
+{
+    userSession.data.set("level", MAIN_LEVEL);
+    const level: Level = world.get(MAIN_LEVEL);
+    if (level)
+    {
+        const object: NetworkObject = level.add();
+        if (object)
+        {
+            userSession.data.set("pawn", object.id);
+        }
+    }
+};
+server.onClientMessage = async (userSession: UserSession, message: Message) =>
+{
+
+};
+server.onClientDisconnection = async (userSession: UserSession) =>
+{
+    world.get(userSession.data.get("level")).remove(userSession.data.get("pawn"));
 };
 server.listen(6000);

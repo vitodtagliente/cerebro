@@ -9,5 +9,13 @@
   },
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    { "path": "../framework/cerebro-core" },
+    { "path": "../framework/cerebro-http" },
+    { "path": "../framework/cerebro-logger" },
+    { "path": "../framework/cerebro-netcore" },
+    { "path": "../framework/cerebro-netgame" },
+    { "path": "../framework/cerebro-netshared" }
   ]
 }

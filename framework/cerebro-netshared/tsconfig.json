@@ -2,10 +2,15 @@
   "compilerOptions": {
     "module": "commonjs",
     "target": "es6",
-    "lib": ["es6"],
-    "sourceMap": true
+    "lib": [ "es6" ],
+    "sourceMap": true,
+    "composite": true
   },
   "exclude": [
     "node_modules"
+  ],
+  "references": [
+    { "path": "../cerebro-netcore" },
+    { "path": "../cerebro-netgame" }
   ]
 }
