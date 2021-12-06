@@ -61,7 +61,7 @@ export default class Client
         this.onInitializing();
     }
 
-    public get register(): CommandRegister { return this._commandProcessor.register; }
+    public get commands(): CommandRegister { return this._commandProcessor.register; }
     public get session(): UserSession { return this._userSession; }
 
     public connect(address: string, port: number): void

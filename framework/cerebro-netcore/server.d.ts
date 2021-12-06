@@ -1,3 +1,5 @@
+import { ActionId } from "./action";
+import ActionRegister from "./action_register";
 import { CommandId } from "./command";
 import CommandRegister from "./command_register";
 import Message from "./message";
@@ -13,13 +15,16 @@ export default class Server {
     onClientDisconnection: ConnectionHandler;
     onClientMessage: MessageHandler;
     private _socket;
+    private _actionProcessor;
     private _commandProcessor;
     private _userSessionManager;
     constructor(protocol: NetworkProtocol);
-    get register(): CommandRegister;
+    get actions(): ActionRegister;
+    get commands(): CommandRegister;
     listen(port: number): void;
     close(): void;
     call<RequestType, ResponseType>(userSession: UserSession, commandId: CommandId, request: RequestType): Promise<ResponseType>;
+    request<RequestType>(userSession: UserSession, actionId: ActionId, request: RequestType): Promise<void>;
     broadcast(message: any | Message): void;
     send(userSession: UserSession, message: any | Message): void;
 }

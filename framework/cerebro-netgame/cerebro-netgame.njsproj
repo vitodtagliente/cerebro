@@ -47,6 +47,9 @@
     <TypeScriptCompile Include="network_object.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="user_property.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="world.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

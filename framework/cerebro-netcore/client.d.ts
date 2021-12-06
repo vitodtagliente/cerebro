@@ -15,7 +15,7 @@ export default class Client {
     private _commandProcessor;
     private _userSession;
     constructor(protocol: NetworkProtocol);
-    get register(): CommandRegister;
+    get commands(): CommandRegister;
     get session(): UserSession;
     connect(address: string, port: number): void;
     close(): void;

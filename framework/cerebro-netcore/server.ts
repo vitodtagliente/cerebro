@@ -1,3 +1,6 @@
+import { ActionId } from "./action";
+import ActionProcessor from "./action_processor";
+import ActionRegister from "./action_register";
 import { CommandId, CommandResponse } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
@@ -24,6 +27,7 @@ export default class Server
     public onClientMessage: MessageHandler = (userSession: UserSession, message: Message) => { };
 
     private _socket: ServerConnection;
+    private _actionProcessor: ActionProcessor;
     private _commandProcessor: CommandProcessor;
     private _userSessionManager: UserSessionManager;
 
@@ -36,6 +40,7 @@ export default class Server
             return;
         }
 
+        this._actionProcessor = new ActionProcessor;
         this._commandProcessor = new CommandProcessor;
         this._userSessionManager = new UserSessionManager;
 
@@ -65,6 +70,7 @@ export default class Server
             }
 
             this.onClientMessage(userSession, message);
+            this._actionProcessor.process(userSession, message);
             const response: Message = this._commandProcessor.process(userSession, message);
             if (response)
             {
@@ -75,7 +81,8 @@ export default class Server
         this.onInitializing();
     }
 
-    public get register(): CommandRegister { return this._commandProcessor.register; }
+    public get actions(): ActionRegister { return this._actionProcessor.register; }
+    public get commands(): CommandRegister { return this._commandProcessor.register; }
 
     public listen(port: number): void
     {
@@ -120,6 +127,25 @@ export default class Server
             else
             {
                 this.send(userSession, message);
+                resolve();
+            }
+        });
+    }
+
+    public async request<RequestType>(userSession: UserSession, actionId: ActionId, request: RequestType): Promise<void>
+    {
+        return new Promise<void>((resolve: Function, reject: Function) =>
+        {
+            const message: Message = this._actionProcessor.request(actionId, request);
+            if (message == null)
+            {
+                console.error(`Failed to call the action[${actionId}]`);
+                reject();
+            }
+            else
+            {
+                this.send(userSession, message);
+                resolve();
             }
         });
     }
