@@ -1,3 +1,4 @@
+import { NetMap } from ".";
 import NetworkId, { nextNetworkId } from "./network_id";
 
 export class UserState
@@ -5,11 +6,11 @@ export class UserState
     public constructor()
     {
         this.name = 'Unknown';
-        this.data = new Map<string, any>();
+        this.data = new NetMap;
     }
 
     public name: string;
-    public data: Map<string, any>;
+    public data: NetMap;
 }
 
 export default class User

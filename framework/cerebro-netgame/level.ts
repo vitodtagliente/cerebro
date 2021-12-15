@@ -1,15 +1,15 @@
-import { NetworkId } from "cerebro-netcore";
+import { NetMap, NetworkId } from "cerebro-netcore";
 import NetworkObject from "./network_object";
 
 export type LevelId = string;
 
 export class LevelState
 {
-    public data: Map<string, string>;
+    public data: NetMap;
 
     public constructor()
     {
-        this.data = new Map<string, string>();
+        this.data = new NetMap;
     }
 }
 
