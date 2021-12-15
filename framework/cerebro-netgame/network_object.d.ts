@@ -1,8 +1,9 @@
+import { NetMap } from 'cerebro-netcore';
 import { NetworkId } from 'cerebro-netcore';
 import Component, { ComponentType } from './component';
 import { Math } from './math';
 export declare class NetworkObjectState {
-    data: Map<string, string>;
+    data: NetMap;
     constructor();
 }
 export default class NetworkObject {

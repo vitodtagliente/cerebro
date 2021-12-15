@@ -14,6 +14,7 @@ import User, { UserState } from "./user";
 import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
 import { RoomId } from "./room";
+import NetMap from "./net_map";
 
 export
 {
@@ -28,11 +29,12 @@ export
     CommandResponse,
     CommandSettings,
     Encoding,
+    InvalidNetworkId,
     Message,
     MessageHeader,
     MessageHeaderField,
     MessageBody,
-    InvalidNetworkId,
+    NetMap,
     NetworkId,
     NetworkProtocol,
     nextNetworkId,

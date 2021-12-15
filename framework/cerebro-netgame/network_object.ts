@@ -1,14 +1,15 @@
+import { NetMap } from 'cerebro-netcore';
 import { InvalidNetworkId, NetworkId, nextNetworkId } from 'cerebro-netcore';
 import Component, { ComponentType } from './component';
 import { Math } from './math';
 
 export class NetworkObjectState
 {
-    public data: Map<string, string>;
+    public data: NetMap;
 
     public constructor()
     {
-        this.data = new Map<string, string>();
+        this.data = new NetMap;
     }
 }
 
