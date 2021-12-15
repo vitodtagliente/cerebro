@@ -2,14 +2,10 @@ import Level, { LevelId } from "./level";
 
 export default class World
 {
-    private static _main: World = null;
-    public static get main(): World { return World._main; }
-
     private _levels: Map<LevelId, Level>;
 
     public constructor()
     {
-        World._main = this;
         this._levels = new Map<LevelId, Level>();
     }
 

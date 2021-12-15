@@ -1,6 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
+import { GameManager } from 'cerebro-netgame';
 import { NetworkObject, World, Level, UserProperty } from 'cerebro-netgame';
 // import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
@@ -91,8 +92,7 @@ const state: ApplicationState = app.listen(() => {
 // };
 // server.listen(6000);
 
-const world: World = new World;
-const MAIN_LEVEL: string = "MAIN_LEVEL";
+const gameManager: GameManager = new GameManager;
 
 const server: Server = new Server(NetworkProtocol.WebSockets);
 server.onListening = async () =>
@@ -102,16 +102,7 @@ server.onListening = async () =>
 };
 server.onClientConnection = async (userSession: UserSession) =>
 {
-    userSession.data.set(UserProperty.Level, MAIN_LEVEL);
-    const level: Level = world.get(MAIN_LEVEL);
-    if (level)
-    {
-        const object: NetworkObject = level.add();
-        if (object)
-        {
-            userSession.data.set(UserProperty.PossessedObject, object.id);
-        }
-    }
+    gameManager.addClient(userSession);
 };
 server.onClientMessage = async (userSession: UserSession, message: Message) =>
 {
@@ -119,6 +110,6 @@ server.onClientMessage = async (userSession: UserSession, message: Message) =>
 };
 server.onClientDisconnection = async (userSession: UserSession) =>
 {
-    world.get(userSession.data.get(UserProperty.Level)).remove(userSession.data.get(UserProperty.PossessedObject));
+    gameManager.removeClient(userSession);
 };
 server.listen(6000);
