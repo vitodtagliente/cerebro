@@ -4,7 +4,6 @@ import { SocketId, NetworkProtocol } from "./network";
 import NetworkId, { InvalidNetworkId, nextNetworkId } from "./network_id";
 import ClientConnection, { ClientConnectionState } from "./client_connection";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
-import ConnectionFactory from "./connection_factory";
 import Client from "./client";
 import { Command, CommandId, CommandPhase, CommandResponse, CommandSettings } from "./command";
 import CommandRegister from "./command_register";
@@ -38,7 +37,6 @@ export
     NetworkId,
     NetworkProtocol,
     nextNetworkId,
-    ConnectionFactory,
     RoomId,
     Server,
     ServerConnection,
