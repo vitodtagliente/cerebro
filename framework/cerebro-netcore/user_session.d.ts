@@ -1,3 +1,4 @@
+import NetMap from "./net_map";
 import { RoomId } from "./room";
 import User from "./user";
 export default class UserSession {
@@ -5,5 +6,5 @@ export default class UserSession {
     authenticated: boolean;
     user: User;
     room: RoomId;
-    data: Map<string, string>;
+    data: NetMap;
 }
