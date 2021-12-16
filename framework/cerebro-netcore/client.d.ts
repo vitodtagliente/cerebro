@@ -1,5 +1,7 @@
 import { CommandId } from "./command";
 import CommandRegister from "./command_register";
+import { ClientComponent } from "./component";
+import ComponentRegister from "./component_register";
 import Message from "./message";
 import { NetworkProtocol } from "./network";
 import UserSession from "./user_session";
@@ -13,9 +15,11 @@ export default class Client {
     onMessage: MessageHandler;
     private _socket;
     private _commandProcessor;
+    private _componentRegister;
     private _userSession;
     constructor(protocol: NetworkProtocol);
     get commands(): CommandRegister;
+    get components(): ComponentRegister<ClientComponent>;
     get session(): UserSession;
     connect(address: string, port: number): void;
     close(): void;

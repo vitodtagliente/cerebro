@@ -1,5 +1,6 @@
 import Component, { ComponentType } from "./component";
-import GameManager from "./game_manager";
+import GameClient from "./game_client";
+import GameServer from "./game_server";
 import Level, { LevelId } from "./level";
 import { Math } from './math';
 import NetworkObject, { NetworkObjectState } from "./network_object";
@@ -12,7 +13,8 @@ export
     ComponentType,
     Level,
     LevelId,
-    GameManager,
+    GameClient,
+    GameServer,
     Math,
     NetworkObject,
     NetworkObjectState,

@@ -2,6 +2,8 @@ import ClientConnection, { ClientConnectionState } from "./client_connection";
 import { CommandId, CommandResponse } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
+import { ClientComponent } from "./component";
+import ComponentRegister from "./component_register";
 import ConnectionFactory from "./connection_factory";
 import Encoding from "./encoding";
 import Message from "./message";
@@ -21,6 +23,7 @@ export default class Client
 
     private _socket: ClientConnection;
     private _commandProcessor: CommandProcessor;
+    private _componentRegister: ComponentRegister<ClientComponent>;
     private _userSession: UserSession;
 
     public constructor(protocol: NetworkProtocol)
@@ -33,6 +36,7 @@ export default class Client
         }
 
         this._commandProcessor = new CommandProcessor;
+        this._componentRegister = new ComponentRegister<ClientComponent>();
         this._userSession = new UserSession;
 
         this._socket.onConnection = () =>
@@ -62,6 +66,7 @@ export default class Client
     }
 
     public get commands(): CommandRegister { return this._commandProcessor.register; }
+    public get components(): ComponentRegister<ClientComponent> { return this._componentRegister; }
     public get session(): UserSession { return this._userSession; }
 
     public connect(address: string, port: number): void

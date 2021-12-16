@@ -47,6 +47,12 @@
     <TypeScriptCompile Include="command_register.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="component.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="component_register.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="encoding.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

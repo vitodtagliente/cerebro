@@ -1,6 +1,8 @@
 import { CommandId, CommandResponse } from "./command";
 import CommandProcessor from "./command_processor";
 import CommandRegister from "./command_register";
+import { ServerComponent } from "./component";
+import ComponentRegister from "./component_register";
 import ConnectionFactory from "./connection_factory";
 import Encoding from "./encoding";
 import Message from "./message";
@@ -25,6 +27,7 @@ export default class Server
 
     private _socket: ServerConnection;
     private _commandProcessor: CommandProcessor;
+    private _componentRegister: ComponentRegister<ServerComponent>;
     private _userSessionManager: UserSessionManager;
 
     public constructor(protocol: NetworkProtocol)
@@ -37,17 +40,26 @@ export default class Server
         }
 
         this._commandProcessor = new CommandProcessor;
+        this._componentRegister = new ComponentRegister<ServerComponent>();
         this._userSessionManager = new UserSessionManager;
 
         this._socket.onClientConnection = (socketId: SocketId) =>
         {
             const userSession: UserSession = this._userSessionManager.create(socketId);
+            for (let [id, component] of this.components.components)
+            {
+                component.onClientConnection(userSession);
+            }
             this.onClientConnection(userSession);
         };
 
         this._socket.onClientDisconnection = (socketId: SocketId) =>
         {
             const userSession: UserSession = this._userSessionManager.get(socketId);
+            for (let [id, component] of this.components.components)
+            {
+                component.onClientDisconnection(userSession);
+            }
             this.onClientDisconnection(userSession);
 
             this._userSessionManager.destroy(socketId);
@@ -76,6 +88,7 @@ export default class Server
     }
 
     public get commands(): CommandRegister { return this._commandProcessor.register; }
+    public get components(): ComponentRegister<ServerComponent> { return this._componentRegister; }
 
     public listen(port: number): void
     {

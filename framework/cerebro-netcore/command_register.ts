@@ -18,7 +18,7 @@ export default class CommandRegister
 
     public delete(commandId: CommandId): void
     {
-        this._commands.delete(commandId);
+        this._commands.delete(commandId); 
     }
 
     public find(commandId: CommandId): BaseCommand

@@ -1,7 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
-import { GameManager } from 'cerebro-netgame';
+import { GameServer } from 'cerebro-netgame';
 import { NetworkObject, World, Level, UserProperty } from 'cerebro-netgame';
 // import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
@@ -92,7 +92,7 @@ const state: ApplicationState = app.listen(() => {
 // };
 // server.listen(6000);
 
-const gameManager: GameManager = new GameManager;
+const gameServer: GameServer = new GameServer;
 
 const server: Server = new Server(NetworkProtocol.WebSockets);
 server.onListening = async () =>
@@ -102,7 +102,7 @@ server.onListening = async () =>
 };
 server.onClientConnection = async (userSession: UserSession) =>
 {
-    gameManager.addClient(userSession);
+    gameServer.addClient(userSession);
 };
 server.onClientMessage = async (userSession: UserSession, message: Message) =>
 {
@@ -110,6 +110,6 @@ server.onClientMessage = async (userSession: UserSession, message: Message) =>
 };
 server.onClientDisconnection = async (userSession: UserSession) =>
 {
-    gameManager.removeClient(userSession);
+    gameServer.removeClient(userSession);
 };
 server.listen(6000);

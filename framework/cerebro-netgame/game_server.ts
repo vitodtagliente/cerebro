@@ -4,23 +4,23 @@ import NetworkObject from "./network_object";
 import { UserProperty } from "./user_property";
 import World from "./world";
 
-export class GameManagerSettings
+export class GameServerSettings
 {
     public mainLevel: string = "MAIN_LEVEL";
 }
 
-export default class GameManager
+export default class GameServer
 {
-    private _settings: GameManagerSettings;
+    private _settings: GameServerSettings;
     private _world: World;
 
-    public constructor(settings: GameManagerSettings = new GameManagerSettings)
+    public constructor(settings: GameServerSettings = new GameServerSettings)
     {
         this._settings = settings;
         this._world = new World;
     }
 
-    public get settings(): GameManagerSettings { return this._settings; }
+    public get settings(): GameServerSettings { return this._settings; }
     public get world(): World { return this._world; }
 
     public addClient(userSession: UserSession): void
