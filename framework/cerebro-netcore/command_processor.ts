@@ -77,11 +77,6 @@ export default class CommandProcessor
     public request<RequestType>(commandId: CommandId, request: RequestType, callback: ResponseHandler): Message
     {
         const command: BaseCommand = this.register.find(commandId);
-        if (command == null)
-        {
-            console.error(`Cannot find the command[${commandId}]`);
-            return null;
-        }
 
         // encode the request
         const message: Message = new Message;
@@ -89,7 +84,7 @@ export default class CommandProcessor
         message.header.fields.set(MessageHeaderField.CommandPhase, CommandPhase.Request);
         message.body = Encoding.stringify(request);
 
-        if (command.settings.requireResponse)
+        if (command && command.settings.requireResponse)
         {
             this._requests.set(message.header.id, callback);
         }
