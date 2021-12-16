@@ -14,10 +14,12 @@ import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
 import { RoomId } from "./room";
 import NetMap from "./net_map";
+import Component, { ComponentId, ComponentSettings, ClientComponent, ServerComponent } from "./component";
 
 export
 {
     Client,
+    ClientComponent,
     ClientConnection,
     ClientConnectionState,
     Command,
@@ -27,6 +29,9 @@ export
     CommandRegister,
     CommandResponse,
     CommandSettings,
+    Component,
+    ComponentId,
+    ComponentSettings,
     Encoding,
     InvalidNetworkId,
     Message,
@@ -39,6 +44,7 @@ export
     nextNetworkId,
     RoomId,
     Server,
+    ServerComponent,
     ServerConnection,
     ServerConnectionState,
     SocketId,

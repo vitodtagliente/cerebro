@@ -14,4 +14,5 @@ import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
 import { RoomId } from "./room";
 import NetMap from "./net_map";
-export { Client, ClientConnection, ClientConnectionState, Command, CommandId, CommandPhase, CommandProcessor, CommandRegister, CommandResponse, CommandSettings, Encoding, InvalidNetworkId, Message, MessageHeader, MessageHeaderField, MessageBody, NetMap, NetworkId, NetworkProtocol, nextNetworkId, RoomId, Server, ServerConnection, ServerConnectionState, SocketId, User, UserSession, UserSessionManager, UserState };
+import Component, { ComponentId, ComponentSettings, ClientComponent, ServerComponent } from "./component";
+export { Client, ClientComponent, ClientConnection, ClientConnectionState, Command, CommandId, CommandPhase, CommandProcessor, CommandRegister, CommandResponse, CommandSettings, Component, ComponentId, ComponentSettings, Encoding, InvalidNetworkId, Message, MessageHeader, MessageHeaderField, MessageBody, NetMap, NetworkId, NetworkProtocol, nextNetworkId, RoomId, Server, ServerComponent, ServerConnection, ServerConnectionState, SocketId, User, UserSession, UserSessionManager, UserState };

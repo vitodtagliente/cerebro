@@ -1,8 +1,10 @@
-import { UserSession } from "cerebro-netcore";
+import { ComponentId, UserSession } from "cerebro-netcore";
 import Level from "./level";
 import NetworkObject from "./network_object";
 import { UserProperty } from "./user_property";
 import World from "./world";
+
+export const componentId: ComponentId = "game";
 
 export class GameServerSettings
 {
