@@ -70,6 +70,9 @@ export default class Server
 
         this._socket.onClientMessage = (socketId: SocketId, rawMessage: string) =>
         {
+            // TODO: temporarly hooked into the message handler
+            this._taskScheduler.tick();
+
             const userSession: UserSession = this._userSessionManager.get(socketId);
 
             const message: Message = Message.parse(rawMessage);

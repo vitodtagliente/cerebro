@@ -59,6 +59,9 @@
     <TypeScriptCompile Include="network_object.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="tasks\world_updater_task.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="user_property.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -68,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="commands\" />
+    <Folder Include="tasks\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
