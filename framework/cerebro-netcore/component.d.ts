@@ -10,7 +10,7 @@ export default abstract class Component {
     constructor(id: ComponentId, settings?: ComponentSettings);
     get id(): ComponentId;
     get settings(): ComponentSettings;
-    initialize(): void;
+    initialize(): boolean;
 }
 export declare class ClientComponent extends Component {
     private _client;

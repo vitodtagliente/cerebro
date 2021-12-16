@@ -1,15 +1,15 @@
-import { ComponentId, UserSession } from "cerebro-netcore";
+import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
 import World from "./world";
 export declare const componentId: ComponentId;
-export declare class GameServerSettings {
+export declare class GameServerSettings extends ComponentSettings {
     mainLevel: string;
 }
-export default class GameServer {
-    private _settings;
+export default class GameServer extends ServerComponent {
     private _world;
-    constructor(settings?: GameServerSettings);
+    constructor(server: Server, settings?: GameServerSettings);
     get settings(): GameServerSettings;
     get world(): World;
-    addClient(userSession: UserSession): void;
-    removeClient(userSession: UserSession): void;
+    initialize(): boolean;
+    onClientConnection(userSession: UserSession): void;
+    onClientDisconnection(userSession: UserSession): void;
 }

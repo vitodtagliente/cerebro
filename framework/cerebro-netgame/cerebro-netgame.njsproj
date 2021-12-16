@@ -30,7 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="index.ts" />
-    <Content Include="component.ts">
+    <Content Include="network_object_component.ts">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />

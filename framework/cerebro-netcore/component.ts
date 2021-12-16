@@ -23,9 +23,9 @@ export default abstract class Component
     public get id(): ComponentId { return this._id; }
     public get settings(): ComponentSettings { return this._settings; }
 
-    public initialize(): void
+    public initialize(): boolean
     {
-
+        return true;
     }
 }
 

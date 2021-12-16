@@ -92,24 +92,11 @@ const state: ApplicationState = app.listen(() => {
 // };
 // server.listen(6000);
 
-const gameServer: GameServer = new GameServer;
-
 const server: Server = new Server(NetworkProtocol.WebSockets);
+server.components.add(new GameServer(server));
 server.onListening = async () =>
 {
     const client: Client = new Client(NetworkProtocol.WebSockets);
     client.connect('127.0.0.1', 6000);
-};
-server.onClientConnection = async (userSession: UserSession) =>
-{
-    gameServer.addClient(userSession);
-};
-server.onClientMessage = async (userSession: UserSession, message: Message) =>
-{
-
-};
-server.onClientDisconnection = async (userSession: UserSession) =>
-{
-    gameServer.removeClient(userSession);
 };
 server.listen(6000);
