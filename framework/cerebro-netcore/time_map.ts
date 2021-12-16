@@ -27,7 +27,7 @@ export default class TimeMap<K, V>
     private _tickTime: number;
     private _tickEach: number;
 
-    public constructor(lifetime: number = 1000, tickEach: number = 10000)
+    public constructor(lifetime: number = 1000 /* millisec */, tickEach: number = 10000)
     {
         this._data = new Map<K, TimeValue<V>>();
         this._lifetime = lifetime;

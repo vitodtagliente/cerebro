@@ -8,6 +8,7 @@ import Encoding from "./encoding";
 import Message from "./message";
 import { NetworkProtocol, SocketId } from "./network";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
+import TaskScheduler from "./task_scheduler";
 import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
 
@@ -28,6 +29,7 @@ export default class Server
     private _socket: ServerConnection;
     private _commandProcessor: CommandProcessor;
     private _componentRegister: ComponentRegister<ServerComponent>;
+    private _taskScheduler: TaskScheduler;
     private _userSessionManager: UserSessionManager;
 
     public constructor(protocol: NetworkProtocol)
@@ -41,6 +43,7 @@ export default class Server
 
         this._commandProcessor = new CommandProcessor;
         this._componentRegister = new ComponentRegister<ServerComponent>();
+        this._taskScheduler = new TaskScheduler(10000); // 10s
         this._userSessionManager = new UserSessionManager;
 
         this._socket.onClientConnection = (socketId: SocketId) =>
@@ -89,6 +92,7 @@ export default class Server
 
     public get commands(): CommandRegister { return this._commandProcessor.register; }
     public get components(): ComponentRegister<ServerComponent> { return this._componentRegister; }
+    public get tasks(): TaskScheduler { return this._taskScheduler; }
 
     public listen(port: number): void
     {

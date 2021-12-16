@@ -1,6 +1,6 @@
 export class TaskSettings
 {
-
+    public lifetime: number = 60; // seconds
 }
 
 export default abstract class Task

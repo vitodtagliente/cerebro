@@ -1,4 +1,5 @@
 export declare class TaskSettings {
+    lifetime: number;
 }
 export default abstract class Task {
     private _settings;
