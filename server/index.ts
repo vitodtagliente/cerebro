@@ -1,7 +1,8 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
-import { GameServer } from 'cerebro-netgame';
+import { Math } from 'cerebro-netgame';
+import { GameClient, GameServer } from 'cerebro-netgame';
 import { NetworkObject, World, Level, UserProperty } from 'cerebro-netgame';
 // import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
@@ -97,6 +98,14 @@ server.components.add(new GameServer(server));
 server.onListening = async () =>
 {
     const client: Client = new Client(NetworkProtocol.WebSockets);
+    client.components.add(new GameClient(client));
+    client.onConnection = async () =>
+    {
+        const game: GameClient = client.components.find("game") as GameClient;
+        let transform: Math.Transform = new Math.Transform;
+        transform.position.x = 6;
+        game.move(transform);
+    };
     client.connect('127.0.0.1', 6000);
 };
 server.listen(6000);

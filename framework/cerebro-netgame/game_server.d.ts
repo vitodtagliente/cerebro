@@ -1,6 +1,5 @@
-import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
+import { ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
 import World from "./world";
-export declare const componentId: ComponentId;
 export declare class GameServerSettings extends ComponentSettings {
     mainLevel: string;
 }

@@ -1,10 +1,10 @@
 import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
+import MoveCommand from "./commands/move_command";
+import { componentId } from "./componet_id";
 import Level from "./level";
 import NetworkObject from "./network_object";
 import { UserProperty } from "./user_property";
 import World from "./world";
-
-export const componentId: ComponentId = "game";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -26,6 +26,7 @@ export default class GameServer extends ServerComponent
 
     public initialize(): boolean
     {
+        this.server.commands.add(new MoveCommand(this._world));
         return true;
     }
 

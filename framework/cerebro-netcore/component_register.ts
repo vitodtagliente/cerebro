@@ -14,6 +14,8 @@ export default class ComponentRegister<T extends Component>
     public add(component: T): void
     {
         this._components.set(component.id, component);
+
+        component.initialize();
     }
 
     public delete(ComponentId: ComponentId): void
