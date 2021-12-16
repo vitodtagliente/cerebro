@@ -92,6 +92,12 @@
     <TypeScriptCompile Include="network_id.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="task.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="task_scheduler.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="time_map.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>

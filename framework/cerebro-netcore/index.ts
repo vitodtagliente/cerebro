@@ -15,6 +15,8 @@ import UserSessionManager from "./user_session_manager";
 import { RoomId } from "./room";
 import NetMap from "./net_map";
 import Component, { ComponentId, ComponentSettings, ClientComponent, ServerComponent } from "./component";
+import Task, { TaskSettings } from "./task";
+import TaskScheduler from "./task_scheduler";
 
 export
 {
@@ -48,6 +50,9 @@ export
     ServerConnection,
     ServerConnectionState,
     SocketId,
+    Task,
+    TaskScheduler,
+    TaskSettings,
     User,
     UserSession,
     UserSessionManager,

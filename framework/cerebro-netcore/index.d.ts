@@ -15,4 +15,6 @@ import UserSessionManager from "./user_session_manager";
 import { RoomId } from "./room";
 import NetMap from "./net_map";
 import Component, { ComponentId, ComponentSettings, ClientComponent, ServerComponent } from "./component";
-export { Client, ClientComponent, ClientConnection, ClientConnectionState, Command, CommandId, CommandPhase, CommandProcessor, CommandRegister, CommandResponse, CommandSettings, Component, ComponentId, ComponentSettings, Encoding, InvalidNetworkId, Message, MessageHeader, MessageHeaderField, MessageBody, NetMap, NetworkId, NetworkProtocol, nextNetworkId, RoomId, Server, ServerComponent, ServerConnection, ServerConnectionState, SocketId, User, UserSession, UserSessionManager, UserState };
+import Task, { TaskSettings } from "./task";
+import TaskScheduler from "./task_scheduler";
+export { Client, ClientComponent, ClientConnection, ClientConnectionState, Command, CommandId, CommandPhase, CommandProcessor, CommandRegister, CommandResponse, CommandSettings, Component, ComponentId, ComponentSettings, Encoding, InvalidNetworkId, Message, MessageHeader, MessageHeaderField, MessageBody, NetMap, NetworkId, NetworkProtocol, nextNetworkId, RoomId, Server, ServerComponent, ServerConnection, ServerConnectionState, SocketId, Task, TaskScheduler, TaskSettings, User, UserSession, UserSessionManager, UserState };
