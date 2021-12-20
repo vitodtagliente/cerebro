@@ -12,5 +12,5 @@ window.onload = () =>
         transform.position.x = 6;
         game.move(transform);
     };
-    client.connect('127.0.0.1', 6000);
+    client.connect('localhost', 8080);
 }

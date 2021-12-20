@@ -67,7 +67,16 @@ export default class ServerConnectionWS extends ServerConnection
             //     return;
             // }
 
-            const connection: WS.connection = request.accept('cerebro', request.origin);
+            let connection: WS.connection = null;
+            try
+            {
+                connection = request.accept('cerebro', request.origin);
+            }
+            catch (e)
+            {
+                console.log(`invalid request ${request.httpRequest.url}`);
+                return;
+            }
 
             const socketId: SocketId = nextNetworkId();
             this._clients.set(socketId, connection);

@@ -97,15 +97,29 @@ const server: Server = new Server(NetworkProtocol.WebSocket);
 server.components.add(new GameServer(server));
 server.onListening = async () =>
 {
-    const client: Client = new Client(NetworkProtocol.WebSocket);
-    client.components.add(new GameClient(client));
-    client.onConnection = async () =>
     {
-        const game: GameClient = client.components.find("game") as GameClient;
-        let transform: Math.Transform = new Math.Transform;
-        transform.position.x = 6;
-        game.move(transform);
-    };
-    client.connect('127.0.0.1', 6000);
+        const client: Client = new Client(NetworkProtocol.WebSocket);
+        client.components.add(new GameClient(client));
+        client.onConnection = async () =>
+        {
+            const game: GameClient = client.components.find("game") as GameClient;
+            let transform: Math.Transform = new Math.Transform;
+            transform.position.x = 6;
+            game.move(transform);
+        };
+        client.connect('127.0.0.1', 8080);
+    }
+    {
+        const client: Client = new Client(NetworkProtocol.WebSocket);
+        client.components.add(new GameClient(client));
+        client.onConnection = async () =>
+        {
+            const game: GameClient = client.components.find("game") as GameClient;
+            let transform: Math.Transform = new Math.Transform;
+            transform.position.x = 6;
+            game.move(transform);
+        };
+        client.connect('127.0.0.1', 8080);
+    }
 };
-server.listen(6000);
+server.listen(8080);
