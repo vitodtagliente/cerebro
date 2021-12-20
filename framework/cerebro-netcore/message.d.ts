@@ -1,8 +1,7 @@
 import NetworkId from "./network_id";
 export declare enum MessageHeaderField {
-    Action = "action",
-    Command = "command",
-    CommandPhase = "command_phase",
+    Rpc = "rpc",
+    RpcPhase = "rpc_phase",
     Version = "version"
 }
 export declare class MessageHeader {

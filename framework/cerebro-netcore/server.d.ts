@@ -1,9 +1,9 @@
-import { CommandId } from "./command";
-import CommandRegister from "./command_register";
 import { ServerComponent } from "./component";
 import ComponentRegister from "./component_register";
 import Message from "./message";
 import { NetworkProtocol } from "./network";
+import { RpcId } from "./rpc";
+import RpcRegister from "./rpc_register";
 import TaskScheduler from "./task_scheduler";
 import UserSession from "./user_session";
 declare type EventHandler = () => void;
@@ -16,17 +16,17 @@ export default class Server {
     onClientDisconnection: ConnectionHandler;
     onClientMessage: MessageHandler;
     private _socket;
-    private _commandProcessor;
     private _componentRegister;
+    private _rpcProcessor;
     private _taskScheduler;
     private _userSessionManager;
     constructor(protocol: NetworkProtocol);
-    get commands(): CommandRegister;
     get components(): ComponentRegister<ServerComponent>;
+    get rpcs(): RpcRegister;
     get tasks(): TaskScheduler;
     listen(port: number): void;
     close(): void;
-    call<RequestType, ResponseType>(userSession: UserSession, commandId: CommandId, request: RequestType): Promise<ResponseType>;
+    call<RequestType, ResponseType>(userSession: UserSession, rpcId: RpcId, request: RequestType): Promise<ResponseType>;
     broadcast(message: any | Message): void;
     send(userSession: UserSession, message: any | Message): void;
 }

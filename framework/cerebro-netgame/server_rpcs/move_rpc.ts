@@ -1,12 +1,11 @@
-import { Encoding } from 'cerebro-netcore';
-import { Command, CommandId, CommandSettings, InvalidNetworkId, NetworkId, UserSession } from 'cerebro-netcore';
+import { Encoding, InvalidNetworkId, NetworkId, RpcId, ServerRpc, ServerRpcSettings, UserSession } from 'cerebro-netcore';
 import Level from '../level';
 import { Math } from '../math';
 import NetworkObject from '../network_object';
 import { UserProperty } from '../user_property';
 import World from '../world';
 
-export const commandId: CommandId = "move";
+export const rpcId: RpcId = "move";
 
 export class Request
 {
@@ -14,18 +13,17 @@ export class Request
     public transform: Math.Transform;
 }
 
-export default class MoveCommand extends Command<Request, void>
+export default class MoveRpc extends ServerRpc<Request, void>
 {
     private _world: World;
 
     public constructor(world: World)
     {
-        const settings: CommandSettings = new CommandSettings;
+        const settings: ServerRpcSettings = new ServerRpcSettings;
         settings.requireAuthentication = false;
-        settings.requireResponse = false;
         settings.requireUserSession = true;
 
-        super(commandId, settings);
+        super(rpcId, settings);
 
         this._world = world;
     }

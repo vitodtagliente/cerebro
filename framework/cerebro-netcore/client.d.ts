@@ -1,9 +1,9 @@
-import { CommandId } from "./command";
-import CommandRegister from "./command_register";
 import { ClientComponent } from "./component";
 import ComponentRegister from "./component_register";
 import Message from "./message";
 import { NetworkProtocol } from "./network";
+import { RpcId } from "./rpc";
+import RpcRegister from "./rpc_register";
 import UserSession from "./user_session";
 declare type EventHandler = () => void;
 declare type ConnectionHandler = () => void;
@@ -14,16 +14,16 @@ export default class Client {
     onDisconnection: ConnectionHandler;
     onMessage: MessageHandler;
     private _socket;
-    private _commandProcessor;
+    private _rpcProcessor;
     private _componentRegister;
     private _userSession;
     constructor(protocol: NetworkProtocol);
-    get commands(): CommandRegister;
     get components(): ComponentRegister<ClientComponent>;
+    get rpcs(): RpcRegister;
     get session(): UserSession;
     connect(address: string, port: number): void;
     close(): void;
     send(message: any | Message): void;
-    call<RequestType, ResponseType>(commandId: CommandId, request: RequestType): Promise<ResponseType>;
+    call<RequestType, ResponseType>(rpcId: RpcId, request: RequestType): Promise<ResponseType>;
 }
 export {};

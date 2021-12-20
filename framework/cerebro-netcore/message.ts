@@ -8,9 +8,8 @@ enum Version
 
 export enum MessageHeaderField
 {
-    Action = 'action',
-    Command = 'command',
-    CommandPhase = 'command_phase',
+    Rpc = 'rpc',
+    RpcPhase = 'rpc_phase',
     Version = 'version',
 }
 

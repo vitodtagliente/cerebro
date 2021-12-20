@@ -1,13 +1,13 @@
-import { CommandId, CommandResponse } from "./command";
-import CommandProcessor from "./command_processor";
-import CommandRegister from "./command_register";
 import { ServerComponent } from "./component";
 import ComponentRegister from "./component_register";
 import ConnectionFactory from "./connection_factory";
 import Encoding from "./encoding";
 import Message from "./message";
 import { NetworkProtocol, SocketId } from "./network";
-import ServerConnection, { ServerConnectionState } from "./server_connection";
+import { RpcId, RpcResponse } from "./rpc";
+import RpcProcessor from "./rpc_processor";
+import RpcRegister from "./rpc_register";
+import ServerConnection from "./server_connection";
 import TaskScheduler from "./task_scheduler";
 import UserSession from "./user_session";
 import UserSessionManager from "./user_session_manager";
@@ -27,8 +27,8 @@ export default class Server
     public onClientMessage: MessageHandler = (userSession: UserSession, message: Message) => { };
 
     private _socket: ServerConnection;
-    private _commandProcessor: CommandProcessor;
     private _componentRegister: ComponentRegister<ServerComponent>;
+    private _rpcProcessor: RpcProcessor;
     private _taskScheduler: TaskScheduler;
     private _userSessionManager: UserSessionManager;
 
@@ -41,8 +41,8 @@ export default class Server
             return;
         }
 
-        this._commandProcessor = new CommandProcessor;
         this._componentRegister = new ComponentRegister<ServerComponent>();
+        this._rpcProcessor = new RpcProcessor;
         this._taskScheduler = new TaskScheduler(10000); // 10s
         this._userSessionManager = new UserSessionManager;
 
@@ -83,7 +83,7 @@ export default class Server
             }
 
             this.onClientMessage(userSession, message);
-            const response: Message = this._commandProcessor.process(userSession, message);
+            const response: Message = this._rpcProcessor.process(userSession, message);
             if (response)
             {
                 this._socket.send(socketId, response);
@@ -93,8 +93,8 @@ export default class Server
         this.onInitializing();
     }
 
-    public get commands(): CommandRegister { return this._commandProcessor.register; }
     public get components(): ComponentRegister<ServerComponent> { return this._componentRegister; }
+    public get rpcs(): RpcRegister { return this._rpcProcessor.register; }
     public get tasks(): TaskScheduler { return this._taskScheduler; }
 
     public listen(port: number): void
@@ -114,15 +114,15 @@ export default class Server
         }
     }
 
-    public async call<RequestType, ResponseType>(userSession: UserSession, commandId: CommandId, request: RequestType): Promise<ResponseType>
+    public async call<RequestType, ResponseType>(userSession: UserSession, rpcId: RpcId, request: RequestType): Promise<ResponseType>
     {
         return new Promise<ResponseType>((resolve: Function, reject: Function) =>
         {
-            const message: Message = this._commandProcessor.request(commandId, request, (commandResponse: CommandResponse) =>
+            const message: Message = this._rpcProcessor.request(rpcId, request, (rpcResponse: RpcResponse) =>
             {
-                if (commandResponse)
+                if (rpcResponse)
                 {
-                    const response: ResponseType = Encoding.tryParse<ResponseType>(commandResponse.data);
+                    const response: ResponseType = Encoding.tryParse<ResponseType>(rpcResponse.data);
                     if (response)
                     {
                         resolve(response);
@@ -134,7 +134,7 @@ export default class Server
 
             if (message == null)
             {
-                console.error(`Failed to call the command[${commandId}]`);
+                console.error(`Failed to call the rpc[${rpcId}]`);
                 reject();
             }
             else

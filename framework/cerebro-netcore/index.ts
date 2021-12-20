@@ -5,9 +5,9 @@ import NetworkId, { InvalidNetworkId, nextNetworkId } from "./network_id";
 import ClientConnection, { ClientConnectionState } from "./client_connection";
 import ServerConnection, { ServerConnectionState } from "./server_connection";
 import Client from "./client";
-import { Command, CommandId, CommandPhase, CommandResponse, CommandSettings } from "./command";
 import CommandRegister from "./command_register";
 import CommandProcessor from "./command_processor";
+import { ClientRpc, ServerRpc, RpcId, RpcPhase, ClientRpcSettings, ServerRpcSettings } from "./rpc";
 import Server from "./server";
 import User, { UserState } from "./user";
 import UserSession from "./user_session";
@@ -24,13 +24,6 @@ export
     ClientComponent,
     ClientConnection,
     ClientConnectionState,
-    Command,
-    CommandId,
-    CommandPhase,
-    CommandProcessor,
-    CommandRegister,
-    CommandResponse,
-    CommandSettings,
     Component,
     ComponentId,
     ComponentSettings,
@@ -44,6 +37,10 @@ export
     NetworkId,
     NetworkProtocol,
     nextNetworkId,
+    ClientRpc, ServerRpc,
+    RpcId,
+    RpcPhase,
+    ClientRpcSettings, ServerRpcSettings,
     RoomId,
     Server,
     ServerComponent,

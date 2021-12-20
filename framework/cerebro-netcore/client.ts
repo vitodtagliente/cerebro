@@ -1,13 +1,13 @@
 import ClientConnection, { ClientConnectionState } from "./client_connection";
-import { CommandId, CommandResponse } from "./command";
-import CommandProcessor from "./command_processor";
-import CommandRegister from "./command_register";
 import { ClientComponent } from "./component";
 import ComponentRegister from "./component_register";
 import ConnectionFactory from "./connection_factory";
 import Encoding from "./encoding";
 import Message from "./message";
 import { NetworkProtocol } from "./network";
+import { RpcId, RpcResponse } from "./rpc";
+import RpcProcessor from "./rpc_processor";
+import RpcRegister from "./rpc_register";
 import UserSession from "./user_session";
 
 type EventHandler = () => void;
@@ -22,7 +22,7 @@ export default class Client
     public onMessage: MessageHandler = (message: Message) => { };
 
     private _socket: ClientConnection;
-    private _commandProcessor: CommandProcessor;
+    private _rpcProcessor: RpcProcessor;
     private _componentRegister: ComponentRegister<ClientComponent>;
     private _userSession: UserSession;
 
@@ -35,7 +35,7 @@ export default class Client
             return;
         }
 
-        this._commandProcessor = new CommandProcessor;
+        this._rpcProcessor = new RpcProcessor;
         this._componentRegister = new ComponentRegister<ClientComponent>();
         this._userSession = new UserSession;
 
@@ -59,14 +59,14 @@ export default class Client
             }
 
             this.onMessage(message);
-            this._commandProcessor.process(this._userSession, message);
+            this._rpcProcessor.process(this._userSession, message);
         };
 
         this.onInitializing();
     }
 
-    public get commands(): CommandRegister { return this._commandProcessor.register; }
     public get components(): ComponentRegister<ClientComponent> { return this._componentRegister; }
+    public get rpcs(): RpcRegister { return this._rpcProcessor.register; }
     public get session(): UserSession { return this._userSession; }
 
     public connect(address: string, port: number): void
@@ -93,23 +93,23 @@ export default class Client
         }
     }
 
-    public async call<RequestType, ResponseType>(commandId: CommandId, request: RequestType): Promise<ResponseType>
+    public async call<RequestType, ResponseType>(rpcId: RpcId, request: RequestType): Promise<ResponseType>
     {
         return new Promise<ResponseType>((resolve: Function, reject: Function) =>
         {
-            const message: Message = this._commandProcessor.request(commandId, request, (commandResponse: CommandResponse) =>
+            const message: Message = this._rpcProcessor.request(rpcId, request, (rpcResponse: RpcResponse) =>
             {
                 let response: ResponseType = null;
-                if (commandResponse)
+                if (rpcResponse)
                 {
-                    response = Encoding.tryParse<ResponseType>(commandResponse.data);
+                    response = Encoding.tryParse<ResponseType>(rpcResponse.data);
                 }
                 resolve(response);
             });
 
             if (message == null)
             {
-                console.error(`Failed to call the command[${commandId}]`);
+                console.error(`Failed to call the rpc[${rpcId}]`);
                 reject();
             }
             else

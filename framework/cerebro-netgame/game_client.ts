@@ -2,7 +2,7 @@ import { Client, ClientComponent, ComponentId, ComponentSettings, UserSession } 
 import { componentId } from "./componet_id";
 import { Math } from './math';
 import World from "./world";
-import { commandId as moveCommandId, Request as MoveRequest } from "./commands/move_command";
+import { rpcId as moveRpcId, Request as MoveRequest } from "./server_rpcs/move_rpc";
 
 export class GameClientSettings extends ComponentSettings
 {
@@ -33,6 +33,6 @@ export default class GameClient extends ClientComponent
         request.transform = transform;
         request.level = "MAIN_LEVEL";
 
-        this.client.call<MoveRequest, void>(moveCommandId, request);
+        this.client.call<MoveRequest, void>(moveRpcId, request);
     }
 }

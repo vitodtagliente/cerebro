@@ -1,5 +1,5 @@
 import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
-import MoveCommand from "./commands/move_command";
+import MoveRpc from "./server_rpcs/move_rpc";
 import { componentId } from "./componet_id";
 import Level from "./level";
 import NetworkObject from "./network_object";
@@ -27,7 +27,7 @@ export default class GameServer extends ServerComponent
 
     public initialize(): boolean
     {
-        this.server.commands.add(new MoveCommand(this._world));
+        this.server.rpcs.add(new MoveRpc(this._world));
         this.server.tasks.add(new WorldUpdaterTask(this.server, this._world));
         return true;
     }
@@ -49,5 +49,10 @@ export default class GameServer extends ServerComponent
     public onClientDisconnection(userSession: UserSession): void
     {
         this.world.get(userSession.data.get(UserProperty.Level)).remove(userSession.data.get(UserProperty.PossessedObject));
+    }
+
+    public sendWorldState(): void
+    {
+
     }
 }
