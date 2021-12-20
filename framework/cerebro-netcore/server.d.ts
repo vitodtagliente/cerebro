@@ -27,6 +27,7 @@ export default class Server {
     listen(port: number): void;
     close(): void;
     call<RequestType, ResponseType>(userSession: UserSession, rpcId: RpcId, request: RequestType): Promise<ResponseType>;
+    broadcastCall<RequestType, ResponseType>(rpcId: RpcId, request: RequestType): Promise<ResponseType>;
     broadcast(message: any | Message): void;
     send(userSession: UserSession, message: any | Message): void;
 }

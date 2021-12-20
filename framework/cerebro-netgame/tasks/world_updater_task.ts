@@ -1,21 +1,24 @@
-import { Server } from "cerebro-netcore";
-import { Task } from "cerebro-netcore";
+import { Task, TaskSettings } from "cerebro-netcore";
+import GameServer from "../game_server";
 import World from "../world";
 
 export default class WorldUpdaterTask extends Task
 {
-    private _server: Server;
+    private _server: GameServer;
     private _world: World;
 
-    public constructor(server: Server, world: World)
+    public constructor(server: GameServer, world: World)
     {
-        super();
+        const settings: TaskSettings = new TaskSettings;
+        settings.lifetime = 0;
+
+        super(settings);
         this._server = server;
         this._world = world;
     }
 
     public execute(): void
     {
-
+        this._server.updateWorld();
     }
 }

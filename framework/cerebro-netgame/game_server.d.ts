@@ -11,5 +11,5 @@ export default class GameServer extends ServerComponent {
     initialize(): boolean;
     onClientConnection(userSession: UserSession): void;
     onClientDisconnection(userSession: UserSession): void;
-    sendWorldState(): void;
+    updateWorld(): void;
 }

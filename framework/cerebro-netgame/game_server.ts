@@ -7,6 +7,8 @@ import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";
 import World from "./world";
 
+import { rpcId as updateWorldRpcId, Request as UpdateWorldRequest } from "./client_rpcs/update_world_rpc";
+
 export class GameServerSettings extends ComponentSettings
 {
     public mainLevel: string = "MAIN_LEVEL";
@@ -28,7 +30,7 @@ export default class GameServer extends ServerComponent
     public initialize(): boolean
     {
         this.server.rpcs.add(new MoveRpc(this._world));
-        this.server.tasks.add(new WorldUpdaterTask(this.server, this._world));
+        this.server.tasks.add(new WorldUpdaterTask(this, this._world));
         return true;
     }
 
@@ -51,8 +53,11 @@ export default class GameServer extends ServerComponent
         this.world.get(userSession.data.get(UserProperty.Level)).remove(userSession.data.get(UserProperty.PossessedObject));
     }
 
-    public sendWorldState(): void
+    public updateWorld(): void
     {
+        const request: UpdateWorldRequest = new UpdateWorldRequest;
+        request.world = this.world;
 
+        this.server.broadcastCall<UpdateWorldRequest, void>(updateWorldRpcId, request);
     }
 }

@@ -38,6 +38,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="client_rpcs\update_world_rpc.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="componet_id.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
@@ -70,6 +73,7 @@
     </TypeScriptCompile>
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="client_rpcs\" />
     <Folder Include="server_rpcs\" />
     <Folder Include="tasks\" />
   </ItemGroup>

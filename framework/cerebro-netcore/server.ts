@@ -43,7 +43,7 @@ export default class Server
 
         this._componentRegister = new ComponentRegister<ServerComponent>();
         this._rpcProcessor = new RpcProcessor;
-        this._taskScheduler = new TaskScheduler(10000); // 10s
+        this._taskScheduler = new TaskScheduler(0); // 10000 = 10s
         this._userSessionManager = new UserSessionManager;
 
         this._socket.onClientConnection = (socketId: SocketId) =>
@@ -140,6 +140,37 @@ export default class Server
             else
             {
                 this.send(userSession, message);
+                resolve();
+            }
+        });
+    }
+
+    public async broadcastCall<RequestType, ResponseType>(rpcId: RpcId, request: RequestType): Promise<ResponseType>
+    {
+        return new Promise<ResponseType>((resolve: Function, reject: Function) =>
+        {
+            const message: Message = this._rpcProcessor.request(rpcId, request, (rpcResponse: RpcResponse) =>
+            {
+                if (rpcResponse)
+                {
+                    const response: ResponseType = Encoding.tryParse<ResponseType>(rpcResponse.data);
+                    if (response)
+                    {
+                        resolve(response);
+                    }
+                    else reject();
+                }
+                else reject();
+            });
+
+            if (message == null)
+            {
+                console.error(`Failed to call the rpc[${rpcId}]`);
+                reject();
+            }
+            else
+            {
+                this.broadcast(message);
                 resolve();
             }
         });
