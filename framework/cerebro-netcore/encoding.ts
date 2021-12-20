@@ -22,7 +22,7 @@ export default class Encoding
     // https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
     public static stringify(data: any): string
     {
-        function replacer(key, value)
+        function replacer(key: string, value: any)
         {
             if (value instanceof Map)
             {
@@ -42,7 +42,7 @@ export default class Encoding
     // https://stackoverflow.com/questions/29085197/how-do-you-json-stringify-an-es6-map
     public static parse<T>(data: string): T
     {
-        function reviver(key, value)
+        function reviver(key: string, value: any)
         {
             if (typeof value === 'object' && value !== null)
             {

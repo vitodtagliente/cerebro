@@ -26,9 +26,17 @@ export default class Client
     private _componentRegister: ComponentRegister<ClientComponent>;
     private _userSession: UserSession;
 
-    public constructor(protocol: NetworkProtocol)
+    public constructor(protocol: NetworkProtocol | ClientConnection)
     {
-        this._socket = ConnectionFactory.client(protocol);
+        if (protocol instanceof ClientConnection)
+        {
+            this._socket = protocol as ClientConnection;
+        }
+        else
+        {
+            this._socket = ConnectionFactory.client(protocol as NetworkProtocol);
+        }
+
         if (this._socket == null)
         {
             console.error(`Cannot initialize the client with protocol[${protocol}]`);

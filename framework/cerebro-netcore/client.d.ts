@@ -1,3 +1,4 @@
+import ClientConnection from "./client_connection";
 import { ClientComponent } from "./component";
 import ComponentRegister from "./component_register";
 import Message from "./message";
@@ -17,7 +18,7 @@ export default class Client {
     private _rpcProcessor;
     private _componentRegister;
     private _userSession;
-    constructor(protocol: NetworkProtocol);
+    constructor(protocol: NetworkProtocol | ClientConnection);
     get components(): ComponentRegister<ClientComponent>;
     get rpcs(): RpcRegister;
     get session(): UserSession;

@@ -11,7 +11,8 @@ enum EventType
     Disconnection = 'disconnection',
     Error = 'error',
     Listening = 'listening',
-    Message = 'message'
+    Message = 'message',
+    Upgrade = 'upgrade'
 }
 
 export default class ServerConnectionWS extends ServerConnection
@@ -66,6 +67,10 @@ export default class ServerConnectionWS extends ServerConnection
                 const decodedMessage: string = Encoding.decode(message);
                 this.onClientMessage(socketId, decodedMessage);
             });
+        });
+        this._socket.on(EventType.Upgrade, (socket: WS) =>
+        {
+            
         });
     }
 

@@ -1,7 +1,7 @@
 import ClientConnection from "./client_connection";
 import { NetworkProtocol } from "./network";
 import ClientConnectionWS from "./connections/client_connection_ws";
-import ServerConnectionUDP from "./connections/server_connection_udp";
+// import ServerConnectionUDP from "./connections/server_connection_udp";
 import ServerConnectionWS from "./connections/server_connection_ws";
 import ServerConnection from "./server_connection";
 
@@ -26,7 +26,7 @@ export default class ConnectionFactory
         switch (protocol)
         {
             case NetworkProtocol.UDP:
-                return new ServerConnectionUDP();
+                return null; // new ServerConnectionUDP();
             case NetworkProtocol.WebSockets:
                 return new ServerConnectionWS();
             default:
