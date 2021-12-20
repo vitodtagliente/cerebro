@@ -1,5 +1,6 @@
 import ClientConnection from "./client_connection";
 import { NetworkProtocol } from "./network";
+import ClientConnectionW3WS from "./connections/client_connection_w3ws";
 import ClientConnectionWS from "./connections/client_connection_ws";
 // import ServerConnectionUDP from "./connections/server_connection_udp";
 import ServerConnectionWS from "./connections/server_connection_ws";
@@ -14,7 +15,9 @@ export default class ConnectionFactory
         {
             case NetworkProtocol.UDP:
                 return null;
-            case NetworkProtocol.WebSockets:
+            case NetworkProtocol.W3CWebSocket:
+                return new ClientConnectionW3WS();
+            case NetworkProtocol.WebSocket:
                 return new ClientConnectionWS();
             default:
                 return null;
@@ -27,7 +30,8 @@ export default class ConnectionFactory
         {
             case NetworkProtocol.UDP:
                 return null; // new ServerConnectionUDP();
-            case NetworkProtocol.WebSockets:
+            case NetworkProtocol.WebSocket:
+            case NetworkProtocol.W3CWebSocket:
                 return new ServerConnectionWS();
             default:
                 return null;

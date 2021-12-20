@@ -25,7 +25,7 @@ export default class ServerConnectionWS extends ServerConnection
 
     public constructor()
     {
-        super(NetworkProtocol.WebSockets);
+        super(NetworkProtocol.WebSocket);
         this._clients = new Map<SocketId, WS.connection>();
     }
 

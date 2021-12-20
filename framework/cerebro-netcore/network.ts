@@ -3,7 +3,8 @@ import NetworkId from "./network_id";
 export enum NetworkProtocol
 {
     UDP,
-    WebSockets
+    WebSocket,
+    W3CWebSocket
 }
 
 export type SocketId = NetworkId;

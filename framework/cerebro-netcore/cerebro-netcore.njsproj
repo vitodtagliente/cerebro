@@ -44,6 +44,9 @@
     <TypeScriptCompile Include="component_register.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="connections\client_connection_w3ws.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="encoding.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
