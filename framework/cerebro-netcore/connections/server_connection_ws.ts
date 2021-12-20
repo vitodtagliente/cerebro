@@ -1,4 +1,5 @@
-import * as WS from 'ws';
+import * as http from 'http';
+import * as WS from 'websocket';
 import Encoding from '../encoding';
 import Message from '../message';
 import { NetworkProtocol, SocketId } from '../network';
@@ -8,22 +9,24 @@ import ServerConnection, { ServerConnectionState } from '../server_connection';
 enum EventType
 {
     Connection = 'connection',
-    Disconnection = 'disconnection',
+    Disconnection = 'close',
     Error = 'error',
     Listening = 'listening',
     Message = 'message',
+    Request = 'request',
     Upgrade = 'upgrade'
 }
 
 export default class ServerConnectionWS extends ServerConnection
 {
-    private _socket: WS.Server = null;
-    private _clients: Map<SocketId, WS>;
+    private _clients: Map<SocketId, WS.connection>;
+    private _http: http.Server;
+    private _socket: WS.server = null;
 
     public constructor()
     {
         super(NetworkProtocol.WebSockets);
-        this._clients = new Map<SocketId, WS>();
+        this._clients = new Map<SocketId, WS.connection>();
     }
 
     public listen(port: number): void 
@@ -33,52 +36,69 @@ export default class ServerConnectionWS extends ServerConnection
             return;
         }
 
-        this._socket = new WS.Server({ port });
-
-        this._state = ServerConnectionState.Listening;
-        console.log(`Game Server listening at port ${port}...`);
-        this.onListening();
-
-        this._socket.on(EventType.Error, (error: Error) =>
+        this._http = http.createServer((request, response) =>
         {
-            this._state = ServerConnectionState.Error;
-
-            console.log(`Fatal error, closing the socket...`);
-            this._socket.close();
-
-            console.log(error.stack);
-            this.onError(error);
+            console.log(`[${new Date()}] Received request for ${request.url}`);
+            response.writeHead(404);
+            response.end();
         });
-        this._socket.on(EventType.Connection, (socket: WS) =>
+        this._http.listen(port, () =>
         {
-            const socketId: SocketId = nextNetworkId();
-            this._clients.set(socketId, socket);
+            console.log(`[${new Date()}] Server is listening on port ${port}`);
+        });
 
+        this._socket = new WS.server({
+            httpServer: this._http,
+            // You should not use autoAcceptConnections for production
+            // applications, as it defeats all standard cross-origin protection
+            // facilities built into the protocol and the browser.  You should
+            // *always* verify the connection's origin and decide whether or not
+            // to accept it.
+            autoAcceptConnections: false
+        });
+
+        this._socket.on(EventType.Request, (request: WS.request) =>
+        {
+            // if (!originIsAllowed(request.origin))
+            // {
+            //     // Make sure we only accept requests from an allowed origin
+            //     request.reject();
+            //     console.log((new Date()) + ' Connection from origin ' + request.origin + ' rejected.');
+            //     return;
+            // }
+
+            const connection: WS.connection = request.accept('cerebro', request.origin);
+
+            const socketId: SocketId = nextNetworkId();
+            this._clients.set(socketId, connection);
             this.onClientConnection(socketId);
 
-            socket.on(EventType.Disconnection, () =>
+            connection.on(EventType.Message, (message: WS.Message) =>
+            {
+                if (message.type === 'utf8')
+                {
+                    const decodedMessage: string = Encoding.decode(message.utf8Data);
+                    this.onClientMessage(socketId, decodedMessage);
+                }
+            });
+            connection.on(EventType.Disconnection, (reasonCode: number, description: string) =>
             {
                 this._clients.delete(socketId);
                 this.onClientDisconnection(socketId);
             });
+        });
 
-            socket.on(EventType.Message, (message: string) =>
-            {
-                const decodedMessage: string = Encoding.decode(message);
-                this.onClientMessage(socketId, decodedMessage);
-            });
-        });
-        this._socket.on(EventType.Upgrade, (socket: WS) =>
-        {
-            
-        });
+        this._state = ServerConnectionState.Listening;
+        console.log(`Server listening at port ${port}...`);
+        this.onListening();
     }
 
     public close(): void
     {
         if (this.state == ServerConnectionState.Initialized)
         {
-            this._socket.close();
+            this._socket.closeAllConnections();
+            this._http.close();
         }
     }
 
@@ -98,12 +118,9 @@ export default class ServerConnectionWS extends ServerConnection
                 data = message;
             }
 
-            this._socket.clients.forEach((client: WS) =>
+            this._socket.connections.forEach((client: WS.connection) =>
             {
-                if (client.readyState === WS.OPEN)
-                {
-                    client.send(data);
-                }
+                client.send(data);
             });
         }
     }
@@ -112,7 +129,7 @@ export default class ServerConnectionWS extends ServerConnection
     {
         if (this._socket && this._state == ServerConnectionState.Listening)
         {
-            const socket: WS = this._clients.get(socketId);
+            const socket: WS.connection = this._clients.get(socketId);
             if (socket)
             {
                 let data: string;
@@ -126,7 +143,7 @@ export default class ServerConnectionWS extends ServerConnection
                 {
                     data = message;
                 }
-                socket.send(data);
+                socket.sendUTF(data);
             }
         }
     }

@@ -1,4 +1,4 @@
-import * as WS from 'ws';
+import * as WS from 'websocket';
 import ClientConnection, { ClientConnectionState } from '../client_connection';
 import Encoding from '../encoding';
 import Message from '../message';
@@ -6,14 +6,15 @@ import { NetworkProtocol } from '../network';
 
 enum EventType
 {
-    Connection = 'open',
+    Connection = 'connect',
     Disconnection = 'close',
+    Error = 'error',
     Message = 'message'
 }
 
 export default class ClientConnectionWS extends ClientConnection
 {
-    private _socket: WS = null;
+    private _socket: WS.connection = null;
 
     public constructor()
     {
@@ -28,25 +29,36 @@ export default class ClientConnectionWS extends ClientConnection
         }
 
         const endpoint: string = `ws://${address}:${port}`;
-        this._socket = new WS(endpoint);
+        const client: WS.client = new WS.client();
 
-        this._socket.on(EventType.Connection, () =>
+        client.on(EventType.Connection, (connection: WS.connection) =>
         {
             this._state = ClientConnectionState.Connected;
+            this._socket = connection;
             console.log(`Connected to the host: ${endpoint}`);
             this.onConnection();
+
+            connection.on(EventType.Error, (error: Error) =>
+            {
+                console.log("Connection Error: " + error.toString());
+            });
+            connection.on(EventType.Disconnection, () =>
+            {
+                this._state = ClientConnectionState.Closed;
+                console.log(`Connection closed!`);
+                this.onDisconnection();
+            });
+            connection.on(EventType.Message, (message: WS.Message) =>
+            {
+                if (message.type === 'utf8')
+                {
+                    const decodedMessage: string = Encoding.decode(message.utf8Data);
+                    this.onMessage(decodedMessage)
+                }
+            });
         });
-        this._socket.on(EventType.Disconnection, () =>
-        {
-            this._state = ClientConnectionState.Closed;
-            console.log(`Connection closed!`);
-            this.onDisconnection();
-        });
-        this._socket.on(EventType.Message, (message: string) =>
-        {
-            const decodedMessage: string = Encoding.decode(message);
-            this.onMessage(decodedMessage)
-        });
+
+        client.connect(endpoint, 'cerebro');
     }
 
     public close(): void
@@ -74,7 +86,7 @@ export default class ClientConnectionWS extends ClientConnection
             {
                 data = message;
             }
-            this._socket.send(data);
+            this._socket.sendUTF(data);
         }
     }
 }
