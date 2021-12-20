@@ -4,6 +4,7 @@ import { Math } from './math';
 import World from "./world";
 
 import { rpcId as moveRpcId, Request as MoveRequest } from "./server_rpcs/move_rpc";
+import UpdateWorldRpc from "./client_rpcs/update_world_rpc";
 
 export class GameClientSettings extends ComponentSettings
 {
@@ -25,6 +26,7 @@ export default class GameClient extends ClientComponent
 
     public initialize(): boolean
     {
+        this.client.rpcs.add(new UpdateWorldRpc(this._world));
         return true;
     }
 

@@ -92,7 +92,14 @@ export default class ServerConnectionWS extends ServerConnection
             {
                 data = message;
             }
-            this._socket.emit(EventType.Message, data);
+
+            this._socket.clients.forEach((client: WS) =>
+            {
+                if (client.readyState === WS.OPEN)
+                {
+                    client.send(data);
+                }
+            });
         }
     }
 

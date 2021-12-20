@@ -1,5 +1,4 @@
 import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
-import MoveRpc from "./server_rpcs/move_rpc";
 import { componentId } from "./componet_id";
 import Level from "./level";
 import NetworkObject from "./network_object";
@@ -8,6 +7,7 @@ import { UserProperty } from "./user_property";
 import World from "./world";
 
 import { rpcId as updateWorldRpcId, Request as UpdateWorldRequest } from "./client_rpcs/update_world_rpc";
+import MoveRpc from "./server_rpcs/move_rpc";
 
 export class GameServerSettings extends ComponentSettings
 {
