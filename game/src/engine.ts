@@ -2,6 +2,7 @@ import Canvas from './canvas';
 import Color from './color';
 import Context from './context';
 import Keyboard from './keyboard';
+import Keycode from './keycode';
 import Mouse from './mouse';
 import Renderer from './renderer';
 import Time from './time';
@@ -66,17 +67,49 @@ export default class Engine
         const level: Level = this._game.world.get(mainLevel);
         if (level)
         {
-            for(const [id, obj] of level.objects)
+            for (const [id, obj] of level.objects)
             {
                 console.log(id);
                 this._context.drawCircle(
                     new Vector2(
                         obj.transform.position.x,
                         obj.transform.position.y
-                    ), 
-                    1, 
+                    ),
+                    1,
                     Color.black()
                 );
+            }
+        }
+
+        {
+            const transform: Math.Transform = new Math.Transform;
+            const speed: number = 2;
+            let dirty: boolean = false;
+            if (this._keyboard.isKeysDown(Keycode.W))
+            {
+                transform.position.y += speed * this.time.deltaTime;
+                dirty = true;
+            }
+            else if (this._keyboard.isKeysDown(Keycode.S))
+            {
+                transform.position.y -= speed * this.time.deltaTime;
+                dirty = true;
+            }
+
+            if (this._keyboard.isKeysDown(Keycode.A))
+            {
+                transform.position.x -= speed * this.time.deltaTime;
+                dirty = true;
+            }
+            else if (this._keyboard.isKeysDown(Keycode.D))
+            {
+                transform.position.x += speed * this.time.deltaTime;
+                dirty = true;
+            }
+
+            if (dirty)
+            {
+                this._game.move(transform);
             }
         }
 
