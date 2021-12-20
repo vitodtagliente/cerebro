@@ -74,7 +74,7 @@ export default class ServerConnectionWS extends ServerConnection
             }
             catch (e)
             {
-                console.log(`invalid request ${request.httpRequest.url}`);
+                console.log(`Invalid request ${request.httpRequest.url}`);
                 return;
             }
 
