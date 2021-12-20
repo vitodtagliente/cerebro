@@ -19,7 +19,7 @@ export default class Context
     public clear(color: Color): void
     {
         this._ctx.fillStyle = color.hex;
-        this._ctx.clearRect(0, 0, this._canvas.width, this._canvas.height);
+        this._ctx.fillRect(0, 0, this._canvas.width, this._canvas.height);
     }
 
     public drawCircle(position: Vector2, radius: number, color: Color): void

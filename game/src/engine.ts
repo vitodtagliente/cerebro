@@ -5,6 +5,7 @@ import Keyboard from './keyboard';
 import Mouse from './mouse';
 import Renderer from './renderer';
 import Time from './time';
+import Vector2 from './vector2';
 
 import { Client, ClientConnection, ClientConnectionState, Encoding, Message, NetworkProtocol, UserSession } from 'cerebro-netcore';
 import { GameClient, Level, Math, NetworkObject, World } from 'cerebro-netgame';
@@ -59,9 +60,25 @@ export default class Engine
         this._time.tick();
         const deltaTime: number = this._time.deltaTime;
 
-        this._context.clear(Color.cyan());
+        this._context.clear(Color.white());
 
-        
+        const mainLevel: string = "MAIN_LEVEL";
+        const level: Level = this._game.world.get(mainLevel);
+        if (level)
+        {
+            for(const [id, obj] of level.objects)
+            {
+                console.log(id);
+                this._context.drawCircle(
+                    new Vector2(
+                        obj.transform.position.x,
+                        obj.transform.position.y
+                    ), 
+                    1, 
+                    Color.black()
+                );
+            }
+        }
 
         requestAnimationFrame(() => this.loop());
     }

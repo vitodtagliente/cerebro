@@ -27,6 +27,7 @@ export default class Level
     }
 
     public get id(): LevelId { return this._id; }
+    public get objects(): Map<NetworkId, NetworkObject> { return this._objects; }
 
     public add(): NetworkObject
     {

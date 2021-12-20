@@ -11,6 +11,7 @@ export default class Level {
     state: LevelState;
     constructor(id: LevelId);
     get id(): LevelId;
+    get objects(): Map<NetworkId, NetworkObject>;
     add(): NetworkObject;
     remove(id: NetworkId): boolean;
     get(id: NetworkId): NetworkObject;
