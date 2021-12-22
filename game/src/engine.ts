@@ -11,8 +11,15 @@ import Vector2 from './vector2';
 import { Client, ClientConnection, ClientConnectionState, Encoding, Message, NetworkProtocol, UserSession } from 'cerebro-netcore';
 import { GameClient, Level, Math, NetworkObject, World } from 'cerebro-netgame';
 
+export class EngineSettings
+{
+    public host: string = 'localhost';
+    public port: number = 8080;
+}
+
 export default class Engine
 {
+    private _settings: EngineSettings;
     private _canvas: Canvas;
     private _context: Context;
     private _renderer: Renderer;
@@ -23,8 +30,9 @@ export default class Engine
     private _client: Client;
     private _game: GameClient;
 
-    public constructor(canvasId: string)
+    public constructor(canvasId: string, settings: EngineSettings = new EngineSettings)
     {
+        this._settings = settings;
         this._canvas = new Canvas(canvasId);
         this._context = new Context(this._canvas);
         this._canvas.onResize.on(() =>
@@ -38,6 +46,7 @@ export default class Engine
         this._mouse.plugin();
     }
 
+    public get settings(): EngineSettings { return this._settings; }
     public get canvas(): Canvas { return this._canvas; }
     public get renderer(): Renderer { return this._renderer; }
     public get time(): Time { return this._time; }
@@ -53,7 +62,7 @@ export default class Engine
         {
             this.loop();
         };
-        this._client.connect('192.168.1.95', 8080);
+        this._client.connect(this._settings.host, this._settings.port);
     }
 
     private loop(): void 

@@ -1,7 +1,10 @@
-import Engine from './engine';
+import Engine, { EngineSettings } from './engine';
 
 window.onload = () =>
 {
-    const engine: Engine = new Engine('game');
+    const settings: EngineSettings = new EngineSettings;
+    settings.host = '192.168.1.95';
+
+    const engine: Engine = new Engine('game', settings);
     engine.run();
 }
