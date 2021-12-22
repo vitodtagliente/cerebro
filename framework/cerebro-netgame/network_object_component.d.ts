@@ -7,4 +7,5 @@ export default class NetworkObjectComponent {
     constructor(type: NetworkObjectComponentType, id?: NetworkId);
     get id(): NetworkId;
     get type(): NetworkObjectComponentType;
+    copyFrom(component: NetworkObjectComponent): void;
 }

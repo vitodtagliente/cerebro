@@ -11,6 +11,12 @@ export class LevelState
     {
         this.data = new NetMap;
     }
+
+    public copyFrom(state: LevelState): void
+    {
+        this.data.clear();
+        this.data = Object.assign(new NetMap, state.data);
+    }
 }
 
 export default class Level
@@ -44,5 +50,18 @@ export default class Level
     public get(id: NetworkId): NetworkObject
     {
         return this._objects.get(id);
+    }
+
+    public copyFrom(level: Level): void
+    {
+        this._objects.clear();
+        this._id = level._id;
+        for (const [id, obj] of level._objects)
+        {
+            const object: NetworkObject = new NetworkObject(id);
+            object.copyFrom(obj);
+            this._objects.set(id, object);
+        }
+        this.state.copyFrom(level.state);
     }
 }

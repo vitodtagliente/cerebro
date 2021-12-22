@@ -69,13 +69,12 @@ export default class Engine
         {
             for (const [id, obj] of level.objects)
             {
-                console.log(id);
                 this._context.drawCircle(
                     new Vector2(
                         obj.transform.position.x,
                         obj.transform.position.y
                     ),
-                    1,
+                    32,
                     Color.black()
                 );
             }
@@ -83,16 +82,16 @@ export default class Engine
 
         {
             const transform: Math.Transform = new Math.Transform;
-            const speed: number = 2;
+            const speed: number = .5;
             let dirty: boolean = false;
             if (this._keyboard.isKeysDown(Keycode.W))
             {
-                transform.position.y += speed * this.time.deltaTime;
+                transform.position.y -= speed * this.time.deltaTime;
                 dirty = true;
             }
             else if (this._keyboard.isKeysDown(Keycode.S))
             {
-                transform.position.y -= speed * this.time.deltaTime;
+                transform.position.y += speed * this.time.deltaTime;
                 dirty = true;
             }
 

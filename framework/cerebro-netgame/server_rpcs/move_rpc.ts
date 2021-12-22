@@ -51,7 +51,7 @@ export default class MoveRpc extends ServerRpc<Request, void>
             return;
         }
 
-        possessedObject.transform = request.transform;
+        possessedObject.transform.position.selfSum(request.transform.position);
         console.error(`user[${userSession.user.id}] - moved to [${Encoding.stringify(possessedObject.transform)}]`);
     }
 }

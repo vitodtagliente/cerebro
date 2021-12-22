@@ -19,4 +19,13 @@ export default class World
         }
         return this._levels.get(levelId);
     }
+
+    public copyFrom(world: World): void
+    {
+        this._levels.clear();
+        for (const [id, level] of world._levels)
+        {
+            this.get(id).copyFrom(level);
+        }
+    }
 }

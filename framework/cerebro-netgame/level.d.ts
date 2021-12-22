@@ -4,6 +4,7 @@ export declare type LevelId = string;
 export declare class LevelState {
     data: NetMap;
     constructor();
+    copyFrom(state: LevelState): void;
 }
 export default class Level {
     private _id;
@@ -15,4 +16,5 @@ export default class Level {
     add(): NetworkObject;
     remove(id: NetworkId): boolean;
     get(id: NetworkId): NetworkObject;
+    copyFrom(level: Level): void;
 }

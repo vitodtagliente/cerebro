@@ -27,6 +27,6 @@ export default class UpdateWorldRpc extends ClientRpc<Request, void>
 
     public _execute(userSession: UserSession, request: Request): void
     {
-        this._world = request.world;
+        this._world.copyFrom(request.world);
     }
 }

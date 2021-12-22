@@ -4,4 +4,5 @@ export default class World {
     constructor();
     get levels(): Map<LevelId, Level>;
     get(levelId: LevelId): Level;
+    copyFrom(world: World): void;
 }

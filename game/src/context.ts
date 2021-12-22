@@ -27,6 +27,6 @@ export default class Context
         this._ctx.fillStyle = color.rgba;
         this._ctx.beginPath();
         this._ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
-        this._ctx.closePath();
+        this._ctx.fill();
     }
 }

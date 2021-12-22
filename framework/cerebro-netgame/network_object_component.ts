@@ -17,4 +17,11 @@ export default class NetworkObjectComponent
 
     public get id(): NetworkId { return this._id; }
     public get type(): NetworkObjectComponentType { return this._type; }
+
+    public copyFrom(component: NetworkObjectComponent): void
+    {
+        this._id = component._id;
+        this._type = component._type;
+        this.data = Object.assign(new NetMap, component.data);
+    }
 }

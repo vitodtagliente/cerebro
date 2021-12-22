@@ -1,20 +1,23 @@
 import { NetMap } from 'cerebro-netcore';
 import { NetworkId } from 'cerebro-netcore';
-import Component, { ComponentType } from './component';
+import { ComponentType } from './component';
 import { Math } from './math';
+import NetworkObjectComponent from './network_object_component';
 export declare class NetworkObjectState {
     data: NetMap;
     constructor();
+    copyFrom(state: NetworkObjectState): void;
 }
 export default class NetworkObject {
     private _id;
     state: NetworkObjectState;
     transform: Math.Transform;
-    _components: Array<Component>;
+    _components: Array<NetworkObjectComponent>;
     constructor(id?: NetworkId);
     get id(): NetworkId;
-    get components(): Array<Component>;
-    addComponent(component: Component): Component;
-    getComponent(type: ComponentType): Component;
-    getComponents(type: ComponentType): Array<Component>;
+    get components(): Array<NetworkObjectComponent>;
+    addComponent(component: NetworkObjectComponent): NetworkObjectComponent;
+    getComponent(type: ComponentType): NetworkObjectComponent;
+    getComponents(type: ComponentType): Array<NetworkObjectComponent>;
+    copyFrom(obj: NetworkObject): void;
 }
