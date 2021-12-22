@@ -56,7 +56,7 @@ export default class GameServer extends ServerComponent
         const level: Level = this.world.get(userLevelId);
         if (level)
         {
-            const possessedObjectId: NetworkId = userSession.data.get(UserProperty.PossessedObject);
+            const possessedObjectId: NetworkId = userSession.data.as<NetworkId>(UserProperty.PossessedObject);
             level.remove(possessedObjectId);
         }
         console.error(`User[${userSession.user.id}] disconnected`);

@@ -12,7 +12,7 @@ export default class WorldUpdaterTask extends Task
     public constructor(game: GameServer, world: World)
     {
         const settings: TaskSettings = new TaskSettings;
-        settings.lifetime = 16; // 16 ms = 60 fps or 33 ms = 30 fps
+        settings.lifetime = 10; // 16 ms = 60 fps or 33 ms = 30 fps
 
         super(settings);
         this._game = game;
