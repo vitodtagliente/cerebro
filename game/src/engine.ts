@@ -4,6 +4,7 @@ import Context from './context';
 import Keyboard from './keyboard';
 import Keycode from './keycode';
 import Mouse from './mouse';
+import Touch from './touch';
 import Renderer from './renderer';
 import Time from './time';
 import Vector2 from './vector2';
@@ -26,6 +27,7 @@ export default class Engine
     private _time: Time;
     private _keyboard: Keyboard;
     private _mouse: Mouse;
+    private _touch: Touch;
 
     private _client: Client;
     private _game: GameClient;
@@ -44,6 +46,8 @@ export default class Engine
         this._keyboard.plugin();
         this._mouse = new Mouse(this.canvas);
         this._mouse.plugin();
+        this._touch = new Touch(this.canvas);
+        this._touch.plugin();
     }
 
     public get settings(): EngineSettings { return this._settings; }
@@ -112,6 +116,16 @@ export default class Engine
             else if (this._keyboard.isKeysDown(Keycode.D))
             {
                 transform.position.x += speed * this.time.deltaTime;
+                dirty = true;
+            }
+
+            if (this._touch.isDown)
+            {
+                transform.position.selfSum(new Math.Vector3(
+                    this._touch.direction.x * speed * this.time.deltaTime,
+                    this._touch.direction.y * speed * this.time.deltaTime,
+                    0
+                ));
                 dirty = true;
             }
 
