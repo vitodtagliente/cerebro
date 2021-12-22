@@ -1,4 +1,4 @@
-import { ComponentId, ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
+import { ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
 import { componentId } from "./componet_id";
 import Level from "./level";
 import NetworkObject from "./network_object";
@@ -6,7 +6,7 @@ import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";
 import World from "./world";
 
-import { rpcId as updateWorldRpcId, Request as UpdateWorldRequest } from "./client_rpcs/update_world_rpc";
+import * as UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 import MoveRpc from "./server_rpcs/move_rpc";
 
 export class GameServerSettings extends ComponentSettings
@@ -37,27 +37,37 @@ export default class GameServer extends ServerComponent
     public onClientConnection(userSession: UserSession): void
     {
         userSession.data.insert(UserProperty.Level, this.settings.mainLevel);
-        const level: Level = this.world.get(this.settings.mainLevel);
-        if (level)
+        const level: Level = this.world.getOrCreate(this.settings.mainLevel);
+
+        const object: NetworkObject = level.add();
+        if (object)
         {
-            const object: NetworkObject = level.add();
-            if (object)
-            {
-                userSession.data.insert(UserProperty.PossessedObject, object.id);
-            }
+            userSession.data.insert(UserProperty.PossessedObject, object.id);
+
+            // send the level state to the user
+            this.updateLevel(userSession, level);
         }
     }
 
     public onClientDisconnection(userSession: UserSession): void
     {
         this.world.get(userSession.data.get(UserProperty.Level)).remove(userSession.data.get(UserProperty.PossessedObject));
+        console.error(`User[${userSession.user.id}] disconnected`);
     }
 
-    public updateWorld(): void
+    public updateLevel(userSession: UserSession, level: Level): void
     {
-        const request: UpdateWorldRequest = new UpdateWorldRequest;
-        request.world = this.world;
+        const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
+        request.level = level;
 
-        this.server.broadcastCall<UpdateWorldRequest, void>(updateWorldRpcId, request);
+        this.server.call(userSession, UpdateLevelRpc.rpcId, request);
+    }
+
+    public broadcastUpdateLevel(level: Level): void
+    {
+        const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
+        request.level = level;
+
+        this.server.broadcastCall(UpdateLevelRpc.rpcId, request);
     }
 }

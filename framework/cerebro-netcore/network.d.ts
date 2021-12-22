@@ -5,3 +5,4 @@ export declare enum NetworkProtocol {
     W3CWebSocket = 2
 }
 export declare type SocketId = NetworkId;
+export declare const InvalidSocketId: SocketId;

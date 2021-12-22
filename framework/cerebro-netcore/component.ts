@@ -52,7 +52,7 @@ export class ServerComponent extends Component
         this._server = server;
     }
 
-    protected get server(): Server { return this._server; }
+    public get server(): Server { return this._server; }
 
     public onClientConnection(userSession: UserSession): void { }
     public onClientDisconnection(userSession: UserSession): void { }

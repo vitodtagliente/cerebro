@@ -3,8 +3,8 @@ import { componentId } from "./componet_id";
 import { Math } from './math';
 import World from "./world";
 
-import { rpcId as moveRpcId, Request as MoveRequest } from "./server_rpcs/move_rpc";
-import UpdateWorldRpc from "./client_rpcs/update_world_rpc";
+import * as MoveRpc from "./server_rpcs/move_rpc";
+import UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 
 export class GameClientSettings extends ComponentSettings
 {
@@ -26,16 +26,16 @@ export default class GameClient extends ClientComponent
 
     public initialize(): boolean
     {
-        this.client.rpcs.add(new UpdateWorldRpc(this._world));
+        this.client.rpcs.add(new UpdateLevelRpc(this._world));
         return true;
     }
 
     public move(transform: Math.Transform): void
     {
-        const request: MoveRequest = new MoveRequest;
+        const request: MoveRpc.Request = new MoveRpc.Request;
         request.transform = transform;
         request.level = "MAIN_LEVEL";
 
-        this.client.call<MoveRequest, void>(moveRpcId, request);
+        this.client.call(MoveRpc.rpcId, request);
     }
 }

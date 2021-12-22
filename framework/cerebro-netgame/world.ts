@@ -13,6 +13,11 @@ export default class World
 
     public get(levelId: LevelId): Level
     {
+        return this._levels.get(levelId);
+    }
+
+    public getOrCreate(levelId: LevelId): Level
+    {
         if (this._levels.has(levelId) == false)
         {
             this._levels.set(levelId, new Level(levelId));

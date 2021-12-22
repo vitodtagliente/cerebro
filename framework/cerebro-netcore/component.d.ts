@@ -20,7 +20,7 @@ export declare class ClientComponent extends Component {
 export declare class ServerComponent extends Component {
     private _server;
     constructor(server: Server, id: ComponentId, settings?: ComponentSettings);
-    protected get server(): Server;
+    get server(): Server;
     onClientConnection(userSession: UserSession): void;
     onClientDisconnection(userSession: UserSession): void;
 }

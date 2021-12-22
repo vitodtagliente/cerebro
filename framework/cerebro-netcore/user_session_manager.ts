@@ -1,4 +1,4 @@
-import { SocketId } from "./network";
+import { InvalidSocketId, SocketId } from "./network";
 import UserSession from "./user_session";
 
 export default class UserSessionManager
@@ -7,6 +7,8 @@ export default class UserSessionManager
     public static get main(): UserSessionManager { return UserSessionManager._main; }
 
     private _sessions: Map<SocketId, UserSession>;
+
+    public get sessions(): IterableIterator<UserSession> { return this._sessions.values(); }
 
     public constructor()
     {
@@ -37,5 +39,17 @@ export default class UserSessionManager
             return this._sessions.get(socketId);
         }
         return this.create(socketId);
+    }
+
+    public getSocketId(userSession: UserSession): SocketId
+    {
+        for (const [socketId, session] of this._sessions)
+        {
+            if (session.id == userSession.id)
+            {
+                return socketId;
+            }
+        }
+        return InvalidSocketId;
     }
 }

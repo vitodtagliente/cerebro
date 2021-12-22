@@ -3,7 +3,7 @@ import ComponentRegister from "./component_register";
 import ConnectionFactory from "./connection_factory";
 import Encoding from "./encoding";
 import Message from "./message";
-import { NetworkProtocol, SocketId } from "./network";
+import { InvalidSocketId, NetworkProtocol, SocketId } from "./network";
 import { RpcId, RpcResponse } from "./rpc";
 import RpcProcessor from "./rpc_processor";
 import RpcRegister from "./rpc_register";
@@ -96,6 +96,7 @@ export default class Server
     public get components(): ComponentRegister<ServerComponent> { return this._componentRegister; }
     public get rpcs(): RpcRegister { return this._rpcProcessor.register; }
     public get tasks(): TaskScheduler { return this._taskScheduler; }
+    public get userSessionManager(): UserSessionManager { return this._userSessionManager; }
 
     public listen(port: number): void
     {
@@ -188,8 +189,13 @@ export default class Server
     {
         if (this._socket)
         {
-            // TODO: userSession to socketId
-            // this._socket.send(, message);
+            const socketId: SocketId = this._userSessionManager.getSocketId(userSession);
+            if (socketId == InvalidSocketId)
+            {
+                console.error(`Cannot find the socket for user[${userSession.id}]`);
+                return;
+            }
+            this._socket.send(socketId, message);
         }
     }
 }

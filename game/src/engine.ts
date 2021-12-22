@@ -65,6 +65,7 @@ export default class Engine
 
         const mainLevel: string = "MAIN_LEVEL";
         const level: Level = this._game.world.get(mainLevel);
+        console.log(level);
         if (level)
         {
             for (const [id, obj] of level.objects)

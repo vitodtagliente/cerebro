@@ -8,3 +8,4 @@ export enum NetworkProtocol
 }
 
 export type SocketId = NetworkId;
+export const InvalidSocketId: SocketId = "";

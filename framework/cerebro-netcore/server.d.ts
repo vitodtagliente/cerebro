@@ -6,6 +6,7 @@ import { RpcId } from "./rpc";
 import RpcRegister from "./rpc_register";
 import TaskScheduler from "./task_scheduler";
 import UserSession from "./user_session";
+import UserSessionManager from "./user_session_manager";
 declare type EventHandler = () => void;
 declare type ConnectionHandler = (userSession: UserSession) => void;
 declare type MessageHandler = (userSession: UserSession, message: Message) => void;
@@ -24,6 +25,7 @@ export default class Server {
     get components(): ComponentRegister<ServerComponent>;
     get rpcs(): RpcRegister;
     get tasks(): TaskScheduler;
+    get userSessionManager(): UserSessionManager;
     listen(port: number): void;
     close(): void;
     call<RequestType, ResponseType>(userSession: UserSession, rpcId: RpcId, request: RequestType): Promise<ResponseType>;
