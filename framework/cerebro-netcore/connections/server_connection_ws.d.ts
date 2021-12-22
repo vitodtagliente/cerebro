@@ -6,7 +6,7 @@ export default class ServerConnectionWS extends ServerConnection {
     private _http;
     private _socket;
     constructor();
-    listen(port: number): void;
+    listen(port: number, host?: string): void;
     close(): void;
     broadcast(message: any | Message): void;
     send(socketId: SocketId, message: any | Message): void;

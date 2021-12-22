@@ -109,7 +109,7 @@ server.onListening = async () =>
             transform.position.x = 6;
             game.move(transform);
         };
-        client.connect('127.0.0.1', 8080);
+        client.connect('localhost', 8080);
     }
 };
 server.listen(8080);

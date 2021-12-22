@@ -29,7 +29,7 @@ export default class ServerConnectionWS extends ServerConnection
         this._clients = new Map<SocketId, WS.connection>();
     }
 
-    public listen(port: number): void 
+    public listen(port: number, host: string = '0.0.0.0'): void 
     {
         if (this.state != ServerConnectionState.Initialized)
         {
@@ -42,9 +42,9 @@ export default class ServerConnectionWS extends ServerConnection
             response.writeHead(404);
             response.end();
         });
-        this._http.listen(port, () =>
+        this._http.listen(port, host, () =>
         {
-            console.log(`[${new Date()}] Server is listening on port ${port}`);
+            console.log(`[${new Date()}] Server is listening at http://${host}:${port}`);
         });
 
         this._socket = new WS.server({
@@ -98,7 +98,6 @@ export default class ServerConnectionWS extends ServerConnection
         });
 
         this._state = ServerConnectionState.Listening;
-        console.log(`Server listening at port ${port}...`);
         this.onListening();
     }
 

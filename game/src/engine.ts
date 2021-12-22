@@ -53,7 +53,7 @@ export default class Engine
         {
             this.loop();
         };
-        this._client.connect('localhost', 8080);
+        this._client.connect('192.168.1.95', 8080);
     }
 
     private loop(): void 
