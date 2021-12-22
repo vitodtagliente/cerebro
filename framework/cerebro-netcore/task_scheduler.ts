@@ -9,6 +9,11 @@ class TimedSlot
     {
         return new Date() > this.expiresAt;
     }
+
+    public reset(): void
+    {
+        this.expiresAt = new Date(Date.now() + this.task.settings.lifetime);
+    }
 }
 
 export default class TaskScheduler
@@ -57,6 +62,7 @@ export default class TaskScheduler
             if (slot.isExpired)
             {
                 slot.task.execute();
+                slot.reset();
             }
         }
     }

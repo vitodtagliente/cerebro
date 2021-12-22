@@ -12,7 +12,7 @@ export default class WorldUpdaterTask extends Task
     public constructor(game: GameServer, world: World)
     {
         const settings: TaskSettings = new TaskSettings;
-        settings.lifetime = 10000; // 10s
+        settings.lifetime = 10; // 10 ms
 
         super(settings);
         this._game = game;

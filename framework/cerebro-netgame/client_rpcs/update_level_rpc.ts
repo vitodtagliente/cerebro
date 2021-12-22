@@ -1,11 +1,12 @@
 import { ClientRpc, ClientRpcSettings, RpcId, UserSession } from 'cerebro-netcore';
-import Level from '../level';
+import Level, { LevelId } from '../level';
 import World from '../world';
 
 export const rpcId: RpcId = "update_level";
 
 export class Request
 {
+    public levelId: LevelId;
     public level: Level;
 }
 
@@ -24,7 +25,7 @@ export default class UpdatLevelRpc extends ClientRpc<Request, void>
 
     public _execute(userSession: UserSession, request: Request): void
     {
-        const level: Level = this._world.getOrCreate(request.level.id);
+        const level: Level = this._world.getOrCreate(request.levelId);
         level.copyFrom(request.level);
     }
 }

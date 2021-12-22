@@ -1,6 +1,6 @@
 import { ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
 import { componentId } from "./componet_id";
-import Level from "./level";
+import Level, { LevelId } from "./level";
 import NetworkObject from "./network_object";
 import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";
@@ -8,6 +8,7 @@ import World from "./world";
 
 import * as UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 import MoveRpc from "./server_rpcs/move_rpc";
+import { NetworkId } from "cerebro-netcore";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -51,13 +52,20 @@ export default class GameServer extends ServerComponent
 
     public onClientDisconnection(userSession: UserSession): void
     {
-        this.world.get(userSession.data.get(UserProperty.Level)).remove(userSession.data.get(UserProperty.PossessedObject));
+        const userLevelId: LevelId = userSession.data.as<LevelId>(UserProperty.Level);
+        const level: Level = this.world.get(userLevelId);
+        if (level)
+        {
+            const possessedObjectId: NetworkId = userSession.data.get(UserProperty.PossessedObject);
+            level.remove(possessedObjectId);
+        }
         console.error(`User[${userSession.user.id}] disconnected`);
     }
 
     public updateLevel(userSession: UserSession, level: Level): void
     {
         const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
+        request.levelId = level.id;
         request.level = level;
 
         this.server.call(userSession, UpdateLevelRpc.rpcId, request);
@@ -66,6 +74,7 @@ export default class GameServer extends ServerComponent
     public broadcastUpdateLevel(level: Level): void
     {
         const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
+        request.levelId = level.id;
         request.level = level;
 
         this.server.broadcastCall(UpdateLevelRpc.rpcId, request);
