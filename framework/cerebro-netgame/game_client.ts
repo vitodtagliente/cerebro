@@ -14,6 +14,7 @@ export class GameClientSettings extends ComponentSettings
 export default class GameClient extends ClientComponent
 {
     private _world: World;
+    private _shadowWorld: World;
 
     public constructor(client: Client, settings: GameClientSettings = new GameClientSettings)
     {

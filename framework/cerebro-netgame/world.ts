@@ -30,7 +30,7 @@ export default class World
         this._levels.clear();
         for (const [id, level] of world._levels)
         {
-            this.get(id).copyFrom(level);
+            this.getOrCreate(id).copyFrom(level);
         }
     }
 }

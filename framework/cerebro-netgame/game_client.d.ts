@@ -5,6 +5,7 @@ export declare class GameClientSettings extends ComponentSettings {
 }
 export default class GameClient extends ClientComponent {
     private _world;
+    private _shadowWorld;
     constructor(client: Client, settings?: GameClientSettings);
     get settings(): GameClientSettings;
     get world(): World;

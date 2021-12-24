@@ -83,5 +83,14 @@ export default class Vector2
         return this.sub(v).magnitude;
     }
 
+    public lerp(a: Vector2, b: Vector2, t: number): Vector2
+    {
+        const delta: Vector2 = b.sub(a);
+        return new Vector2(
+            a.x + delta.x * t,
+            a.y + delta.y * t
+        );
+    }
+
     public get magnitude(): number { return Math.sqrt(this.x * this.x + this.y * this.y); }
 }

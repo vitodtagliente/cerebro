@@ -1,16 +1,16 @@
 import Canvas from './canvas';
 import Color from './color';
 import Context from './context';
-import Keyboard from './keyboard';
+import Input from './input';
 import Keycode from './keycode';
-import Mouse from './mouse';
-import Touch from './touch';
 import Renderer from './renderer';
 import Time from './time';
 import Vector2 from './vector2';
 
-import { Client, ClientConnection, ClientConnectionState, Encoding, Message, NetworkProtocol, UserSession } from 'cerebro-netcore';
-import { GameClient, Level, Math, NetworkObject, World } from 'cerebro-netgame';
+import { Client, NetworkProtocol } from 'cerebro-netcore';
+import { GameClient, Level, Math } from 'cerebro-netgame';
+import World from './world';
+import input from './input';
 
 export class EngineSettings
 {
@@ -23,11 +23,10 @@ export default class Engine
     private _settings: EngineSettings;
     private _canvas: Canvas;
     private _context: Context;
+    private _input: input;
     private _renderer: Renderer;
     private _time: Time;
-    private _keyboard: Keyboard;
-    private _mouse: Mouse;
-    private _touch: Touch;
+    private _world: World;
 
     private _client: Client;
     private _game: GameClient;
@@ -37,25 +36,23 @@ export default class Engine
         this._settings = settings;
         this._canvas = new Canvas(canvasId);
         this._context = new Context(this._canvas);
+        this._input = new input(this._canvas);
+        this._renderer = new Renderer(this._context);
+        this._time = new Time();
+        this._world = new World();
+
         this._canvas.onResize.on(() =>
         {
 
         });
-        this._time = new Time();
-        this._keyboard = new Keyboard(this.canvas);
-        this._keyboard.plugin();
-        this._mouse = new Mouse(this.canvas);
-        this._mouse.plugin();
-        this._touch = new Touch(this.canvas);
-        this._touch.plugin();
     }
 
     public get settings(): EngineSettings { return this._settings; }
     public get canvas(): Canvas { return this._canvas; }
+    public get input(): Input { return this._input; }
     public get renderer(): Renderer { return this._renderer; }
     public get time(): Time { return this._time; }
-    public get keyboard(): Keyboard { return this._keyboard; }
-    public get mouse(): Mouse { return this._mouse; }
+    public get world(): World { return this._world; }
 
     public run(): void
     {
@@ -82,12 +79,26 @@ export default class Engine
         {
             for (const [id, obj] of level.objects)
             {
+                let position: Vector2 = new Vector2(obj.transform.position.x, obj.transform.position.y);
+                /*
+                if (null)
+                {
+                    const shadowObject: NetworkObject = shadowLevel.get(id);
+                    if (shadowObject)
+                    {
+                        position = position.lerp(
+                            new Vector2(shadowObject.transform.position.x, shadowObject.transform.position.y),
+                            position,
+                            this.time.deltaTime
+                        )
+                        console.log(`interpolate ${position.x}:${position.y} from ${shadowObject.transform.position.x}:${shadowObject.transform.position.y} to ${obj.transform.position.x}:${obj.transform.position.y}`);
+                    }
+                }
+                */
+
                 this._context.drawCircle(
-                    new Vector2(
-                        obj.transform.position.x,
-                        obj.transform.position.y
-                    ),
-                    32,
+                    position,
+                    16,
                     Color.black()
                 );
             }
@@ -97,33 +108,33 @@ export default class Engine
             const transform: Math.Transform = new Math.Transform;
             const speed: number = .5;
             let dirty: boolean = false;
-            if (this._keyboard.isKeysDown(Keycode.W))
+            if (this.input.keyboard.isKeysDown(Keycode.W))
             {
                 transform.position.y -= speed * this.time.deltaTime;
                 dirty = true;
             }
-            else if (this._keyboard.isKeysDown(Keycode.S))
+            else if (this.input.keyboard.isKeysDown(Keycode.S))
             {
                 transform.position.y += speed * this.time.deltaTime;
                 dirty = true;
             }
 
-            if (this._keyboard.isKeysDown(Keycode.A))
+            if (this.input.keyboard.isKeysDown(Keycode.A))
             {
                 transform.position.x -= speed * this.time.deltaTime;
                 dirty = true;
             }
-            else if (this._keyboard.isKeysDown(Keycode.D))
+            else if (this.input.keyboard.isKeysDown(Keycode.D))
             {
                 transform.position.x += speed * this.time.deltaTime;
                 dirty = true;
             }
 
-            if (this._touch.isDown)
+            if (this.input.touch.isDown)
             {
                 transform.position.selfSum(new Math.Vector3(
-                    this._touch.direction.x * speed * this.time.deltaTime,
-                    this._touch.direction.y * speed * this.time.deltaTime,
+                    this.input.touch.direction.x * speed * this.time.deltaTime,
+                    this.input.touch.direction.y * speed * this.time.deltaTime,
                     0
                 ));
                 dirty = true;
