@@ -1,10 +1,11 @@
+import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
+import { Level } from "cerebro-netgame";
 import GameObject from "./game_object";
-import Input from "./input";
-import Renderer from "./renderer";
 
 export default class World
 {
     private _objects: Array<GameObject>;
+    private _lastWorldVersion: NetworkId = InvalidNetworkId;
 
     public constructor()
     {
@@ -31,19 +32,38 @@ export default class World
         }
     }
 
-    public update(input: Input, deltaTime: number): void 
+    public netUpdate(level: Level): void 
     {
-        for (const object of this._objects)
+        if (this._lastWorldVersion == level.version)
         {
-            object.update(input, deltaTime);
+            return;
         }
-    }
 
-    public render(renderer: Renderer): void 
-    {
+        this._lastWorldVersion = level.version;
+
+        const netIds: Array<NetworkId> = [...level.objects.keys()];
+        // update the objects the world already has
         for (const object of this._objects)
         {
-            object.render(renderer);
+            if (object.isNetworkObject == false)
+                continue;
+
+            const index: number = netIds.findIndex(id => id == object.netId);
+            if (index >= 0)
+            {
+                object.netUpdate(level.get(object.netId));
+                netIds.splice(index, 1);
+            }
+            else 
+            {
+                this.destroy(object);
+            }
+        }
+        // spawn the new ones
+        for (const netId of netIds)
+        {
+            const object: GameObject = this.spawn(new GameObject());
+            object.netInit(level.get(netId));
         }
     }
 }

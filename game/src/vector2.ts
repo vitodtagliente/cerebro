@@ -31,6 +31,11 @@ export default class Vector2
         v.data = this.data.slice();
     }
 
+    public clone(): Vector2
+    {
+        return new Vector2(this.x, this.y);
+    }
+
     public equals(v: Vector2): boolean
     {
         return this.x == v.x && this.y == v.y;
@@ -83,7 +88,7 @@ export default class Vector2
         return this.sub(v).magnitude;
     }
 
-    public lerp(a: Vector2, b: Vector2, t: number): Vector2
+    public static lerp(a: Vector2, b: Vector2, t: number): Vector2
     {
         const delta: Vector2 = b.sub(a);
         return new Vector2(
@@ -93,4 +98,9 @@ export default class Vector2
     }
 
     public get magnitude(): number { return Math.sqrt(this.x * this.x + this.y * this.y); }
+
+    public toString(): string
+    {
+        return `{${this.x},${this.y}}`;
+    }
 }

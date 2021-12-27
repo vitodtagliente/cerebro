@@ -31,6 +31,8 @@ export default class Engine
     private _client: Client;
     private _game: GameClient;
 
+    private _debug: boolean;
+
     public constructor(canvasId: string, settings: EngineSettings = new EngineSettings)
     {
         this._settings = settings;
@@ -40,6 +42,8 @@ export default class Engine
         this._renderer = new Renderer(this._context);
         this._time = new Time();
         this._world = new World();
+
+        this._debug = true;
 
         this._canvas.onResize.on(() =>
         {
@@ -69,44 +73,14 @@ export default class Engine
     private loop(): void 
     {
         this._time.tick();
-        const deltaTime: number = this._time.deltaTime;
 
-        this._context.clear(Color.white());
-
-        const mainLevel: string = "MAIN_LEVEL";
-        const level: Level = this._game.world.get(mainLevel);
-        if (level)
-        {
-            for (const [id, obj] of level.objects)
-            {
-                let position: Vector2 = new Vector2(obj.transform.position.x, obj.transform.position.y);
-                /*
-                if (null)
-                {
-                    const shadowObject: NetworkObject = shadowLevel.get(id);
-                    if (shadowObject)
-                    {
-                        position = position.lerp(
-                            new Vector2(shadowObject.transform.position.x, shadowObject.transform.position.y),
-                            position,
-                            this.time.deltaTime
-                        )
-                        console.log(`interpolate ${position.x}:${position.y} from ${shadowObject.transform.position.x}:${shadowObject.transform.position.y} to ${obj.transform.position.x}:${obj.transform.position.y}`);
-                    }
-                }
-                */
-
-                this._context.drawCircle(
-                    position,
-                    16,
-                    Color.black()
-                );
-            }
-        }
+        this.netUpdate();
+        this.update(this._time.deltaTime);
+        this.render();
 
         {
             const transform: Math.Transform = new Math.Transform;
-            const speed: number = .5;
+            const speed: number = 200;
             let dirty: boolean = false;
             if (this.input.keyboard.isKeysDown(Keycode.W))
             {
@@ -147,5 +121,44 @@ export default class Engine
         }
 
         requestAnimationFrame(() => this.loop());
+    }
+
+    private netUpdate(): void 
+    {
+        const mainLevel: string = "MAIN_LEVEL";
+        const level: Level = this._game.world.get(mainLevel);
+        if (level)
+        {
+            this._world.netUpdate(level);
+        }
+
+    }
+
+    private update(deltaTime: number): void
+    {
+        for (const object of this._world.objects)
+        {
+            object.update(this._input, deltaTime);
+        }
+    }
+
+    private render(): void
+    {
+        this._context.clear(Color.white());
+
+        this._renderer.begin();
+        for (const object of this._world.objects)
+        {
+            object.render(this._renderer);
+            if (this._debug)
+            {
+                this._context.drawCircle(
+                    object.transform.position,
+                    16,
+                    Color.black()
+                );
+            }
+        }
+        this._renderer.commit();
     }
 }

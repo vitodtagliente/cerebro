@@ -9,12 +9,15 @@ export declare class LevelState {
 export default class Level {
     private _id;
     private _objects;
+    private _version;
     state: LevelState;
     constructor(id: LevelId);
     get id(): LevelId;
     get objects(): Map<NetworkId, NetworkObject>;
+    get version(): NetworkId;
     add(): NetworkObject;
     remove(id: NetworkId): boolean;
     get(id: NetworkId): NetworkObject;
+    review(): void;
     copyFrom(level: Level): void;
 }

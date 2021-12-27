@@ -9,5 +9,13 @@ export default class Renderer
         this._context = context;
     }
 
-    
+    public begin(): void 
+    {
+
+    }
+
+    public commit(): void 
+    {
+
+    }
 }

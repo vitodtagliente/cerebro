@@ -1,22 +1,29 @@
+import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
+import { NetworkObject } from "cerebro-netgame";
 import Component from "./component";
 import Input from "./input";
 import Renderer from "./renderer";
 import Transform from "./transform";
+import Vector2 from "./vector2";
 import World from "./world";
 
 export default class GameObject 
 {
     private _components: Array<Component>;
+    private _netId: NetworkId
     private _world: World;
     public transform: Transform;
 
-    public construct()
+    public constructor()
     {
         this._components = new Array<Component>();
+        this._netId = InvalidNetworkId;
         this.transform = new Transform;
     }
 
     public get components(): Array<Component> { return this._components; }
+    public get isNetworkObject(): boolean { return this._netId != InvalidNetworkId; }
+    public get netId(): NetworkId { return this._netId; }
 
     public spawn(world: World): void 
     {
@@ -47,6 +54,26 @@ export default class GameObject
         {
             component.init();
         }
+    }
+
+    public netInit(networkObject: NetworkObject): void
+    {
+        this._netId = networkObject.id;
+        this.netUpdate(networkObject);
+    }
+
+    public netUpdate(networkObject: NetworkObject): void 
+    {
+        if (this._netId != networkObject.id)
+            return;
+
+        const startPosition: Vector2 = this.transform.position.clone();
+        const desiredPosition: Vector2 = new Vector2(networkObject.transform.position.x, networkObject.transform.position.y);
+        this.transform.position = Vector2.lerp(
+            startPosition,
+            desiredPosition,
+            1
+        );
     }
 
     public update(input: Input, deltaTime: number): void 

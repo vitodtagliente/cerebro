@@ -52,5 +52,6 @@ export default class MoveRpc extends ServerRpc<Request, void>
         }
 
         possessedObject.transform.position.selfSum(request.transform.position);
+        level.review();
     }
 }

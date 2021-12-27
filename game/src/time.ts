@@ -10,7 +10,8 @@ export default class Time
 
     public constructor()
     {
-        this._lastTick = new Date().getTime();
+        this._lastTick = new Date().getTime() / 1000;
+        this._time = 0;
     }
 
     public get time(): number { return this._time; }
@@ -18,7 +19,7 @@ export default class Time
 
     public tick(): void
     {
-        const currentTick: number = new Date().getTime();
+        const currentTick: number = new Date().getTime() / 1000;
         this._deltaTime = currentTick - this._lastTick;
         this._lastTick = currentTick;
         this._time += this._deltaTime;
