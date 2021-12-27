@@ -26,14 +26,14 @@ export default class Vector2
         this.y = y;
     }
 
-    public copy(v: Vector2): void
-    {
-        v.data = this.data.slice();
-    }
-
     public clone(): Vector2
     {
         return new Vector2(this.x, this.y);
+    }
+
+    public copy(v: Vector2): void
+    {
+        v.data = this.data.slice();
     }
 
     public equals(v: Vector2): boolean

@@ -68,6 +68,11 @@ export default class Color
         this.data = [r, g, b, a ? a : 1];
     }
 
+    public clone(): Color 
+    {
+        return new Color(this.r, this.g, this.b, this.a);
+    }
+
     public copy(c: Color): void 
     {
         c.data = this.data.slice();
