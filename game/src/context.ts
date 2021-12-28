@@ -1,6 +1,7 @@
 import Canvas from './canvas';
 import Color from './color';
 import Texture from './texture';
+import TextureRect from './texture_rect';
 import Vector2 from './vector2';
 
 export default class Context
@@ -38,6 +39,21 @@ export default class Context
 
     public drawTexture(position: Vector2, texture: Texture): void 
     {
-        
+        this._ctx.drawImage(texture.data, position.x, position.y);
+    }
+
+    public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect): void
+    {
+        this._ctx.drawImage(
+            texture.data,
+            rect.x * texture.data.width,
+            rect.y * texture.data.height,
+            rect.width * texture.data.width,
+            rect.height * texture.data.height,
+            position.x,
+            position.y,
+            rect.width * texture.data.width,
+            rect.height * texture.data.height
+        )
     }
 }

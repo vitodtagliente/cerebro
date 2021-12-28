@@ -11,6 +11,8 @@ import { Client, NetworkProtocol } from 'cerebro-netcore';
 import { GameClient, Level, Math } from 'cerebro-netgame';
 import World from './world';
 import input from './input';
+import Texture from './texture';
+import TextureRect from './texture_rect';
 
 export class EngineSettings
 {
@@ -32,6 +34,7 @@ export default class Engine
     private _game: GameClient;
 
     private _debug: boolean;
+    private _texture: Texture;
 
     public constructor(canvasId: string, settings: EngineSettings = new EngineSettings)
     {
@@ -49,6 +52,9 @@ export default class Engine
         {
 
         });
+
+        this._texture = new Texture();
+        this._texture.load('assets/slime.png', () => console.log('slime asset loaded'));
     }
 
     public get settings(): EngineSettings { return this._settings; }
@@ -152,11 +158,22 @@ export default class Engine
             object.render(this._renderer);
             if (this._debug)
             {
-                this._context.drawCircle(
-                    object.transform.position,
-                    16,
-                    object.tag == 'slime' ? Color.green() : Color.black()
-                );
+                if( object.tag == 'slime')
+                {
+                    this._context.drawSubTexture(
+                        object.transform.position,
+                        this._texture,
+                        new TextureRect(0, 0, .16, 1)
+                    );
+                }
+                else 
+                {
+                    this._context.drawCircle(
+                        object.transform.position,
+                        16,
+                        Color.black()
+                    );
+                }                
             }
         }
         this._renderer.commit();

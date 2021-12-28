@@ -97,7 +97,7 @@ const server: Server = new Server(NetworkProtocol.WebSocket);
 server.components.add(new GameServer(server));
 server.onListening = async () =>
 {
-    const testClients: number = 1;
+    const testClients: number = 0;
     for (let i: number = 0; i < testClients; ++i)
     {
         const client: Client = new Client(NetworkProtocol.WebSocket);
