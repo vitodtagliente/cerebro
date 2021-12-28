@@ -30,7 +30,7 @@
   </PropertyGroup>
   <ItemGroup>
     <None Include="index.ts" />
-    <Content Include="network_object_component.ts">
+    <Content Include="network_component.ts">
       <SubType>Code</SubType>
     </Content>
     <Content Include="package.json" />
@@ -41,7 +41,7 @@
     <TypeScriptCompile Include="client_rpcs\update_level_rpc.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="componet_id.ts">
+    <TypeScriptCompile Include="component_id.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="game_client.ts">
@@ -57,6 +57,9 @@
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="network_object.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
+    <TypeScriptCompile Include="network_object_property.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="server_rpcs\move_rpc.ts">

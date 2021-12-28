@@ -5,10 +5,10 @@ import NetworkObject from "./network_object";
 import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";
 import World from "./world";
-
 import * as UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 import MoveRpc from "./server_rpcs/move_rpc";
 import { NetworkId } from "cerebro-netcore";
+import { NetworkObjectProperty } from "./network_object_property";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -44,6 +44,9 @@ export default class GameServer extends ServerComponent
         if (object)
         {
             userSession.data.insert(UserProperty.PossessedObject, object.id);
+
+            object.state.data.insert(NetworkObjectProperty.MaxHp, 100);
+            object.state.data.insert(NetworkObjectProperty.Hp, 100);
 
             // send the level state to the user
             this.updateLevel(userSession, level);

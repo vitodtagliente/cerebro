@@ -1,0 +1,4 @@
+export declare enum NetworkObjectProperty {
+    Hp = "hp",
+    MaxHp = "max_hp"
+}

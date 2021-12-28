@@ -1,14 +1,14 @@
 import { InvalidNetworkId, NetMap, NetworkId, nextNetworkId } from "cerebro-netcore";
 
-export type NetworkObjectComponentType = string;
+export type NetworkComponentType = string;
 
-export default class NetworkObjectComponent
+export default class NetworkComponent
 {
     private _id: NetworkId;
-    private _type: NetworkObjectComponentType;
+    private _type: NetworkComponentType;
     public data: NetMap;
 
-    public constructor(type: NetworkObjectComponentType, id: NetworkId = InvalidNetworkId)
+    public constructor(type: NetworkComponentType, id: NetworkId = InvalidNetworkId)
     {
         this._type = type;
         this._id = id == InvalidNetworkId ? nextNetworkId() : id;
@@ -16,9 +16,9 @@ export default class NetworkObjectComponent
     }
 
     public get id(): NetworkId { return this._id; }
-    public get type(): NetworkObjectComponentType { return this._type; }
+    public get type(): NetworkComponentType { return this._type; }
 
-    public copyFrom(component: NetworkObjectComponent): void
+    public copyFrom(component: NetworkComponent): void
     {
         this._id = component._id;
         this._type = component._type;
