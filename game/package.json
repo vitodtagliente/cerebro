@@ -19,6 +19,7 @@
     "webpack-dev-server": "^3.8.0"
   },
   "dependencies": {
+    "blackrose": "file:../engine",
     "cerebro-http": "file:../framework/cerebro-http",
     "cerebro-logger": "file:../framework/cerebro-logger",
     "cerebro-netcore": "file:../framework/cerebro-netcore",
