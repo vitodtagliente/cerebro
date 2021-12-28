@@ -155,7 +155,7 @@ export default class Engine
                 this._context.drawCircle(
                     object.transform.position,
                     16,
-                    Color.black()
+                    object.tag == 'slime' ? Color.green() : Color.black()
                 );
             }
         }

@@ -1,4 +1,5 @@
 import { Encoding } from ".";
+import NetworkId, { InvalidNetworkId } from "./network_id";
 
 export default class NetMap extends Map<string, string>
 {
@@ -15,11 +16,38 @@ export default class NetMap extends Map<string, string>
 
     public asBool(key: string): boolean
     {
-        return this.as<boolean>(key);
+        const value: boolean = this.as<boolean>(key);
+        if (value) return value;
+        return false;
     }
 
     public asNumber(key: string): number
     {
-        return this.as<number>(key);
+        const value: number = this.as<number>(key);
+        if (value) return value;
+        return 0;
+    }
+
+    public asString(key: string): string
+    {
+        const value: string = this.as<string>(key);
+        if (value) return value.slice(1, -1);
+        return '';
+    }
+
+    public asNetworkId(key: string): NetworkId
+    {
+        const value: NetworkId = this.as<string>(key);
+        if (value) return value;
+        return InvalidNetworkId;
+    }
+
+    public copyFrom(map: NetMap): void
+    {
+        this.clear();
+        for (const [key, value] of map)
+        {
+            this.insert(key, value);
+        }
     }
 }

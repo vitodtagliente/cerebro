@@ -1,4 +1,9 @@
 export declare namespace Math {
+    function radians(angle: number): number;
+    function degrees(radians: number): number;
+    function lerp(a: number, b: number, time: number): number;
+    function clamp(value: number, min: number, max: number): number;
+    function random(min: number, max: number): number;
     class Vector3 {
         x: number;
         y: number;

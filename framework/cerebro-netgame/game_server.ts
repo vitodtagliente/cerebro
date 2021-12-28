@@ -9,6 +9,7 @@ import * as UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 import MoveRpc from "./server_rpcs/move_rpc";
 import { NetworkId } from "cerebro-netcore";
 import { NetworkObjectProperty } from "./network_object_property";
+import EnemySpawnerTask from "./tasks/enemy_spawner_task";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -32,6 +33,7 @@ export default class GameServer extends ServerComponent
     {
         this.server.rpcs.add(new MoveRpc(this._world));
         this.server.tasks.add(new WorldUpdaterTask(this, this._world));
+        this.server.tasks.add(new EnemySpawnerTask(this, this._world));
         return true;
     }
 

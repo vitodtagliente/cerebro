@@ -1,5 +1,5 @@
 import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
-import { NetworkObject } from "cerebro-netgame";
+import { NetworkObject, NetworkObjectProperty } from "cerebro-netgame";
 import Component from "./component";
 import Input from "./input";
 import Renderer from "./renderer";
@@ -12,12 +12,14 @@ export default class GameObject
     private _components: Array<Component>;
     private _netId: NetworkId
     private _world: World;
+    public tag: string;
     public transform: Transform;
 
     public constructor()
     {
         this._components = new Array<Component>();
         this._netId = InvalidNetworkId;
+        this.tag = '';
         this.transform = new Transform;
     }
 
@@ -59,6 +61,7 @@ export default class GameObject
     public netInit(networkObject: NetworkObject): void
     {
         this._netId = networkObject.id;
+        this.tag = networkObject.state.data.asString(NetworkObjectProperty.AssetType);
         this.netUpdate(networkObject);
     }
 

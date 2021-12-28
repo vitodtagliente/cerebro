@@ -1,8 +1,7 @@
 import { NetMap } from 'cerebro-netcore';
 import { InvalidNetworkId, NetworkId, nextNetworkId } from 'cerebro-netcore';
-import Component, { ComponentType } from './component';
 import { Math } from './math';
-import NetworkComponent from './network_component';
+import NetworkComponent, { NetworkComponentType } from './network_component';
 
 export class NetworkObjectState
 {
@@ -15,8 +14,7 @@ export class NetworkObjectState
 
     public copyFrom(state: NetworkObjectState): void
     {
-        this.data.clear();
-        this.data = Object.assign(new NetMap, state.data);
+        this.data.copyFrom(state.data);
     }
 }
 
@@ -44,12 +42,12 @@ export default class NetworkObject
         return component;
     }
 
-    public getComponent(type: ComponentType): NetworkComponent
+    public getComponent(type: NetworkComponentType): NetworkComponent
     {
         return this._components.find(component => component.type == type);
     }
 
-    public getComponents(type: ComponentType): Array<NetworkComponent>
+    public getComponents(type: NetworkComponentType): Array<NetworkComponent>
     {
         return this._components.filter(component => component.type == type);
     }

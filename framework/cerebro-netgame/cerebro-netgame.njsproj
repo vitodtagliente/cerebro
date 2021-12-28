@@ -65,6 +65,9 @@
     <TypeScriptCompile Include="server_rpcs\move_rpc.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
+    <TypeScriptCompile Include="tasks\enemy_spawner_task.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="tasks\world_updater_task.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
