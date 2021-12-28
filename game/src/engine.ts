@@ -163,7 +163,8 @@ export default class Engine
                     this._context.drawSubTexture(
                         object.transform.position,
                         this._texture,
-                        new TextureRect(0, 0, .16, 1)
+                        new TextureRect(0, 0, .16, 1),
+                        new Vector2(.5, .5)
                     );
                 }
                 else 

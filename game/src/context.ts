@@ -42,7 +42,7 @@ export default class Context
         this._ctx.drawImage(texture.data, position.x, position.y);
     }
 
-    public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect): void
+    public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect, scale: Vector2 = Vector2.one()): void
     {
         this._ctx.drawImage(
             texture.data,
@@ -52,8 +52,8 @@ export default class Context
             rect.height * texture.data.height,
             position.x,
             position.y,
-            rect.width * texture.data.width,
-            rect.height * texture.data.height
+            rect.width * texture.data.width * scale.x,
+            rect.height * texture.data.height * scale.y
         )
     }
 }
