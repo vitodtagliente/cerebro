@@ -22,7 +22,6 @@ export default class World
     {
         this._entities.push(object);
         object.spawn(this);
-        object.init();
         return object;
     }
 

@@ -41,7 +41,7 @@ export default class SpriteAnimator extends Component
     public update(world: World, input: Input, deltaTime: number): void 
     {
         if (this._isPlaying)
-        {
+        {            
             this._state.timer -= deltaTime;
             if (this._state.timer <= 0)
             {

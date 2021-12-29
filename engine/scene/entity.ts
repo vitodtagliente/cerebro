@@ -36,6 +36,7 @@ export default class Entity
         // assert(component.isAttached == false);
         this._components.push(component);
         component.attach(this);
+        component.init();
         return component;
     }
 
@@ -77,10 +78,7 @@ export default class Entity
 
     public init(): void 
     {
-        for (const component of this._components)
-        {
-            component.init();
-        }
+        
     }
 
     public netInit(networkObject: NetworkObject): void
