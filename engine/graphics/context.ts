@@ -37,16 +37,28 @@ export default class Context
         this._ctx.fill();
     }
 
+    public strokeCircle(position: Vector2, radius: number, color: Color): void
+    {
+        this._ctx.strokeStyle = color.rgba;
+        this._ctx.beginPath();
+        this._ctx.arc(position.x, position.y, radius, 0, Math.PI * 2);
+        this._ctx.stroke();
+    }
+
     public drawTexture(position: Vector2, texture: Texture): void 
     {
-        if (texture.image.isLoaded == false) return;
-        
+        if (texture == null
+            || texture.image == null
+            || texture.image.isLoaded == false) return;
+
         this._ctx.drawImage(texture.image.data, position.x, position.y);
     }
 
     public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect, scale: Vector2 = Vector2.one): void
     {
-        if (texture.image.isLoaded == false) return;
+        if (texture == null
+            || texture.image == null
+            || texture.image.isLoaded == false) return;
 
         this._ctx.drawImage(
             texture.image.data,

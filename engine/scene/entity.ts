@@ -31,22 +31,48 @@ export default class Entity
         this._world = world;
     }
 
-    public addComponent(component: Component): Component
+    public addComponent<T extends Component>(component: T): T
     {
+        // assert(component.isAttached == false);
         this._components.push(component);
         component.attach(this);
         return component;
     }
 
-    public removeComponent(component: Component): void 
+    public findComponent<T extends Component>(constr: { new(...args: any[]): T }): T 
     {
-        const index: number = this._components.findIndex(c => c == component);
-        if (index >= 0)
+        return this._components.find(component => component instanceof constr) as T;
+    }
+
+    public findComponents<T extends Component>(constr: { new(...args: any[]): T }): Array<T> 
+    {
+        let result: Array<T> = new Array<T>();
+        for (const component of this._components)
         {
-            component.uninit();
-            component.detach();
-            this._components.splice(index, 1);
+            if (component instanceof constr)
+            {
+                result.push(component as T);
+            }
         }
+        return result;
+    }
+
+    public removeComponent<T extends Component>(constr: { new(...args: any[]): T }): void
+    {
+        let result: Array<Component> = new Array<Component>();
+        for (const component of this._components)
+        {
+            if (component instanceof constr)
+            {
+                component.uninit();
+                component.detach();
+            }
+            else 
+            {
+                result.push(component);
+            }
+        }
+        this._components = result;
     }
 
     public init(): void 
@@ -98,7 +124,7 @@ export default class Entity
     {
         for (const component of this._components)
         {
-            this.removeComponent(component);
+            component.uninit();
         }
     }
 }

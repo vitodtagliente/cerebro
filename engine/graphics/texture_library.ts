@@ -5,31 +5,31 @@ import Texture from "./texture";
 export default class TextureLibrary
 {
     private _context: Context;
-    private _textures: Map<number, Texture>;
+    private _textures: Map<string, Texture>;
 
     public constructor(context: Context)
     {
         this._context = context;
-        this._textures = new Map<number, Texture>();
+        this._textures = new Map<string, Texture>();
     }
-
-    public get textures(): Map<number, Texture> { return this._textures; }
 
     public get(image: Image): Texture
     {
-        /*
+        if (image == null) return null;
+
         let texture: Texture = this._textures.get(image.filename);
-        if (texture == null && this._context != null)
+        if (texture == null)
         {
-            texture = this._context.createTexture(image);
-            this._textures.set(image.id, texture);
-            image.onDispose.on((asset: AssetData) =>
+            texture = new Texture(image);
+            /*
+            image.onDispose.on(() =>
             {
-                this._textures.delete(asset.id);
+                this._textures.delete(image.filename);
             });
+            */
+            this._textures.set(image.filename, texture);
         }
+        console.log(texture);
         return texture;
-        */
-        return null;
     }
 }

@@ -1,34 +1,38 @@
 import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
 import { NetworkLevel } from "cerebro-netgame";
+import { Signal } from "../core";
 import Entity from "./entity";
 
 export default class World
 {
-    private _objects: Array<Entity>;
+    private _entities: Array<Entity>;
     private _lastWorldVersion: NetworkId = InvalidNetworkId;
+
+    public onEntitySpawn: Signal<Entity>;
 
     public constructor()
     {
-        this._objects = new Array<Entity>();
+        this._entities = new Array<Entity>();
+        this.onEntitySpawn = new Signal<Entity>();
     }
 
-    public get objects(): Array<Entity> { return this._objects; }
+    public get entities(): Array<Entity> { return this._entities; }
 
     public spawn(object: Entity): Entity
     {
-        this._objects.push(object);
+        this._entities.push(object);
         object.spawn(this);
         object.init();
         return object;
     }
 
-    public destroy(object: Entity): void 
+    public destroy(entity: Entity): void 
     {
-        const index: number = this._objects.findIndex(obj => obj == object);
+        const index: number = this._entities.findIndex(e => e == entity);
         if (index >= 0)
         {
-            object.prepareToDestroy();
-            this._objects.splice(index, 1);
+            entity.prepareToDestroy();
+            this._entities.splice(index, 1);
         }
     }
 
@@ -43,27 +47,28 @@ export default class World
 
         const netIds: Array<NetworkId> = [...level.objects.keys()];
         // update the objects the world already has
-        for (const object of this._objects)
+        for (const entity of this._entities)
         {
-            if (object.isNetworkObject == false)
+            if (entity.isNetworkObject == false)
                 continue;
 
-            const index: number = netIds.findIndex(id => id == object.netId);
+            const index: number = netIds.findIndex(id => id == entity.netId);
             if (index >= 0)
             {
-                object.netUpdate(level.get(object.netId));
+                entity.netUpdate(level.get(entity.netId));
                 netIds.splice(index, 1);
             }
             else 
             {
-                this.destroy(object);
+                this.destroy(entity);
             }
         }
         // spawn the new ones
         for (const netId of netIds)
         {
-            const object: Entity = this.spawn(new Entity());
-            object.netInit(level.get(netId));
+            const entity: Entity = this.spawn(new Entity());
+            entity.netInit(level.get(netId));
+            this.onEntitySpawn.emit(entity);
         }
     }
 }

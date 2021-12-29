@@ -1,11 +1,14 @@
 import { Client, NetworkProtocol } from "cerebro-netcore";
 import { GameClient, NetworkLevel, Math as NetworkMath } from "cerebro-netgame";
-import { Image } from "../asset";
+import { SpriteAnimation, SpriteAnimator } from "../animation";
+import { AssetLibrary, Image } from "../asset";
+import { AssetType } from "../asset/asset";
+import { SpriteRenderer } from "../components";
 import { Time } from "../core";
 import { Input, KeyCode } from "../device";
 import { Color, Context, Renderer, Texture, TextureRect } from "../graphics";
 import { Vector2 } from "../math";
-import { World } from "../scene";
+import { Entity, World } from "../scene";
 import Canvas from "./canvas";
 import Stats from "./stats";
 
@@ -42,6 +45,30 @@ export default class Engine
         this._renderer = new Renderer(this._context);
         this._time = new Time();
         this._world = new World();
+        
+        const img: Image = new Image;
+        img.load('assets/slime.png', () => this._texture = new Texture(img));
+
+        this._world.onEntitySpawn.on((entity: Entity) => 
+        {
+            if (entity.tag == 'slime')
+            {
+                entity.transform.scale.set(0.3, 0.3);
+                const spriteRenderer = entity.addComponent(new SpriteRenderer);
+                spriteRenderer.image = img;
+
+                const animator = entity.addComponent(new SpriteAnimator);
+                {
+                    const animation = new SpriteAnimation;
+                    for (let i = 0; i < 6; ++i)
+                    {
+                        animation.add(new TextureRect(i * .16, 0, .16, 1), .2);
+                    }
+                    animator.add('idle', animation);
+                }
+                animator.play('idle');
+            }
+        });
 
         this._debug = true;
 
@@ -54,9 +81,6 @@ export default class Engine
         {
 
         });
-
-        const img: Image = new Image;
-        img.load('assets/slime.png', () => this._texture = new Texture(img));
     }
 
     public get settings(): EngineSettings { return this._settings; }
@@ -134,7 +158,7 @@ export default class Engine
 
     private update(deltaTime: number): void
     {
-        for (const object of this._world.objects)
+        for (const object of this._world.entities)
         {
             object.update(this._input, deltaTime);
         }
@@ -150,29 +174,17 @@ export default class Engine
         this._context.clear(Color.white);
 
         this._renderer.begin();
-        for (const object of this._world.objects)
+        for (const entity of this._world.entities)
         {
-            object.render(this._renderer);
-            if (this._debug)
+            if (this._debug && entity.tag != 'slime')
             {
-                if (object.tag == 'slime')
-                {
-                    this._context.drawSubTexture(
-                        object.transform.position,
-                        this._texture,
-                        new TextureRect(0, 0, .16, 1),
-                        new Vector2(.3, .3)
-                    );
-                }
-                else 
-                {
-                    this._context.drawCircle(
-                        object.transform.position,
-                        16,
-                        Color.black
-                    );
-                }
+                this._context.strokeCircle(
+                    entity.transform.position,
+                    16,
+                    Color.black
+                );
             }
+            entity.render(this._renderer);
         }
         this._renderer.commit();
     }

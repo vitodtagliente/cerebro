@@ -1,3 +1,4 @@
+import { Signal } from "../core";
 import AssetLibrary from "./asset_library";
 
 export enum AssetType
@@ -15,10 +16,13 @@ export default abstract class Asset
     private _filename: string;
     private _type: AssetType;
 
+    public onDispose: Signal<void>;
+
     public constructor(type: AssetType)
     {
         this._filename = '';
         this._type = type;
+        this.onDispose = new Signal<void>();
     }
 
     public get data(): any { return this._data; }
@@ -48,6 +52,6 @@ export default abstract class Asset
 
     public dispose(): void 
     {
-
+        this.onDispose.emit();
     }
 }
