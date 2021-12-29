@@ -45,6 +45,8 @@ export default class GameServer extends ServerComponent
         const object: NetworkObject = level.add();
         if (object)
         {
+            object.transform.position.x = 300;
+            object.transform.position.y = 300;
             userSession.data.insert(UserProperty.PossessedObject, object.id);
 
             object.state.data.insert(NetworkObjectProperty.MaxHp, 100);
