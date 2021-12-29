@@ -68,7 +68,12 @@ export namespace Math
             return this;
         }
 
-        public copyFrom(v: Vector3): void
+        public clone(): Vector3
+        {
+            return new Vector3(this.x, this.y, this.z);
+        }
+
+        public copy(v: Vector3): void
         {
             this.x = v.x;
             this.y = v.y;
@@ -89,11 +94,20 @@ export namespace Math
         public rotation: Vector3;
         public scale: Vector3;
 
-        public copyFrom(transform: Transform): void
+        public clone(): Transform
         {
-            this.position.copyFrom(transform.position);
-            this.rotation.copyFrom(transform.rotation);
-            this.scale.copyFrom(transform.scale);
+            const t: Transform = new Transform;
+            t.position.copy(this.position);
+            t.rotation.copy(this.rotation);
+            t.scale.copy(this.scale);
+            return t;
+        }
+
+        public copy(transform: Transform): void
+        {
+            this.position.copy(transform.position);
+            this.rotation.copy(transform.rotation);
+            this.scale.copy(transform.scale);
         }
     }
 }

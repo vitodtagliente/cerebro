@@ -11,7 +11,9 @@ export default class NetMap extends Map<string, string>
 
     public as<T>(key: string): T
     {
-        return Encoding.tryParse<T>(this.get(key));
+        if (this.has(key))
+            return Encoding.tryParse<T>(this.get(key));
+        return null;
     }
 
     public asBool(key: string): boolean
@@ -42,7 +44,17 @@ export default class NetMap extends Map<string, string>
         return InvalidNetworkId;
     }
 
-    public copyFrom(map: NetMap): void
+    public clone(): NetMap
+    {
+        const map: NetMap = new NetMap;
+        for (const [key, value] of this)
+        {
+            this.insert(key, value);
+        }
+        return map;
+    }
+
+    public copy(map: NetMap): void
     {
         this.clear();
         for (const [key, value] of map)

@@ -50,7 +50,7 @@
     <TypeScriptCompile Include="game_server.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="level.ts">
+    <TypeScriptCompile Include="network_level.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="math.ts">
@@ -74,7 +74,7 @@
     <TypeScriptCompile Include="user_property.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="world.ts">
+    <TypeScriptCompile Include="network_world.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
   </ItemGroup>

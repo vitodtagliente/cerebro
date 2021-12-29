@@ -6,5 +6,6 @@ export default class NetMap extends Map<string, string> {
     asNumber(key: string): number;
     asString(key: string): string;
     asNetworkId(key: string): NetworkId;
-    copyFrom(map: NetMap): void;
+    clone(): NetMap;
+    copy(map: NetMap): void;
 }

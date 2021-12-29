@@ -1,20 +1,20 @@
 import { ClientRpc, ClientRpcSettings, RpcId, UserSession } from 'cerebro-netcore';
-import Level, { LevelId } from '../level';
-import World from '../world';
+import NetworkLevel, { NetworkLevelId } from '../network_level';
+import NetworkWorld from '../network_world';
 
 export const rpcId: RpcId = "update_level";
 
 export class Request
 {
-    public levelId: LevelId;
-    public level: Level;
+    public levelId: NetworkLevelId;
+    public level: NetworkLevel;
 }
 
 export default class UpdatLevelRpc extends ClientRpc<Request, void>
 {
-    private _world: World;
+    private _world: NetworkWorld;
 
-    public constructor(world: World)
+    public constructor(world: NetworkWorld)
     {
         const settings: ClientRpcSettings = new ClientRpcSettings;
 
@@ -25,7 +25,7 @@ export default class UpdatLevelRpc extends ClientRpc<Request, void>
 
     public _execute(userSession: UserSession, request: Request): void
     {
-        const level: Level = this._world.getOrCreate(request.levelId);
-        level.copyFrom(request.level);
+        const level: NetworkLevel = this._world.getOrCreate(request.levelId);
+        level.copy(request.level);
     }
 }

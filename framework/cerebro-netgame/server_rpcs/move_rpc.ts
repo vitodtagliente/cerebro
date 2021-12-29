@@ -1,9 +1,9 @@
 import { Encoding, InvalidNetworkId, NetworkId, RpcId, ServerRpc, ServerRpcSettings, UserSession } from 'cerebro-netcore';
-import Level from '../level';
 import { Math } from '../math';
+import NetworkLevel from '../network_level';
 import NetworkObject from '../network_object';
+import NetworkWorld from '../network_world';
 import { UserProperty } from '../user_property';
-import World from '../world';
 
 export const rpcId: RpcId = "move";
 
@@ -15,9 +15,9 @@ export class Request
 
 export default class MoveRpc extends ServerRpc<Request, void>
 {
-    private _world: World;
+    private _world: NetworkWorld;
 
-    public constructor(world: World)
+    public constructor(world: NetworkWorld)
     {
         const settings: ServerRpcSettings = new ServerRpcSettings;
         settings.requireAuthentication = false;
@@ -30,7 +30,7 @@ export default class MoveRpc extends ServerRpc<Request, void>
 
     public _execute(userSession: UserSession, request: Request): void
     {
-        const level: Level = this._world.get(request.level);
+        const level: NetworkLevel = this._world.get(request.level);
         if (level == null)
         {
             console.error(`user[${userSession.user.id}] is moving into a not valid level[${request.level}]`);

@@ -1,15 +1,15 @@
 import { ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
 import { componentId } from "./componet_id";
-import Level, { LevelId } from "./level";
 import NetworkObject from "./network_object";
 import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";
-import World from "./world";
 import * as UpdateLevelRpc from "./client_rpcs/update_level_rpc";
 import MoveRpc from "./server_rpcs/move_rpc";
 import { NetworkId } from "cerebro-netcore";
 import { NetworkObjectProperty } from "./network_object_property";
 import EnemySpawnerTask from "./tasks/enemy_spawner_task";
+import NetworkWorld from "./network_world";
+import NetworkLevel, { NetworkLevelId } from "./network_level";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -18,16 +18,16 @@ export class GameServerSettings extends ComponentSettings
 
 export default class GameServer extends ServerComponent
 {
-    private _world: World;
+    private _world: NetworkWorld;
 
     public constructor(server: Server, settings: GameServerSettings = new GameServerSettings)
     {
         super(server, componentId, settings);
-        this._world = new World;
+        this._world = new NetworkWorld;
     }
 
     public get settings(): GameServerSettings { return super.settings as GameServerSettings; }
-    public get world(): World { return this._world; }
+    public get world(): NetworkWorld { return this._world; }
 
     public initialize(): boolean
     {
@@ -40,7 +40,7 @@ export default class GameServer extends ServerComponent
     public onClientConnection(userSession: UserSession): void
     {
         userSession.data.insert(UserProperty.Level, this.settings.mainLevel);
-        const level: Level = this.world.getOrCreate(this.settings.mainLevel);
+        const level: NetworkLevel = this.world.getOrCreate(this.settings.mainLevel);
 
         const object: NetworkObject = level.add();
         if (object)
@@ -57,8 +57,8 @@ export default class GameServer extends ServerComponent
 
     public onClientDisconnection(userSession: UserSession): void
     {
-        const userLevelId: LevelId = userSession.data.as<LevelId>(UserProperty.Level);
-        const level: Level = this.world.get(userLevelId);
+        const userLevelId: NetworkLevelId = userSession.data.as<NetworkLevelId>(UserProperty.Level);
+        const level: NetworkLevel = this.world.get(userLevelId);
         if (level)
         {
             const possessedObjectId: NetworkId = userSession.data.as<NetworkId>(UserProperty.PossessedObject);
@@ -67,7 +67,7 @@ export default class GameServer extends ServerComponent
         console.error(`User[${userSession.user.id}] disconnected`);
     }
 
-    public updateLevel(userSession: UserSession, level: Level): void
+    public updateLevel(userSession: UserSession, level: NetworkLevel): void
     {
         const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
         request.levelId = level.id;
@@ -76,7 +76,7 @@ export default class GameServer extends ServerComponent
         this.server.call(userSession, UpdateLevelRpc.rpcId, request);
     }
 
-    public broadcastUpdateLevel(level: Level): void
+    public broadcastUpdateLevel(level: NetworkLevel): void
     {
         const request: UpdateLevelRpc.Request = new UpdateLevelRpc.Request;
         request.levelId = level.id;

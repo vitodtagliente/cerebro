@@ -1,9 +1,9 @@
 import { Task } from "cerebro-netcore";
 import GameServer from "../game_server";
-import World from "../world";
+import NetworkWorld from "../network_world";
 export default class EnemySpawnerTask extends Task {
     private _game;
     private _world;
-    constructor(game: GameServer, world: World);
+    constructor(game: GameServer, world: NetworkWorld);
     execute(): void;
 }

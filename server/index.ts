@@ -3,7 +3,6 @@ import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
 import { Math } from 'cerebro-netgame';
 import { GameClient, GameServer } from 'cerebro-netgame';
-import { NetworkObject, World, Level, UserProperty } from 'cerebro-netgame';
 // import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
 class FooController extends Controller

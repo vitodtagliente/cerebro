@@ -14,7 +14,7 @@ export class NetworkObjectState
 
     public copyFrom(state: NetworkObjectState): void
     {
-        this.data.copyFrom(state.data);
+        this.data.copy(state.data);
     }
 }
 
@@ -52,11 +52,11 @@ export default class NetworkObject
         return this._components.filter(component => component.type == type);
     }
 
-    public copyFrom(obj: NetworkObject): void
+    public copy(obj: NetworkObject): void
     {
         this._id = obj._id;
         this.state.copyFrom(obj.state);
-        this.transform.copyFrom(obj.transform);
+        this.transform.copy(obj.transform);
         this._components.splice(0, this._components.length);
         for (const component of obj._components)
         {

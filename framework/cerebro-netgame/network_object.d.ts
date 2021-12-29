@@ -18,5 +18,5 @@ export default class NetworkObject {
     addComponent(component: NetworkComponent): NetworkComponent;
     getComponent(type: NetworkComponentType): NetworkComponent;
     getComponents(type: NetworkComponentType): Array<NetworkComponent>;
-    copyFrom(obj: NetworkObject): void;
+    copy(obj: NetworkObject): void;
 }

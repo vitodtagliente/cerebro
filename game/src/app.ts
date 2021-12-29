@@ -1,4 +1,4 @@
-import Engine, { EngineSettings } from './engine';
+import { Engine, EngineSettings } from "blackrose/application";
 
 window.onload = () =>
 {
