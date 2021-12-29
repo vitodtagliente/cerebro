@@ -1,11 +1,14 @@
+import { ComponentRegister } from ".";
 import { Image } from "../asset";
 import { Renderer, Texture, TextureRect } from "../graphics";
-import { Component } from "../scene";
+import { Component, ComponentId } from "../scene";
 
-export default class SpriteRenderer extends Component
+class SpriteRenderer extends Component
 {
     public image: Image;
     public textureRect: TextureRect;
+
+    public static readonly id: ComponentId = 'sprite_renderer';
 
     public constructor()
     {
@@ -18,7 +21,7 @@ export default class SpriteRenderer extends Component
         super.render(renderer);
 
         const texture: Texture = new Texture(this.image);
-        
+
         renderer.context.drawSubTexture(
             this.owner.transform.position,
             texture,
@@ -27,3 +30,7 @@ export default class SpriteRenderer extends Component
         );
     }
 }
+
+ComponentRegister.main.add(SpriteRenderer.id, SpriteRenderer);
+
+export default SpriteRenderer;

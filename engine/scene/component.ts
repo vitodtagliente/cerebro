@@ -3,13 +3,15 @@ import { Renderer } from "../graphics";
 import Entity from "./entity";
 import World from "./world";
 
-export default class Component 
+export type ComponentId = string;
+
+export default abstract class Component 
 {
     private _owner: Entity;
 
     public constructor()
     {
-
+        
     }
 
     public get owner(): Entity { return this._owner; }

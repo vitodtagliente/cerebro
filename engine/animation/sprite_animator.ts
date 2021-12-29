@@ -1,6 +1,6 @@
-import { SpriteRenderer } from "../components";
+import { ComponentRegister, SpriteRenderer } from "../components";
 import { Input } from "../device";
-import { Component, World } from "../scene";
+import { Component, ComponentId, World } from "../scene";
 import SpriteAnimation from "./sprite_animation";
 
 class PlayingState 
@@ -11,8 +11,10 @@ class PlayingState
     public timer: number = 0;
 }
 
-export default class SpriteAnimator extends Component
+class SpriteAnimator extends Component
 {
+    public static readonly id: ComponentId = 'sprite_animator';
+
     private _sprite: SpriteRenderer;
     private _animations: Map<string, SpriteAnimation>;
     private _isPlaying: boolean;
@@ -41,7 +43,7 @@ export default class SpriteAnimator extends Component
     public update(world: World, input: Input, deltaTime: number): void 
     {
         if (this._isPlaying)
-        {            
+        {
             this._state.timer -= deltaTime;
             if (this._state.timer <= 0)
             {
@@ -104,3 +106,7 @@ export default class SpriteAnimator extends Component
         this._state.frameIndex = 0;
     }
 }
+
+ComponentRegister.main.add(SpriteAnimator.id, SpriteAnimator);
+
+export default SpriteAnimator;

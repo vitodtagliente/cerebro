@@ -62,7 +62,7 @@ export default class Engine
                     const animation = new SpriteAnimation;
                     for (let i = 0; i < 6; ++i)
                     {
-                        animation.add(new TextureRect(i * .16, 0, .16, 1), .2);
+                        animation.add(new TextureRect(i * .166, 0, .166, 1), .2);
                     }
                     animator.add('idle', animation);
                 }

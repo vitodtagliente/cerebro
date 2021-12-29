@@ -61,7 +61,7 @@ export default class NetworkObject
         for (const component of obj._components)
         {
             const comp: NetworkComponent = new NetworkComponent(component.id, component.type);
-            comp.copyFrom(component);
+            comp.copy(component);
             this._components.push(comp);
         }
     }
