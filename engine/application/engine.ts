@@ -7,6 +7,7 @@ import { Color, Context, Renderer, Texture, TextureRect } from "../graphics";
 import { Vector2 } from "../math";
 import { World } from "../scene";
 import Canvas from "./canvas";
+import Stats from "./stats";
 
 export class EngineSettings
 {
@@ -27,6 +28,8 @@ export default class Engine
     private _client: Client;
     private _game: GameClient;
 
+    private _stats: Stats;
+
     private _debug: boolean;
     private _texture: Texture;
 
@@ -41,6 +44,11 @@ export default class Engine
         this._world = new World();
 
         this._debug = true;
+
+        if (this._debug)
+        {
+            this._stats = new Stats();
+        }
 
         this._canvas.onResize.on(() =>
         {
@@ -130,6 +138,11 @@ export default class Engine
         {
             object.update(this._input, deltaTime);
         }
+
+        if (this._debug)
+        {
+            this._stats.update();
+        }
     }
 
     private render(): void
@@ -142,7 +155,7 @@ export default class Engine
             object.render(this._renderer);
             if (this._debug)
             {
-                if( object.tag == 'slime')
+                if (object.tag == 'slime')
                 {
                     this._context.drawSubTexture(
                         object.transform.position,
@@ -158,7 +171,7 @@ export default class Engine
                         16,
                         Color.black
                     );
-                }                
+                }
             }
         }
         this._renderer.commit();

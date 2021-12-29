@@ -39,11 +39,15 @@ export default class Context
 
     public drawTexture(position: Vector2, texture: Texture): void 
     {
+        if (texture.image.isLoaded == false) return;
+        
         this._ctx.drawImage(texture.image.data, position.x, position.y);
     }
 
     public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect, scale: Vector2 = Vector2.one): void
     {
+        if (texture.image.isLoaded == false) return;
+
         this._ctx.drawImage(
             texture.image.data,
             rect.x * texture.image.width,
