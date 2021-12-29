@@ -1,3 +1,4 @@
+import { NetworkComponent } from "cerebro-netgame";
 import { Input } from "../device";
 import { Renderer } from "../graphics";
 import Entity from "./entity";
@@ -11,7 +12,7 @@ export default abstract class Component
 
     public constructor()
     {
-        
+
     }
 
     public get owner(): Entity { return this._owner; }
@@ -27,6 +28,8 @@ export default abstract class Component
     }
 
     public init(): void { }
+    public netInit(component: NetworkComponent): void { }
+    public netUpdate(component: NetworkComponent): void { }
     public render(renderer: Renderer) { }
     public uninit(): void { }
     public update(world: World, input: Input, deltaTime: number): void { }
