@@ -55,7 +55,7 @@ export default class Engine
             {
                 entity.transform.scale.set(0.3, 0.3);
                 const spriteRenderer = entity.addComponent(new SpriteRenderer);
-                spriteRenderer.image = img;
+                spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/slime.png') as Image;
 
                 const animator = entity.addComponent(new SpriteAnimator);
                 {

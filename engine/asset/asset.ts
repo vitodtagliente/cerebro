@@ -38,15 +38,11 @@ export default abstract class Asset
         if (filename.length == 0) return;
 
         this._filename = filename;
-        const data: Asset = AssetLibrary.main.get(this.type, filename);
-        if (data)
+        this._load(filename, onLoadCallback);
+
+        if (AssetLibrary.main.contains(this.type, filename) == false)
         {
-            this._data = data;
-        }
-        else 
-        {
-            this._load(filename, onLoadCallback);
-            AssetLibrary.main.add(this.type, filename, this._data);
+            AssetLibrary.main.add(this);
         }
     }
 
