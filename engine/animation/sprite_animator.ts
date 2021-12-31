@@ -5,6 +5,7 @@ import SpriteAnimation from "./sprite_animation";
 
 class PlayingState 
 {
+    public name: string = '';
     public animation: SpriteAnimation = null;
     public frameIndex: number = 0;
     public loop: boolean = false;
@@ -72,6 +73,12 @@ class SpriteAnimator extends Component
     {
         if (this._sprite && this._animations.has(name))
         {
+            if (this._isPlaying && this._state.name == name)
+            {
+                // already playing this animation
+                return;
+            }
+
             const animation: SpriteAnimation = this._animations.get(name);
             if (animation.length == 0) return;
 

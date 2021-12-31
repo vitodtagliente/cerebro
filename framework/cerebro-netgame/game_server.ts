@@ -48,6 +48,8 @@ export default class GameServer extends ServerComponent
             object.transform.position.x = 300;
             object.transform.position.y = 300;
             userSession.data.insert(UserProperty.PossessedObject, object.id);
+            object.state.data.insert(NetworkObjectProperty.Animation, 'idle');
+            object.state.data.insert(NetworkObjectProperty.AssetType, 'player');
 
             object.state.data.insert(NetworkObjectProperty.MaxHp, 100);
             object.state.data.insert(NetworkObjectProperty.Hp, 100);

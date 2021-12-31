@@ -1,10 +1,12 @@
 import { ComponentRegister } from ".";
 import { Image } from "../asset";
-import { Renderer, Texture, TextureRect } from "../graphics";
+import { Color, Renderer, Texture, TextureRect } from "../graphics";
+import { Vector2 } from "../math";
 import { Component, ComponentId } from "../scene";
 
 class SpriteRenderer extends Component
 {
+    public debug: boolean;
     public image: Image;
     public textureRect: TextureRect;
 
@@ -13,6 +15,7 @@ class SpriteRenderer extends Component
     public constructor()
     {
         super();
+        this.debug = true;
         this.textureRect = new TextureRect();
     }
 
@@ -28,6 +31,22 @@ class SpriteRenderer extends Component
             this.textureRect,
             this.owner.transform.scale
         );
+
+        if (this.debug)
+        {
+            const width: number = texture.image.width * this.textureRect.width * this.owner.transform.scale.x;
+            const height: number = texture.image.height * this.textureRect.height * this.owner.transform.scale.y;
+
+            renderer.context.strokeRect(
+                this.owner.transform.position.sub(new Vector2(
+                    width / 2,
+                    height / 2
+                )),
+                width,
+                height,
+                Color.green
+            );
+        }
     }
 }
 

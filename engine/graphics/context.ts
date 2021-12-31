@@ -26,7 +26,14 @@ export default class Context
 
     public drawRect(position: Vector2, width: number, height: number, color: Color): void 
     {
+        this._ctx.fillStyle = color.hex;
+        this._ctx.fillRect(position.x, position.y, width, height);
+    }
 
+    public strokeRect(position: Vector2, width: number, height: number, color: Color): void 
+    {
+        this._ctx.strokeStyle = color.hex;
+        this._ctx.strokeRect(position.x, position.y, width, height);
     }
 
     public drawCircle(position: Vector2, radius: number, color: Color): void
@@ -51,7 +58,11 @@ export default class Context
             || texture.image == null
             || texture.image.isLoaded == false) return;
 
-        this._ctx.drawImage(texture.image.data, position.x, position.y);
+        this._ctx.drawImage(
+            texture.image.data,
+            position.x - texture.image.width / 2,
+            position.y - texture.image.height / 2
+        );
     }
 
     public drawSubTexture(position: Vector2, texture: Texture, rect: TextureRect, scale: Vector2 = Vector2.one): void
@@ -60,16 +71,19 @@ export default class Context
             || texture.image == null
             || texture.image.isLoaded == false) return;
 
+        const width: number = rect.width * texture.image.width * scale.x;
+        const height: number = rect.height * texture.image.height * scale.y;
+
         this._ctx.drawImage(
             texture.image.data,
             rect.x * texture.image.width,
             rect.y * texture.image.height,
             rect.width * texture.image.width,
             rect.height * texture.image.height,
-            position.x,
-            position.y,
-            rect.width * texture.image.width * scale.x,
-            rect.height * texture.image.height * scale.y
+            position.x - width / 2,
+            position.y - height / 2,
+            width,
+            height
         )
     }
 }

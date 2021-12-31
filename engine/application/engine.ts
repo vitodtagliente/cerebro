@@ -45,9 +45,17 @@ export default class Engine
         this._renderer = new Renderer(this._context);
         this._time = new Time();
         this._world = new World();
-        
-        const img: Image = new Image;
-        img.load('assets/slime.png', () => this._texture = new Texture(img));
+
+        const images: Array<string> = [
+            'assets/slime.png',
+            'assets/warrior.png'
+        ];
+
+        for (const assetname of images)
+        {
+            const img: Image = new Image;
+            img.load(assetname, () => this._texture = new Texture(img));
+        }
 
         this._world.onEntitySpawn.on((entity: Entity) => 
         {
@@ -63,6 +71,24 @@ export default class Engine
                     for (let i = 0; i < 6; ++i)
                     {
                         animation.add(new TextureRect(i * .166, 0, .166, 1), .2);
+                    }
+                    animator.add('idle', animation);
+                }
+                animator.play('idle');
+            }
+
+            if (entity.tag == 'player')
+            {
+                entity.transform.scale.set(1.5, 1.5);
+                const spriteRenderer = entity.addComponent(new SpriteRenderer);
+                spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/warrior.png') as Image;
+
+                const animator = entity.addComponent(new SpriteAnimator);
+                {
+                    const animation = new SpriteAnimation;
+                    for (let i = 0; i < 6; ++i)
+                    {
+                        animation.add(new TextureRect(i * (1 / 6), 0, 1 / 6, 1 / 17), .2);
                     }
                     animator.add('idle', animation);
                 }
@@ -176,14 +202,6 @@ export default class Engine
         this._renderer.begin();
         for (const entity of this._world.entities)
         {
-            if (this._debug && entity.tag != 'slime')
-            {
-                this._context.strokeCircle(
-                    entity.transform.position,
-                    16,
-                    Color.black
-                );
-            }
             entity.render(this._renderer);
         }
         this._renderer.commit();
