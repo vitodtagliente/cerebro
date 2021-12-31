@@ -53,7 +53,7 @@
     <TypeScriptCompile Include="network_level.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
-    <TypeScriptCompile Include="math.ts">
+    <TypeScriptCompile Include="network_math.ts">
       <SubType>Code</SubType>
     </TypeScriptCompile>
     <TypeScriptCompile Include="network_object.ts">

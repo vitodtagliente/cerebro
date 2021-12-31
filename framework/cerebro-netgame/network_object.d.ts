@@ -1,7 +1,7 @@
 import { NetMap } from 'cerebro-netcore';
 import { NetworkId } from 'cerebro-netcore';
-import { Math } from './math';
 import NetworkComponent, { NetworkComponentType } from './network_component';
+import { NetworkMath } from './network_math';
 export declare class NetworkObjectState {
     data: NetMap;
     constructor();
@@ -10,7 +10,7 @@ export declare class NetworkObjectState {
 export default class NetworkObject {
     private _id;
     state: NetworkObjectState;
-    transform: Math.Transform;
+    transform: NetworkMath.Transform;
     _components: Array<NetworkComponent>;
     constructor(id?: NetworkId);
     get id(): NetworkId;

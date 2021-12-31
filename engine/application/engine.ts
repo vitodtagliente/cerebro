@@ -1,5 +1,5 @@
 import { Client, NetworkProtocol } from "cerebro-netcore";
-import { GameClient, NetworkLevel, Math as NetworkMath } from "cerebro-netgame";
+import { GameClient, NetworkLevel, NetworkMath } from "cerebro-netgame";
 import { SpriteAnimation, SpriteAnimator } from "../animation";
 import { AssetLibrary, Image } from "../asset";
 import { AssetType } from "../asset/asset";

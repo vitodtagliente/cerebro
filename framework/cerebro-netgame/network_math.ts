@@ -1,4 +1,4 @@
-export namespace Math
+export namespace NetworkMath
 {
     const deg2rad_factor: number = global.Math.PI / 180;
     const rad2deg_factor: number = 180 / global.Math.PI;

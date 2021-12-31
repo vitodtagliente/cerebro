@@ -1,7 +1,7 @@
 import { NetMap } from 'cerebro-netcore';
 import { InvalidNetworkId, NetworkId, nextNetworkId } from 'cerebro-netcore';
-import { Math } from './math';
 import NetworkComponent, { NetworkComponentType } from './network_component';
+import { NetworkMath } from './network_math';
 
 export class NetworkObjectState
 {
@@ -22,14 +22,14 @@ export default class NetworkObject
 {
     private _id: NetworkId;
     public state: NetworkObjectState;
-    public transform: Math.Transform;
+    public transform: NetworkMath.Transform;
     public _components: Array<NetworkComponent>;
 
     public constructor(id: NetworkId = InvalidNetworkId)
     {
         this._id = id == InvalidNetworkId ? nextNetworkId() : id;
         this.state = new NetworkObjectState;
-        this.transform = new Math.Transform;
+        this.transform = new NetworkMath.Transform;
         this._components = new Array<NetworkComponent>();
     }
 

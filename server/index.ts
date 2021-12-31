@@ -1,8 +1,7 @@
 import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
 import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
-import { Math } from 'cerebro-netgame';
-import { GameClient, GameServer } from 'cerebro-netgame';
+import { GameClient, GameServer, NetworkMath } from 'cerebro-netgame';
 // import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
 
 class FooController extends Controller
@@ -104,7 +103,7 @@ server.onListening = async () =>
         client.onConnection = async () =>
         {
             const game: GameClient = client.components.find("game") as GameClient;
-            let transform: Math.Transform = new Math.Transform;
+            let transform: NetworkMath.Transform = new NetworkMath.Transform;
             transform.position.x = 6;
             game.move(transform);
         };

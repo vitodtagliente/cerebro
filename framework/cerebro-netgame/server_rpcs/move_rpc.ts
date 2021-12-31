@@ -1,6 +1,6 @@
-import { Encoding, InvalidNetworkId, NetworkId, RpcId, ServerRpc, ServerRpcSettings, UserSession } from 'cerebro-netcore';
-import { Math } from '../math';
+import { InvalidNetworkId, NetworkId, RpcId, ServerRpc, ServerRpcSettings, UserSession } from 'cerebro-netcore';
 import NetworkLevel from '../network_level';
+import { NetworkMath } from '../network_math';
 import NetworkObject from '../network_object';
 import NetworkWorld from '../network_world';
 import { UserProperty } from '../user_property';
@@ -10,7 +10,7 @@ export const rpcId: RpcId = "move";
 export class Request
 {
     public level: string;
-    public transform: Math.Transform;
+    public transform: NetworkMath.Transform;
 }
 
 export default class MoveRpc extends ServerRpc<Request, void>

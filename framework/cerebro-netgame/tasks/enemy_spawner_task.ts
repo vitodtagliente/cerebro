@@ -1,7 +1,7 @@
 import { Task, TaskSettings } from "cerebro-netcore";
 import GameServer from "../game_server";
-import { Math } from "../math";
 import NetworkLevel from "../network_level";
+import { NetworkMath } from "../network_math";
 import NetworkObject from "../network_object";
 import { NetworkObjectProperty } from "../network_object_property";
 import NetworkWorld from "../network_world";
@@ -33,8 +33,8 @@ export default class EnemySpawnerTask extends Task
             object.state.data.insert(NetworkObjectProperty.Hp, 100);
             object.state.data.insert(NetworkObjectProperty.AssetType, 'slime');
 
-            object.transform.position.x = Math.random(0, 600);
-            object.transform.position.y = Math.random(0, 600);
+            object.transform.position.x = NetworkMath.random(0, 600);
+            object.transform.position.y = NetworkMath.random(0, 600);
         }
     }
 }
