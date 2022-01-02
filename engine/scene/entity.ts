@@ -1,5 +1,6 @@
 import { InvalidNetworkId, NetworkId } from 'cerebro-netcore';
-import { NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
+import { NetworkComponent, NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
+import { ComponentRegister } from '../components';
 import { Input } from '../device';
 import { Renderer } from '../graphics';
 import { Transform, Vector2 } from '../math';
@@ -45,6 +46,11 @@ export default class Entity
         return this._components.find(component => component instanceof constr) as T;
     }
 
+    private findComponentByNetId(id: NetworkId): Component
+    {
+        return this._components.find(component => component.netId == id);
+    }
+
     public findComponents<T extends Component>(constr: { new(...args: any[]): T }): Array<T> 
     {
         let result: Array<T> = new Array<T>();
@@ -78,7 +84,7 @@ export default class Entity
 
     public init(): void 
     {
-        
+
     }
 
     public netInit(networkObject: NetworkObject): void
@@ -100,6 +106,29 @@ export default class Entity
             desiredPosition,
             1
         );
+
+        for (const networkComponent of networkObject.components)
+        {
+            let component: Component = this.findComponentByNetId(networkComponent.id);
+            if (component)
+            {
+                component.netUpdate(networkComponent);
+            }
+            else 
+            {
+                // attach a new one
+                const ConstructorType: { new(...args: any[]): Component } = ComponentRegister.main.get(networkComponent.type);
+                if (ConstructorType)
+                {
+                    component = this.addComponent(new ConstructorType());
+                    component.netInit(networkComponent);
+                }
+                else 
+                {
+                    console.error(`Cannot instantiate a component of type${networkComponent.type}`);
+                }
+            }
+        }
     }
 
     public update(input: Input, deltaTime: number): void 

@@ -26,6 +26,6 @@ export default class ComponentRegister
 
     public get(id: ComponentId): { new(...args: any[]): Component } 
     {
-        return this.get(id);
+        return this._components.get(id);
     }
 }

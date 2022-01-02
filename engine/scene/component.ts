@@ -1,3 +1,4 @@
+import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
 import { NetworkComponent } from "cerebro-netgame";
 import { Input } from "../device";
 import { Renderer } from "../graphics";
@@ -9,6 +10,7 @@ export type ComponentId = string;
 export default abstract class Component 
 {
     private _owner: Entity;
+    private _netId: NetworkId;
 
     public constructor()
     {
@@ -16,6 +18,8 @@ export default abstract class Component
     }
 
     public get owner(): Entity { return this._owner; }
+    public get isNetworkComponent(): boolean { return this._netId != InvalidNetworkId; }
+    public get netId(): NetworkId { return this._netId; }
 
     public attach(owner: Entity): void 
     {
@@ -28,7 +32,12 @@ export default abstract class Component
     }
 
     public init(): void { }
-    public netInit(component: NetworkComponent): void { }
+    public netInit(component: NetworkComponent): void
+    {
+        this._netId = component.id;
+        this.netUpdate(component);
+    }
+    public netSerialize(): NetworkComponent { return null; }
     public netUpdate(component: NetworkComponent): void { }
     public render(renderer: Renderer) { }
     public uninit(): void { }
