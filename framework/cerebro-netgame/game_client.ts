@@ -1,9 +1,9 @@
-import { Client, ClientComponent, ComponentId, ComponentSettings, UserSession } from "cerebro-netcore";
-import { componentId } from "./componet_id";
-import { Math } from './math';
+import { Client, ClientComponent, ComponentSettings } from "cerebro-netcore";
+import { componentId } from "./component_id";
 
 import * as MoveRpc from "./server_rpcs/move_rpc";
 import UpdateLevelRpc from "./client_rpcs/update_level_rpc";
+import { NetworkMath } from "./network_math";
 import NetworkWorld from "./network_world";
 
 export class GameClientSettings extends ComponentSettings
@@ -14,7 +14,6 @@ export class GameClientSettings extends ComponentSettings
 export default class GameClient extends ClientComponent
 {
     private _world: NetworkWorld;
-    private _shadowWorld: NetworkWorld;
 
     public constructor(client: Client, settings: GameClientSettings = new GameClientSettings)
     {
@@ -31,7 +30,7 @@ export default class GameClient extends ClientComponent
         return true;
     }
 
-    public move(transform: Math.Transform): void
+    public move(transform: NetworkMath.Transform): void
     {
         const request: MoveRpc.Request = new MoveRpc.Request;
         request.transform = transform;

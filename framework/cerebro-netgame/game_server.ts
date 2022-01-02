@@ -1,5 +1,5 @@
 import { ComponentSettings, Server, ServerComponent, UserSession } from "cerebro-netcore";
-import { componentId } from "./componet_id";
+import { componentId } from "./component_id";
 import NetworkObject from "./network_object";
 import WorldUpdaterTask from "./tasks/world_updater_task";
 import { UserProperty } from "./user_property";

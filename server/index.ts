@@ -1,9 +1,7 @@
-import { Application, ApplicationState, Controller, Endpoint, HTTP, Router, Service } from 'cerebro-core';
-import Logger from 'cerebro-logger';
 import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
-import { GameClient, GameServer, NetworkMath } from 'cerebro-netgame';
-// import { AuthenticationCommand, AuthenticationCommandId, AuthenticationRequest, AuthenticationResponse } from 'cerebro-netshared';
+import { GameServer } from 'cerebro-netgame';
 
+/*
 class FooController extends Controller
 {
     public constructor(app: Application) { super(app); }
@@ -52,6 +50,7 @@ class FooEndpoint extends Endpoint<FooRequest, FooResponse>
         return HTTP.StatusCode.OK;
     }
 }
+*/
 
 /*
 const app: Application = new Application();
@@ -95,6 +94,7 @@ const server: Server = new Server(NetworkProtocol.WebSocket);
 server.components.add(new GameServer(server));
 server.onListening = async () =>
 {
+    /*
     const testClients: number = 0;
     for (let i: number = 0; i < testClients; ++i)
     {
@@ -109,5 +109,6 @@ server.onListening = async () =>
         };
         client.connect('localhost', 8080);
     }
+    */
 };
 server.listen(8080);
