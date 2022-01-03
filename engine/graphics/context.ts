@@ -27,13 +27,13 @@ export default class Context
     public drawRect(position: Vector2, width: number, height: number, color: Color): void 
     {
         this._ctx.fillStyle = color.hex;
-        this._ctx.fillRect(position.x, position.y, width, height);
+        this._ctx.fillRect(position.x - width / 2, position.y - height / 2, width, height);
     }
 
     public strokeRect(position: Vector2, width: number, height: number, color: Color): void 
     {
         this._ctx.strokeStyle = color.hex;
-        this._ctx.strokeRect(position.x, position.y, width, height);
+        this._ctx.strokeRect(position.x - width / 2, position.y - height / 2, width, height);
     }
 
     public drawCircle(position: Vector2, radius: number, color: Color): void

@@ -38,10 +38,7 @@ class SpriteRenderer extends Component
             const height: number = texture.image.height * this.textureRect.height * this.owner.transform.scale.y;
 
             renderer.context.strokeRect(
-                this.owner.transform.position.sub(new Vector2(
-                    width / 2,
-                    height / 2
-                )),
+                this.owner.transform.position,
                 width,
                 height,
                 Color.green

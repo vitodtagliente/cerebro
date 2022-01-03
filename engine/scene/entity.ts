@@ -24,6 +24,7 @@ export default class Entity
     }
 
     public get components(): Array<Component> { return this._components; }
+    public get hasNetAuthority(): boolean { return true; }
     public get isNetworkObject(): boolean { return this._netId != InvalidNetworkId; }
     public get netId(): NetworkId { return this._netId; }
 
@@ -92,6 +93,11 @@ export default class Entity
         this._netId = networkObject.id;
         this.tag = networkObject.state.data.asString(NetworkObjectProperty.AssetType);
         this.netUpdate(networkObject);
+    }
+
+    public netSerialize(): NetworkObject
+    {
+        return null;
     }
 
     public netUpdate(networkObject: NetworkObject): void 

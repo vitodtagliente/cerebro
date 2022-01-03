@@ -134,6 +134,7 @@ export default class Engine
 
         this.netUpdate();
         this.update(this._time.deltaTime);
+        this.netSerialize();
         this.render();
 
         {
@@ -169,6 +170,17 @@ export default class Engine
         }
 
         requestAnimationFrame(() => this.loop());
+    }
+
+    private netSerialize(): void 
+    {
+        for (const object of this._world.entities)
+        {
+            if (object.isNetworkObject && object.hasNetAuthority)
+            {
+                
+            }
+        }
     }
 
     private netUpdate(): void 
