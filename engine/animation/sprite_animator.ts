@@ -1,5 +1,4 @@
 import { ComponentRegister, SpriteRenderer } from "../components";
-import { Input } from "../device";
 import { Component, ComponentId, World } from "../scene";
 import SpriteAnimation from "./sprite_animation";
 
@@ -41,7 +40,7 @@ class SpriteAnimator extends Component
         this._animations.set(name, animation);
     }
 
-    public update(world: World, input: Input, deltaTime: number): void 
+    public update(world: World, deltaTime: number): void 
     {
         if (this._isPlaying)
         {

@@ -7,7 +7,7 @@ import { SpriteRenderer } from "../components";
 import { Time } from "../core";
 import { Input, KeyCode } from "../device";
 import { Color, Context, Renderer, Texture, TextureRect } from "../graphics";
-import { Vector2 } from "../math";
+import { Player, PlayerController } from "../player";
 import { Entity, World } from "../scene";
 import Canvas from "./canvas";
 import Stats from "./stats";
@@ -16,15 +16,17 @@ export class EngineSettings
 {
     public host: string = 'localhost';
     public port: number = 8080;
+    public playerControllerType: { new(...args: any[]): PlayerController } = PlayerController;
 }
 
 export default class Engine
 {
-    private _settings: EngineSettings;
     private _canvas: Canvas;
     private _context: Context;
     private _input: Input;
+    private _players: Map<number, Player>;
     private _renderer: Renderer;
+    private _settings: EngineSettings;
     private _time: Time;
     private _world: World;
 
@@ -34,17 +36,25 @@ export default class Engine
     private _stats: Stats;
 
     private _debug: boolean;
-    private _texture: Texture;
 
     public constructor(canvasId: string, settings: EngineSettings = new EngineSettings)
     {
-        this._settings = settings;
         this._canvas = new Canvas(canvasId);
         this._context = new Context(this._canvas);
         this._input = new Input(this._canvas);
+        this._players = new Map<number, Player>();
         this._renderer = new Renderer(this._context);
+        this._settings = settings;
         this._time = new Time();
         this._world = new World();
+
+        // initialize the local player
+        // there's always a player at index 0
+        {
+            const localPlayer: Player = new Player('local');
+            this._players.set(0, localPlayer);
+            localPlayer.use(new settings.playerControllerType);
+        }
 
         const images: Array<string> = [
             'assets/slime.png',
@@ -54,7 +64,7 @@ export default class Engine
         for (const assetname of images)
         {
             const img: Image = new Image;
-            img.load(assetname, () => this._texture = new Texture(img));
+            img.load(assetname);
         }
 
         this._world.onEntitySpawn.on((entity: Entity) => 
@@ -109,10 +119,11 @@ export default class Engine
         });
     }
 
-    public get settings(): EngineSettings { return this._settings; }
     public get canvas(): Canvas { return this._canvas; }
     public get input(): Input { return this._input; }
+    public get players(): Map<number, Player> { return this._players; }
     public get renderer(): Renderer { return this._renderer; }
+    public get settings(): EngineSettings { return this._settings; }
     public get time(): Time { return this._time; }
     public get world(): World { return this._world; }
 
@@ -137,49 +148,14 @@ export default class Engine
         this.netSerialize();
         this.render();
 
-        {
-            const transform = new NetworkMath.Transform;
-            const speed: number = 200;
-            let dirty: boolean = false;
-            if (this.input.keyboard.isKeysDown(KeyCode.W))
-            {
-                transform.position.y -= speed * this.time.deltaTime;
-                dirty = true;
-            }
-            else if (this.input.keyboard.isKeysDown(KeyCode.S))
-            {
-                transform.position.y += speed * this.time.deltaTime;
-                dirty = true;
-            }
-
-            if (this.input.keyboard.isKeysDown(KeyCode.A))
-            {
-                transform.position.x -= speed * this.time.deltaTime;
-                dirty = true;
-            }
-            else if (this.input.keyboard.isKeysDown(KeyCode.D))
-            {
-                transform.position.x += speed * this.time.deltaTime;
-                dirty = true;
-            }
-
-            if (dirty)
-            {
-                this._game.move(transform);
-            }
-        }
-
         requestAnimationFrame(() => this.loop());
     }
 
     private netSerialize(): void 
     {
-        for (const object of this._world.entities)
+        for (const [index, player] of this._players)
         {
-            if (object.isNetworkObject && object.hasNetAuthority)
-            {
-                
-            }
+            player.controller.netSerialize(this._game);
         }
     }
 
@@ -196,9 +172,14 @@ export default class Engine
 
     private update(deltaTime: number): void
     {
+        for (const [index, player] of this._players)
+        {
+            player.controller.update(this._input, deltaTime);
+        }
+
         for (const object of this._world.entities)
         {
-            object.update(this._input, deltaTime);
+            object.update(deltaTime);
         }
 
         if (this._debug)

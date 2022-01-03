@@ -1,6 +1,5 @@
 import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
 import { NetworkComponent } from "cerebro-netgame";
-import { Input } from "../device";
 import { Renderer } from "../graphics";
 import Entity from "./entity";
 import World from "./world";
@@ -41,5 +40,5 @@ export default abstract class Component
     public netUpdate(component: NetworkComponent): void { }
     public render(renderer: Renderer) { }
     public uninit(): void { }
-    public update(world: World, input: Input, deltaTime: number): void { }
+    public update(world: World, deltaTime: number): void { }
 }

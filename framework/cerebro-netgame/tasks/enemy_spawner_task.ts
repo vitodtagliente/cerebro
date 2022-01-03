@@ -11,6 +11,7 @@ export default class EnemySpawnerTask extends Task
 {
     private _game: GameServer;
     private _world: NetworkWorld;
+    private _counter: number;
 
     public constructor(game: GameServer, world: NetworkWorld)
     {
@@ -20,6 +21,7 @@ export default class EnemySpawnerTask extends Task
         super(settings);
         this._game = game;
         this._world = world;
+        this._counter = 0;
     }
 
     public execute(): void
@@ -27,16 +29,21 @@ export default class EnemySpawnerTask extends Task
         console.error(`[${new Date()}] executing the enemy spawner...`);
         const level: NetworkLevel = this._world.getOrCreate(this._game.settings.mainLevel);
 
-        const object: NetworkObject = level.add();
-        if (object)
+        if (this._counter < 12)
         {
-            object.state.data.insert(NetworkObjectProperty.AssetType, 'slime');
-            object.transform.position.x = NetworkMath.random(0, 600);
-            object.transform.position.y = NetworkMath.random(0, 600);
+            const object: NetworkObject = level.add();
+            if (object)
+            {
+                object.state.data.insert(NetworkObjectProperty.AssetType, 'slime');
+                object.transform.position.x = NetworkMath.random(0, 600);
+                object.transform.position.y = NetworkMath.random(0, 600);
 
-            const health: NetworkComponent = object.addComponent(new NetworkComponent('health'));
-            health.data.insert('max', 10);
-            health.data.insert('value', 10);
+                const health: NetworkComponent = object.addComponent(new NetworkComponent('health'));
+                health.data.insert('max', 10);
+                health.data.insert('value', 10);
+
+                this._counter++;
+            }
         }
 
         const test: boolean = true;

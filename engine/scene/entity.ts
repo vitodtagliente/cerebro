@@ -1,7 +1,6 @@
 import { InvalidNetworkId, NetworkId } from 'cerebro-netcore';
-import { NetworkComponent, NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
+import { NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
 import { ComponentRegister } from '../components';
-import { Input } from '../device';
 import { Renderer } from '../graphics';
 import { Transform, Vector2 } from '../math';
 import Component from "./component";
@@ -137,11 +136,11 @@ export default class Entity
         }
     }
 
-    public update(input: Input, deltaTime: number): void 
+    public update(deltaTime: number): void 
     {
         for (const component of this._components)
         {
-            component.update(this._world, input, deltaTime);
+            component.update(this._world, deltaTime);
         }
     }
 

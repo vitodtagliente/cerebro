@@ -10,6 +10,7 @@ import { NetworkObjectProperty } from "./network_object_property";
 import EnemySpawnerTask from "./tasks/enemy_spawner_task";
 import NetworkWorld from "./network_world";
 import NetworkLevel, { NetworkLevelId } from "./network_level";
+import NetworkComponent from "./network_component";
 
 export class GameServerSettings extends ComponentSettings
 {
@@ -51,8 +52,9 @@ export default class GameServer extends ServerComponent
             object.state.data.insert(NetworkObjectProperty.Animation, 'idle');
             object.state.data.insert(NetworkObjectProperty.AssetType, 'player');
 
-            object.state.data.insert(NetworkObjectProperty.MaxHp, 100);
-            object.state.data.insert(NetworkObjectProperty.Hp, 100);
+            const health: NetworkComponent = object.addComponent(new NetworkComponent('health'));
+            health.data.insert('max', 10);
+            health.data.insert('value', 10);
 
             // send the level state to the user
             this.updateLevel(userSession, level);

@@ -6,6 +6,7 @@ import * as Device from './device';
 import * as Graphics from './graphics';
 import * as Math from './math';
 import * as Network from './network';
+import * as Player from './player';
 import * as Physics from './physics';
 import * as Scene from './scene';
 
