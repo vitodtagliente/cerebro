@@ -1,4 +1,4 @@
-import { Task, TaskSettings } from "cerebro-netcore";
+import { NetworkId, Task, TaskSettings } from "cerebro-netcore";
 import GameServer from "../game_server";
 import NetworkComponent from "../network_component";
 import NetworkLevel from "../network_level";
@@ -37,6 +37,23 @@ export default class EnemySpawnerTask extends Task
             const health: NetworkComponent = object.addComponent(new NetworkComponent('health'));
             health.data.insert('max', 10);
             health.data.insert('value', 10);
+        }
+
+        const test: boolean = true;
+        if (test && level.objects.size > 0)
+        {
+            const keys = Array.from(level.objects.keys());
+            const index: number = Math.round(NetworkMath.random(0, keys.length - 1));
+            const obj: NetworkObject = level.objects.get(keys[index]);
+            const health: NetworkComponent = obj.getComponent('health');
+            if (health)
+            {
+                const value: number = health.data.asNumber('value');
+                if (value > 1)
+                {
+                    health.data.insert('value', value - 1);
+                }
+            }
         }
     }
 }
