@@ -84,6 +84,7 @@ export default class Engine
                     }
                     animator.add('idle', animation);
                 }
+                animator.play('idle');
             }
 
             if (entity.tag == 'player')
@@ -132,6 +133,7 @@ export default class Engine
                         }
                         animator.add('up', animation);
                     }
+                    animator.play('idle');
                 }
             }
         });
