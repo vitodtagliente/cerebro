@@ -159,4 +159,40 @@ export default class Entity
             component.uninit();
         }
     }
+
+    public serialize(): any 
+    {
+        const data: any = {};
+        data['tag'] = this.tag;
+        {
+            const components: Array<any> = [];
+            for (const component of this._components)
+            {
+                components.push(component.serialize());
+            }
+            data['components'] = components;
+        }
+        return data;
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case "tag": this.tag = (data[key]); break;
+                case "components":
+                    {
+                        const components: Array<any> = data[key] as Array<any>;
+                        for (const component of components)
+                        {
+                            const type: string = component['type'];
+                            
+                        }
+                        break;
+                    }
+            }
+        }
+    }
 }

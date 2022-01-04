@@ -41,4 +41,14 @@ export default abstract class Component
     public render(renderer: Renderer) { }
     public uninit(): void { }
     public update(world: World, deltaTime: number): void { }
+
+    public serialize(): any 
+    {
+        return { 'type': '' };
+    }
+
+    public deserialize(data: any): void 
+    {
+
+    }
 }

@@ -45,6 +45,18 @@ class SpriteRenderer extends Component
             );
         }
     }
+
+    public serialize(): any 
+    {
+        return {
+            'type': SpriteRenderer.id
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+
+    }
 }
 
 ComponentRegister.main.add(SpriteRenderer.id, SpriteRenderer);

@@ -1,0 +1,1 @@
+{"tag":"player","components":[{"type":""},{"type":""},{"type":"sprite_renderer"}]}

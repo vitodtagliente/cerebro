@@ -1,7 +1,7 @@
 import { Client, NetworkProtocol } from "cerebro-netcore";
 import { GameClient, NetworkLevel } from "cerebro-netgame";
 import { SpriteAnimation, SpriteAnimator } from "../animation";
-import { AssetLibrary, Image } from "../asset";
+import { AssetLibrary, Image, Prefab } from "../asset";
 import { AssetType } from "../asset/asset";
 import { SpriteRenderer } from "../components";
 import { Time } from "../core";
@@ -66,6 +66,13 @@ export default class Engine
             const img: Image = new Image;
             img.load(assetname);
         }
+
+        const prefab: Prefab = new Prefab;
+        prefab.load('assets/prefabs/sample.pb', () =>
+        {
+            console.log('prefab loaded');
+            console.log(prefab.data);
+        });
 
         this._world.onEntitySpawn.on((entity: Entity) => 
         {
