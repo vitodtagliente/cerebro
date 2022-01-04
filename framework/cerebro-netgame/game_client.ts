@@ -30,9 +30,10 @@ export default class GameClient extends ClientComponent
         return true;
     }
 
-    public move(transform: NetworkMath.Transform): void
+    public move(transform: NetworkMath.Transform, animation: string): void
     {
         const request: MoveRpc.Request = new MoveRpc.Request;
+        request.animation = animation;
         request.transform = transform;
         request.level = "MAIN_LEVEL";
 

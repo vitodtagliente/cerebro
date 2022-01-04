@@ -7,9 +7,12 @@ import { GameClient, NetworkMath } from "cerebro-netgame";
 class CustomPlayerController extends PlayerController
 {
     private _transform: NetworkMath.Transform;
+    private _animation: string = 'idle';
+    private _lastAnimation: string;
 
     public update(input: Input, deltaTime: number): void
     {
+        this._lastAnimation = this._animation;
         this._transform = new NetworkMath.Transform;
         const speed: number = 200;
         if (input.keyboard.isKeysDown(KeyCode.W))
@@ -37,13 +40,13 @@ class CustomPlayerController extends PlayerController
             {
                 if (this._transform.position.x != 0)
                 {
-                    animator.play(this._transform.position.x > 0 ? 'right' : 'left');
+                    this._animation = this._transform.position.x > 0 ? 'right' : 'left';
                 }
                 else 
                 {
                     if (this._transform.position.y == 0)
-                        animator.play('idle');
-                    else animator.play(this._transform.position.y > 0 ? 'down' : 'up');
+                        this._animation = 'idle';
+                    else this._animation = this._transform.position.y > 0 ? 'down' : 'up';
                 }
             }
         }
@@ -51,9 +54,9 @@ class CustomPlayerController extends PlayerController
 
     public netSerialize(client: GameClient): void 
     {
-        if (this._transform.position.x != 0 || this._transform.position.y != 0)
+        if (this._transform.position.x != 0 || this._transform.position.y != 0 || this._animation != this._lastAnimation)
         {
-            client.move(this._transform);
+            client.move(this._transform, this._animation);
         }
     }
 }

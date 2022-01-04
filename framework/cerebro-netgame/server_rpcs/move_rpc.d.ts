@@ -5,6 +5,7 @@ export declare const rpcId: RpcId;
 export declare class Request {
     level: string;
     transform: NetworkMath.Transform;
+    animation: string;
 }
 export default class MoveRpc extends ServerRpc<Request, void> {
     private _world;

@@ -1,3 +1,4 @@
+import { NetworkComponent } from "cerebro-netgame";
 import { ComponentRegister, SpriteRenderer } from "../components";
 import { Component, ComponentId, World } from "../scene";
 import SpriteAnimation from "./sprite_animation";
@@ -40,6 +41,11 @@ class SpriteAnimator extends Component
         this._animations.set(name, animation);
     }
 
+    public netUpdate(component: NetworkComponent): void
+    {
+        this.play(component.data.asString('animation'));
+    }
+
     public update(world: World, deltaTime: number): void 
     {
         if (this._isPlaying)
@@ -70,6 +76,11 @@ class SpriteAnimator extends Component
 
     public play(name: string, loop: boolean = true): void 
     {
+        if (this._sprite == null)
+        {
+            this._sprite = this.owner.findComponent(SpriteRenderer);
+        }
+
         if (this._sprite && this._animations.has(name))
         {
             if (this._isPlaying && this._state.name == name)

@@ -56,6 +56,9 @@ export default class GameServer extends ServerComponent
             health.data.insert('max', 10);
             health.data.insert('value', 10);
 
+            const animator: NetworkComponent = object.addComponent(new NetworkComponent('sprite_animator'));
+            animator.data.insert('animation', 'idle');
+
             // send the level state to the user
             this.updateLevel(userSession, level);
         }

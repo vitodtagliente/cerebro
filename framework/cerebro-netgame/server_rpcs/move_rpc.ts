@@ -1,4 +1,5 @@
 import { InvalidNetworkId, NetworkId, RpcId, ServerRpc, ServerRpcSettings, UserSession } from 'cerebro-netcore';
+import NetworkComponent from '../network_component';
 import NetworkLevel from '../network_level';
 import { NetworkMath } from '../network_math';
 import NetworkObject from '../network_object';
@@ -11,6 +12,7 @@ export class Request
 {
     public level: string;
     public transform: NetworkMath.Transform;
+    public animation: string;
 }
 
 export default class MoveRpc extends ServerRpc<Request, void>
@@ -52,6 +54,12 @@ export default class MoveRpc extends ServerRpc<Request, void>
         }
 
         possessedObject.transform.position.selfSum(request.transform.position);
+        const animator: NetworkComponent = possessedObject.getComponent('sprite_animator');
+        if (animator)
+        {
+            animator.data.insert('animation', request.animation);
+        }
+
         level.review();
     }
 }

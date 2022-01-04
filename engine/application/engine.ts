@@ -75,7 +75,7 @@ export default class Engine
                 const spriteRenderer = entity.addComponent(new SpriteRenderer);
                 spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/slime.png') as Image;
 
-                const animator = entity.addComponent(new SpriteAnimator);
+                const animator = entity.findComponent(SpriteAnimator);
                 {
                     const animation = new SpriteAnimation;
                     for (let i = 0; i < 6; ++i)
@@ -84,7 +84,6 @@ export default class Engine
                     }
                     animator.add('idle', animation);
                 }
-                animator.play('idle');
             }
 
             if (entity.tag == 'player')
@@ -94,7 +93,7 @@ export default class Engine
                 const spriteRenderer = entity.addComponent(new SpriteRenderer);
                 spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/chars.png') as Image;
 
-                const animator = entity.addComponent(new SpriteAnimator);
+                const animator = entity.findComponent(SpriteAnimator);
                 {
                     {
                         const animation = new SpriteAnimation;
@@ -134,7 +133,6 @@ export default class Engine
                         animator.add('up', animation);
                     }
                 }
-                animator.play('idle');
             }
         });
 

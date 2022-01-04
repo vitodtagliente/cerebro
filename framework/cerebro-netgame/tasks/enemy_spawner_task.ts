@@ -42,6 +42,9 @@ export default class EnemySpawnerTask extends Task
                 health.data.insert('max', 10);
                 health.data.insert('value', 10);
 
+                const animator: NetworkComponent = object.addComponent(new NetworkComponent('sprite_animator'));
+                animator.data.insert('animation', 'idle');
+
                 this._counter++;
             }
         }

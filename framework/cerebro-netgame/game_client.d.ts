@@ -9,5 +9,5 @@ export default class GameClient extends ClientComponent {
     get settings(): GameClientSettings;
     get world(): NetworkWorld;
     initialize(): boolean;
-    move(transform: NetworkMath.Transform): void;
+    move(transform: NetworkMath.Transform, animation: string): void;
 }
