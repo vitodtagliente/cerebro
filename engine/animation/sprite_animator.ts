@@ -81,6 +81,7 @@ class SpriteAnimator extends Component
             const animation: SpriteAnimation = this._animations.get(name);
             if (animation.length == 0) return;
 
+            this._state.name = name;
             this._state.animation = animation;
             this._state.frameIndex = animation.startingFrame;
             this._state.loop = loop;

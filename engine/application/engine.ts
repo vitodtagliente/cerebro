@@ -1,12 +1,12 @@
 import { Client, NetworkProtocol } from "cerebro-netcore";
-import { GameClient, NetworkLevel, NetworkMath } from "cerebro-netgame";
+import { GameClient, NetworkLevel } from "cerebro-netgame";
 import { SpriteAnimation, SpriteAnimator } from "../animation";
 import { AssetLibrary, Image } from "../asset";
 import { AssetType } from "../asset/asset";
 import { SpriteRenderer } from "../components";
 import { Time } from "../core";
-import { Input, KeyCode } from "../device";
-import { Color, Context, Renderer, Texture, TextureRect } from "../graphics";
+import { Input } from "../device";
+import { Color, Context, Renderer, TextureRect } from "../graphics";
 import { Player, PlayerController } from "../player";
 import { Entity, World } from "../scene";
 import Canvas from "./canvas";
@@ -58,7 +58,7 @@ export default class Engine
 
         const images: Array<string> = [
             'assets/slime.png',
-            'assets/warrior.png'
+            'assets/chars.png'
         ];
 
         for (const assetname of images)
@@ -89,18 +89,50 @@ export default class Engine
 
             if (entity.tag == 'player')
             {
+                this._players.get(0).controller.possess(entity);
                 entity.transform.scale.set(1.5, 1.5);
                 const spriteRenderer = entity.addComponent(new SpriteRenderer);
-                spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/warrior.png') as Image;
+                spriteRenderer.image = AssetLibrary.main.get(AssetType.Image, 'assets/chars.png') as Image;
 
                 const animator = entity.addComponent(new SpriteAnimator);
                 {
-                    const animation = new SpriteAnimation;
-                    for (let i = 0; i < 6; ++i)
                     {
-                        animation.add(new TextureRect(i * (1 / 6), 0, 1 / 6, 1 / 17), .2);
+                        const animation = new SpriteAnimation;
+                        animation.add(new TextureRect(4 * 1 / 12, 0, 1 / 12, 1 / 8), 10);
+                        animator.add('idle', animation);
                     }
-                    animator.add('idle', animation);
+                    {
+                        const animation = new SpriteAnimation;
+                        for (let i = 3; i < 6; ++i)
+                        {
+                            animation.add(new TextureRect(i * (1 / 12), 0, 1 / 12, 1 / 8), .2);
+                        }
+                        animator.add('down', animation);
+                    }
+                    {
+                        const animation = new SpriteAnimation;
+                        for (let i = 3; i < 6; ++i)
+                        {
+                            animation.add(new TextureRect(i * (1 / 12), 2 * 1 / 8, 1 / 12, 1 / 8), .2);
+                        }
+                        animator.add('right', animation);
+                    }
+                    {
+                        const animation = new SpriteAnimation;
+                        for (let i = 3; i < 6; ++i)
+                        {
+                            animation.add(new TextureRect(i * (1 / 12), 1 * 1 / 8, 1 / 12, 1 / 8), .2);
+                        }
+                        animator.add('left', animation);
+                    }
+                    {
+                        const animation = new SpriteAnimation;
+                        for (let i = 3; i < 6; ++i)
+                        {
+                            animation.add(new TextureRect(i * (1 / 12), 3 * 1 / 8, 1 / 12, 1 / 8), .2);
+                        }
+                        animator.add('up', animation);
+                    }
                 }
                 animator.play('idle');
             }

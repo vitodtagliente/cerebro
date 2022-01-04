@@ -1,7 +1,8 @@
+import { SpriteAnimator } from "blackrose/animation";
 import { Engine, EngineSettings } from "blackrose/application";
 import { Input, KeyCode } from "blackrose/device";
 import { PlayerController } from "blackrose/player";
-import { GameClient, NetworkMath } from "../../engine/node_modules/cerebro-netgame";
+import { GameClient, NetworkMath } from "cerebro-netgame";
 
 class CustomPlayerController extends PlayerController
 {
@@ -27,6 +28,24 @@ class CustomPlayerController extends PlayerController
         else if (input.keyboard.isKeysDown(KeyCode.D))
         {
             this._transform.position.x += speed * deltaTime;
+        }
+
+        if (this.possessedEntity)
+        {
+            const animator: SpriteAnimator = this.possessedEntity.findComponent(SpriteAnimator);
+            if (animator)
+            {
+                if (this._transform.position.x != 0)
+                {
+                    animator.play(this._transform.position.x > 0 ? 'right' : 'left');
+                }
+                else 
+                {
+                    if (this._transform.position.y == 0)
+                        animator.play('idle');
+                    else animator.play(this._transform.position.y > 0 ? 'down' : 'up');
+                }
+            }
         }
     }
 
