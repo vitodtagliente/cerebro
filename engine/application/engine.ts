@@ -1,7 +1,7 @@
 import { Client, NetworkProtocol } from "cerebro-netcore";
 import { GameClient, NetworkLevel } from "cerebro-netgame";
 import { SpriteAnimation, SpriteAnimator } from "../animation";
-import { AssetLibrary, Image, Prefab } from "../asset";
+import { AssetLibrary, Image } from "../asset";
 import { AssetType } from "../asset/asset";
 import { SpriteRenderer } from "../components";
 import { Time } from "../core";
@@ -10,6 +10,7 @@ import { Color, Context, Renderer, TextureRect } from "../graphics";
 import { Player, PlayerController } from "../player";
 import { Entity, World } from "../scene";
 import Canvas from "./canvas";
+import Game from './game';
 import Stats from "./stats";
 
 export class EngineSettings
@@ -24,6 +25,7 @@ export default class Engine
 {
     private _canvas: Canvas;
     private _context: Context;
+    private _game: Game;
     private _input: Input;
     private _players: Map<number, Player>;
     private _renderer: Renderer;
@@ -32,7 +34,7 @@ export default class Engine
     private _world: World;
 
     private _client: Client;
-    private _game: GameClient;
+    private _gameClient: GameClient;
 
     private _stats: Stats;
 
@@ -144,6 +146,7 @@ export default class Engine
     }
 
     public get canvas(): Canvas { return this._canvas; }
+    public get game(): Game { return this._game; }
     public get input(): Input { return this._input; }
     public get players(): Map<number, Player> { return this._players; }
     public get renderer(): Renderer { return this._renderer; }
@@ -151,11 +154,13 @@ export default class Engine
     public get time(): Time { return this._time; }
     public get world(): World { return this._world; }
 
-    public run(): void
+    public run(game: Game = new Game): void
     {
+        this._game = game;
+
         this._client = new Client(NetworkProtocol.W3CWebSocket);
-        this._game = new GameClient(this._client);
-        this._client.components.add(this._game);
+        this._gameClient = new GameClient(this._client);
+        this._client.components.add(this._gameClient);
         this._client.onConnection = async () =>
         {
             this.loop();
@@ -179,14 +184,14 @@ export default class Engine
     {
         for (const [index, player] of this._players)
         {
-            player.controller.netSerialize(this._game);
+            player.controller.netSerialize(this._gameClient);
         }
     }
 
     private netUpdate(): void 
     {
         const mainLevel: string = "MAIN_LEVEL";
-        const level: NetworkLevel = this._game.world.get(mainLevel);
+        const level: NetworkLevel = this._gameClient.world.get(mainLevel);
         if (level)
         {
             this._world.netUpdate(level);

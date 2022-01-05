@@ -1,5 +1,5 @@
 import { SpriteAnimator } from "blackrose/animation";
-import { Engine, EngineSettings } from "blackrose/application";
+import { Engine, EngineSettings, Game, GameSettings } from "blackrose/application";
 import { Input, KeyCode } from "blackrose/device";
 import { PlayerController } from "blackrose/player";
 import { GameClient, NetworkMath } from "cerebro-netgame";
@@ -61,6 +61,14 @@ class CustomPlayerController extends PlayerController
     }
 }
 
+class MyGame extends Game
+{
+    public constructor()
+    {
+        super(new GameSettings());
+    }
+}
+
 window.onload = () =>
 {
     const settings: EngineSettings = new EngineSettings;
@@ -68,5 +76,5 @@ window.onload = () =>
     settings.playerControllerType = CustomPlayerController;
 
     const engine: Engine = new Engine('game', settings);
-    engine.run();
+    engine.run(new MyGame);
 }
