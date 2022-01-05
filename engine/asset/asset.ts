@@ -5,7 +5,8 @@ export enum AssetType
 {
     Audio,
     Image,
-    Prefab
+    Prefab,
+    Scene
 }
 
 export type AssetLoadEvent = () => void;

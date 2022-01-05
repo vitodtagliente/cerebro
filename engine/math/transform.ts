@@ -1,6 +1,7 @@
+import { Serializable } from "../core";
 import Vector2 from "./vector2";
 
-export default class Transform
+export default class Transform extends Serializable
 {
     public position: Vector2;
     public rotation: Vector2;
@@ -8,6 +9,7 @@ export default class Transform
 
     public constructor()
     {
+        super();
         this.position = Vector2.zero.clone();
         this.rotation = Vector2.zero.clone();
         this.scale = Vector2.one.clone();
@@ -27,5 +29,27 @@ export default class Transform
         this.position.copy(transform.position);
         this.rotation.copy(transform.rotation);
         this.scale.copy(transform.scale);
+    }
+
+    public serialize(): any 
+    {
+        return {
+            'position': this.position.serialize(),
+            'rotation': this.rotation.serialize(),
+            'scale': this.scale.serialize()
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'position': this.position.deserialize(data[key]); break;
+                case 'rotation': this.rotation.deserialize(data[key]); break;
+                case 'scale': this.scale.deserialize(data[key]); break;
+            }
+        }
     }
 }

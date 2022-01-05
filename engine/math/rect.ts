@@ -1,4 +1,6 @@
-export default class Rect
+import { Serializable } from "../core";
+
+export default class Rect extends Serializable
 {
     public data: Float32Array;
 
@@ -13,6 +15,7 @@ export default class Rect
 
     public constructor(x: number = 0, y: number = 0, width: number = 1, height: number = 1)
     {
+        super();
         this.data = new Float32Array([
             x, y, width, height
         ]);
@@ -34,5 +37,29 @@ export default class Rect
         this.y = y;
         this.width = width;
         this.height = height;
+    }
+
+    public serialize(): any 
+    {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'width': this.width,
+            'height': this.height
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'x': this.x = data[key]; break;
+                case 'y': this.y = data[key]; break;
+                case 'width': this.width = data[key]; break;
+                case 'height': this.height = data[key]; break;
+            }
+        }
     }
 }

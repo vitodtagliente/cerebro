@@ -1,5 +1,6 @@
 import { InvalidNetworkId, NetworkId } from "cerebro-netcore";
 import { NetworkLevel } from "cerebro-netgame";
+import { Scene } from "../asset";
 import { Signal } from "../core";
 import Entity from "./entity";
 
@@ -17,6 +18,11 @@ export default class World
     }
 
     public get entities(): Array<Entity> { return this._entities; }
+
+    public load(scene: Scene): void 
+    {
+        
+    }
 
     public spawn(object: Entity): Entity
     {

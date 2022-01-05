@@ -3,6 +3,7 @@ import AssetLibrary from "./asset_library"
 import Audio from "./audio"
 import Image from "./image"
 import Prefab from "./prefab"
+import Scene from "./scene"
 
 export 
 {
@@ -10,5 +11,6 @@ export
     AssetLibrary,
     Audio,
     Image,
-    Prefab
+    Prefab,
+    Scene
 }

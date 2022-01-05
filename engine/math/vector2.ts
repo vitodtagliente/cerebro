@@ -1,4 +1,6 @@
-export default class Vector2
+import { Serializable } from "../core";
+
+export default class Vector2 extends Serializable
 {
     public static readonly zero: Vector2 = new Vector2(0, 0);
     public static readonly one: Vector2 = new Vector2(1, 1);
@@ -17,6 +19,7 @@ export default class Vector2
 
     public constructor(x: number = 0, y: number = 0)
     {
+        super();
         this.data = new Float32Array([x, y]);
     }
 
@@ -102,5 +105,25 @@ export default class Vector2
     public toString(): string
     {
         return `{${this.x},${this.y}}`;
+    }
+
+    public serialize(): any 
+    {
+        return {
+            'x': this.x,
+            'y': this.y
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'x': this.x = data[key]; break;
+                case 'y': this.y = data[key]; break;
+            }
+        }
     }
 }

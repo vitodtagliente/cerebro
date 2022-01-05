@@ -17,6 +17,7 @@ export class EngineSettings
     public host: string = 'localhost';
     public port: number = 8080;
     public playerControllerType: { new(...args: any[]): PlayerController } = PlayerController;
+    public startingScene: string = '';
 }
 
 export default class Engine
@@ -66,13 +67,6 @@ export default class Engine
             const img: Image = new Image;
             img.load(assetname);
         }
-
-        const prefab: Prefab = new Prefab;
-        prefab.load('assets/prefabs/sample.pb', () =>
-        {
-            console.log('prefab loaded');
-            console.log(prefab.data);
-        });
 
         this._world.onEntitySpawn.on((entity: Entity) => 
         {
@@ -142,6 +136,8 @@ export default class Engine
                     }
                     animator.play('idle');
                 }
+
+                console.log(JSON.stringify(entity.serialize()));
             }
         });
 

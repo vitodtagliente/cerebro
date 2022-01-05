@@ -1,4 +1,6 @@
-export default class Vector3
+import { Serializable } from "../core";
+
+export default class Vector3 extends Serializable
 {
     public static readonly zero: Vector3 = new Vector3(0, 0, 0);
     public static readonly one: Vector3 = new Vector3(1, 1, 1)
@@ -20,6 +22,7 @@ export default class Vector3
 
     public constructor(x: number = 0, y: number = 0, z: number = 0)
     {
+        super();
         this.data = new Float32Array([x, y, z]);
     }
 
@@ -96,4 +99,26 @@ export default class Vector3
     }
 
     public get magnitude(): number { return Math.sqrt(this.x * this.x + this.y * this.y + this.z * this.z); }
+
+    public serialize(): any 
+    {
+        return {
+            'x': this.x,
+            'y': this.y,
+            'z': this.z
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'x': this.x = data[key]; break;
+                case 'y': this.y = data[key]; break;
+                case 'z': this.z = data[key]; break;
+            }
+        }
+    }
 }

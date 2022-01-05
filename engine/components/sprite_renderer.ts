@@ -1,7 +1,7 @@
 import { ComponentRegister } from ".";
-import { Image } from "../asset";
+import { AssetLibrary, Image } from "../asset";
+import { AssetType } from "../asset/asset";
 import { Color, Renderer, Texture, TextureRect } from "../graphics";
-import { Vector2 } from "../math";
 import { Component, ComponentId } from "../scene";
 
 class SpriteRenderer extends Component
@@ -49,13 +49,22 @@ class SpriteRenderer extends Component
     public serialize(): any 
     {
         return {
-            'type': SpriteRenderer.id
+            'type': SpriteRenderer.id,
+            'image': this.image ? this.image.filename : null,
+            'texturRect': this.textureRect.serialize()
         };
     }
 
     public deserialize(data: any): void 
     {
-
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'image': this.image = AssetLibrary.main.get(AssetType.Image, data[key]) as Image; break;
+                case 'textureRect': this.textureRect.deserialize(data[key]); break;
+            }
+        }
     }
 }
 
