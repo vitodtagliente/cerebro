@@ -1,4 +1,17 @@
+import { Audio, Image, Prefab, Scene } from ".";
 import Asset, { AssetType } from "./asset";
+
+function instantiate(type: AssetType): Asset
+{
+    switch (type)
+    {
+        case AssetType.Audio: return new Audio();
+        case AssetType.Image: return new Image();
+        case AssetType.Prefab: return new Prefab();
+        case AssetType.Scene: return new Scene();
+        default: return null;
+    }
+}
 
 class AssetCache
 {
@@ -13,19 +26,26 @@ class AssetCache
 
     public get type(): AssetType { return this._type; }
 
-    public add(filename: string, asset: Asset): boolean
+    public add(asset: Asset): boolean
     {
-        this._assets.set(filename, asset);
+        this._assets.set(asset.filename, asset);
         return true;
     }
 
-    public contains(filename: string): boolean
+    public has(filename: string): boolean
     {
         return this._assets.has(filename);
     }
 
     public get(filename: string): Asset
     {
+        if (!this.has(filename))
+        {
+            const asset: Asset = instantiate(this.type);
+            asset.load(filename);
+            this.add(asset);
+            return asset;
+        }
         return this._assets.get(filename);
     }
 
@@ -77,27 +97,28 @@ export default class AssetLibrary
             cache = new AssetCache(asset.type);
             this._caches.set(asset.type, cache);
         }
-        return cache.add(asset.filename, asset);
+        return cache.add(asset);
     }
 
-    public contains(type: AssetType, filename: string): boolean
+    public has(type: AssetType, filename: string): boolean
     {
         const cache: AssetCache = this._caches.get(type);
         if (cache != null)
         {
-            return cache.contains(filename);
+            return cache.has(filename);
         }
         return false;
     }
 
     public get(type: AssetType, filename: string): Asset
     {
-        const cache: AssetCache = this._caches.get(type);
-        if (cache != null)
+        let cache: AssetCache = this._caches.get(type);
+        if (cache == null)
         {
-            return cache.get(filename);
+            cache = new AssetCache(type);
+            this._caches.set(type, cache);
         }
-        return null;
+        return cache.get(filename);
     }
 
     public clear(type?: AssetType | null): void 

@@ -41,7 +41,7 @@ export default abstract class Asset
         this._filename = filename;
         this._load(filename, onLoadCallback);
 
-        if (AssetLibrary.main.contains(this.type, filename) == false)
+        if (AssetLibrary.main.has(this.type, filename) == false)
         {
             AssetLibrary.main.add(this);
         }

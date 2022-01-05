@@ -21,7 +21,7 @@ class SpriteRenderer extends Component
 
     public render(renderer: Renderer): void 
     {
-        super.render(renderer);
+        if (this.image == null || this.image.isLoaded == false) return;
 
         const texture: Texture = new Texture(this.image);
 

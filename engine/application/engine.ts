@@ -57,17 +57,6 @@ export default class Engine
             localPlayer.use(new settings.playerControllerType);
         }
 
-        const images: Array<string> = [
-            'assets/slime.png',
-            'assets/chars.png'
-        ];
-
-        for (const assetname of images)
-        {
-            const img: Image = new Image;
-            img.load(assetname);
-        }
-
         this._world.onEntitySpawn.on((entity: Entity) => 
         {
             if (entity.tag == 'slime')
