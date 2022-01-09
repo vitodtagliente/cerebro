@@ -50,7 +50,7 @@ export default class GameServer extends ServerComponent
             object.transform.position.y = 300;
             userSession.data.insert(UserProperty.PossessedObject, object.id);
             object.state.data.insert(NetworkObjectProperty.Animation, 'idle');
-            object.state.data.insert(NetworkObjectProperty.AssetType, 'player');
+            object.state.data.insert(NetworkObjectProperty.Asset, 'player');
 
             const health: NetworkComponent = object.addComponent(new NetworkComponent('health'));
             health.data.insert('max', 10);

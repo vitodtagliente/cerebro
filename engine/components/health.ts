@@ -55,6 +55,31 @@ class Health extends Component
         );
         renderer.context.strokeRect(this.owner.transform.position.add(this.position), this.size.x, this.size.y, Color.black);
     }
+
+    public serialize(): any 
+    {
+        return {
+            'type': Health.id,
+            'position': this.position.serialize(),
+            'size': this.size.serialize(),
+            'max': this.max,
+            'value': this.value
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'position': this.position.deserialize(data[key]); break;
+                case 'size': this.size.deserialize(data[key]); break;
+                case 'max': this.max = data[key] as number; break;
+                case 'value': this.value = data[key] as number; break;
+            }
+        }
+    }
 }
 
 ComponentRegister.main.add(Health.id, Health);

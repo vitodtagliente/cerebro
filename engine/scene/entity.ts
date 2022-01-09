@@ -6,8 +6,14 @@ import { Transform, Vector2 } from '../math';
 import Component from "./component";
 import World from './world';
 
+export interface EntitySchema
+{
+
+}
+
 export default class Entity 
 {
+    private _asset: string;
     private _components: Array<Component>;
     private _netId: NetworkId;
     private _world: World;
@@ -16,12 +22,14 @@ export default class Entity
 
     public constructor()
     {
+        this._asset = '';
         this._components = new Array<Component>();
         this._netId = InvalidNetworkId;
         this.tag = '';
         this.transform = new Transform;
     }
 
+    public get asset(): string { return this._asset; }
     public get components(): Array<Component> { return this._components; }
     public get hasNetAuthority(): boolean { return true; }
     public get isNetworkObject(): boolean { return this._netId != InvalidNetworkId; }
@@ -90,7 +98,8 @@ export default class Entity
     public netInit(networkObject: NetworkObject): void
     {
         this._netId = networkObject.id;
-        this.tag = networkObject.state.data.asString(NetworkObjectProperty.AssetType);
+        this._asset = networkObject.state.data.asString(NetworkObjectProperty.Asset);
+        this.tag = networkObject.state.data.asString(NetworkObjectProperty.Tag);
         this.netUpdate(networkObject);
     }
 
@@ -188,7 +197,7 @@ export default class Entity
                         for (const component of components)
                         {
                             const type: string = component['type'];
-                            
+
                         }
                         break;
                     }

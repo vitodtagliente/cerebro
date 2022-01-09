@@ -34,7 +34,7 @@ export default class EnemySpawnerTask extends Task
             const object: NetworkObject = level.add();
             if (object)
             {
-                object.state.data.insert(NetworkObjectProperty.AssetType, 'slime');
+                object.state.data.insert(NetworkObjectProperty.Asset, 'slime');
                 object.transform.position.x = NetworkMath.random(0, 600);
                 object.transform.position.y = NetworkMath.random(0, 600);
 

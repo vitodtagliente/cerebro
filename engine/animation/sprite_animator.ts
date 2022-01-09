@@ -123,6 +123,41 @@ class SpriteAnimator extends Component
         this._isPlaying = false;
         this._state.frameIndex = 0;
     }
+
+    public serialize(): any 
+    {
+        const animations: Map<string, any> = new Map<string, any>();
+        for (const [name, animation] of this._animations)
+        {
+            animations.set(name, animation.serialize());
+        }
+
+        return {
+            'type': SpriteAnimator.id,
+            'animations': animations
+        };
+    }
+
+    public deserialize(data: any): void 
+    {
+        for (const key of Object.keys(data))
+        {
+            switch (key)
+            {
+                case 'animations':
+                    {
+                        const animations: Map<string, any> = data[key] as Map<string, any>;
+                        for (const [name, animation] of animations)
+                        {
+                            const anim: SpriteAnimation = new SpriteAnimation;
+                            anim.deserialize(animation);
+                            this.add(name, anim);
+                        }
+                        break;
+                    }
+            }
+        }
+    }
 }
 
 ComponentRegister.main.add(SpriteAnimator.id, SpriteAnimator);

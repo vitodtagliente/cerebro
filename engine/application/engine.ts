@@ -1,4 +1,4 @@
-import { Client, NetworkProtocol } from "cerebro-netcore";
+import { Client, Encoding, NetworkProtocol } from "cerebro-netcore";
 import { GameClient, NetworkLevel } from "cerebro-netgame";
 import { SpriteAnimation, SpriteAnimator } from "../animation";
 import { AssetLibrary, Image } from "../asset";
@@ -61,7 +61,7 @@ export default class Engine
 
         this._world.onEntitySpawn.on((entity: Entity) => 
         {
-            if (entity.tag == 'slime')
+            if (entity.asset == 'slime')
             {
                 entity.transform.scale.set(0.3, 0.3);
                 const spriteRenderer = entity.addComponent(new SpriteRenderer);
@@ -79,7 +79,7 @@ export default class Engine
                 animator.play('idle');
             }
 
-            if (entity.tag == 'player')
+            if (entity.asset == 'player')
             {
                 this._players.get(0).controller.possess(entity);
                 entity.transform.scale.set(1.5, 1.5);
@@ -128,7 +128,7 @@ export default class Engine
                     animator.play('idle');
                 }
 
-                console.log(JSON.stringify(entity.serialize()));
+                console.log(Encoding.stringify(entity.serialize()));
             }
         });
 
