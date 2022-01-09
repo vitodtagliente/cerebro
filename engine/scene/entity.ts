@@ -1,4 +1,4 @@
-import { InvalidNetworkId, NetworkId } from 'cerebro-netcore';
+import { Encoding, InvalidNetworkId, NetworkId } from 'cerebro-netcore';
 import { NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
 import { AssetLibrary, Prefab } from '../asset';
 import { AssetType } from '../asset/asset';
@@ -14,14 +14,16 @@ export default class Entity
     private _components: Array<Component>;
     private _netId: NetworkId;
     private _world: World;
+    public name: string;
     public tag: string;
     public transform: Transform;
 
-    public constructor()
+    public constructor(name: string = '')
     {
         this._asset = '';
         this._components = new Array<Component>();
         this._netId = InvalidNetworkId;
+        this.name = name;
         this.tag = '';
         this.transform = new Transform;
     }
@@ -32,7 +34,7 @@ export default class Entity
         if (this._asset != '') return;
 
         this._asset = value;
-        
+
         const prefab: Prefab = AssetLibrary.main.get(AssetType.Prefab, `assets/prefabs/${value}.prefab`) as Prefab;
         if (prefab.isLoaded)
         {
@@ -184,17 +186,18 @@ export default class Entity
 
     public serialize(): any 
     {
-        const data: any = {};
-        data['tag'] = this.tag;
+        const components: Array<any> = [];
+        for (const component of this._components)
         {
-            const components: Array<any> = [];
-            for (const component of this._components)
-            {
-                components.push(component.serialize());
-            }
-            data['components'] = components;
+            components.push(component.serialize());
         }
-        return data;
+
+        return {
+            'name': this.name,
+            'tag': this.tag,
+            'transform': this.transform.serialize(),
+            'components': components
+        }
     }
 
     public deserialize(data: any): void 
@@ -203,7 +206,16 @@ export default class Entity
         {
             switch (key)
             {
-                case "tag": this.tag = (data[key]); break;
+                case 'name': this.name = data[key] as string; break;
+                case "tag": this.tag = (data[key]) as string; break;
+                case 'transform':
+                    {
+                        // preserve the position
+                        const position: Vector2 = this.transform.position.clone();
+                        this.transform.deserialize(data[key]);
+                        this.transform.position.copy(position);
+                        break;
+                    }
                 case "components":
                     {
                         const components: Array<any> = data[key] as Array<any>;
@@ -225,5 +237,10 @@ export default class Entity
                     }
             }
         }
+    }
+
+    public stringify(): string
+    {
+        return Encoding.stringify(this.serialize());
     }
 }

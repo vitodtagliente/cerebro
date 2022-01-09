@@ -1,6 +1,44 @@
 {
-   "tag":"",
+   "name":"slime",
+   "tag":"enemy",
+   "transform":{
+      "position":{
+         "x":0,
+         "y":0
+      },
+      "rotation":{
+         "x":0,
+         "y":0
+      },
+      "scale":{
+         "x":0.3,
+         "y":0.3
+      }
+   },
    "components":[
+      {
+         "type":"health",
+         "position":{
+            "x":0,
+            "y":-20
+         },
+         "size":{
+            "x":50,
+            "y":10
+         },
+         "max":"10",
+         "value":7
+      },
+      {
+         "type":"sprite_animator",
+         "animations":{
+            "dataType":"Map",
+            "value":[
+               
+            ]
+         },
+         "autoplay":true
+      },
       {
          "type":"health",
          "position":{
@@ -82,7 +120,8 @@
                   }
                ]
             ]
-         }
+         },
+         "autoplay":true
       },
       {
          "type":"sprite_renderer",
@@ -90,7 +129,7 @@
          "texturRect":{
             "x":0,
             "y":0,
-            "width":0.16599999368190765,
+            "width":1,
             "height":1
          }
       }
