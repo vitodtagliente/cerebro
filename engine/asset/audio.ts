@@ -1,4 +1,4 @@
-import Asset, { AssetLoadEvent, AssetType } from "./asset";
+import Asset, { AssetType } from "./asset";
 
 export default class Audio extends Asset
 {
@@ -24,9 +24,9 @@ export default class Audio extends Asset
         return this.data.networkState == this.data.NETWORK_IDLE;
     }
 
-    protected _load(filename: string, onLoadCallback?: AssetLoadEvent): boolean
+    protected _load(filename: string): boolean
     {
-        this._data.onload = onLoadCallback;
+        this._data.onload = () => { this.onLoad.emit(); };
         this._data.src = filename;
         return true;
     }

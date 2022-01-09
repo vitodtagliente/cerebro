@@ -1,5 +1,7 @@
 import { InvalidNetworkId, NetworkId } from 'cerebro-netcore';
 import { NetworkObject, NetworkObjectProperty } from 'cerebro-netgame';
+import { AssetLibrary, Prefab } from '../asset';
+import { AssetType } from '../asset/asset';
 import { ComponentRegister } from '../components';
 import { Renderer } from '../graphics';
 import { Transform, Vector2 } from '../math';
@@ -25,6 +27,22 @@ export default class Entity
     }
 
     public get asset(): string { return this._asset; }
+    public set asset(value: string)
+    {
+        if (this._asset != '') return;
+
+        this._asset = value;
+        
+        const prefab: Prefab = AssetLibrary.main.get(AssetType.Prefab, `assets/prefabs/${value}.prefab`) as Prefab;
+        if (prefab.isLoaded)
+        {
+            this.deserialize(prefab.data);
+        }
+        else 
+        {
+            prefab.onLoad.on(() => this.deserialize(prefab.data));
+        }
+    }
     public get components(): Array<Component> { return this._components; }
     public get hasNetAuthority(): boolean { return true; }
     public get isNetworkObject(): boolean { return this._netId != InvalidNetworkId; }
@@ -93,7 +111,7 @@ export default class Entity
     public netInit(networkObject: NetworkObject): void
     {
         this._netId = networkObject.id;
-        this._asset = networkObject.state.data.asString(NetworkObjectProperty.Asset);
+        this.asset = networkObject.state.data.asString(NetworkObjectProperty.Asset);
         this.tag = networkObject.state.data.asString(NetworkObjectProperty.Tag);
         this.netUpdate(networkObject);
     }

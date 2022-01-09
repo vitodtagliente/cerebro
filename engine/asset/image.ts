@@ -1,4 +1,4 @@
-import Asset, { AssetLoadEvent, AssetType } from "./asset";
+import Asset, { AssetType } from "./asset";
 
 export default class Image extends Asset
 {
@@ -17,9 +17,9 @@ export default class Image extends Asset
         return this.data.complete && this.height !== 0;
     }
 
-    protected _load(filename: string, onLoadCallback?: AssetLoadEvent): boolean
+    protected _load(filename: string): boolean
     {
-        this._data.onload = onLoadCallback;
+        this._data.onload = () => { this.onLoad.emit(); };
         this._data.src = filename;
         return true;
     }

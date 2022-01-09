@@ -1,6 +1,5 @@
 import { Encoding } from "cerebro-netcore";
-import { Entity } from "../scene";
-import Asset, { AssetLoadEvent, AssetType } from "./asset";
+import Asset, { AssetType } from "./asset";
 
 export default class Prefab extends Asset
 {
@@ -20,7 +19,7 @@ export default class Prefab extends Asset
         return this._request.status == 200 && this._request.readyState == 4;
     }
 
-    protected _load(filename: string, onLoadCallback?: AssetLoadEvent): boolean
+    protected _load(filename: string): boolean
     {
         this._request.open("GET", filename, true);
         this._request.onreadystatechange = () =>
@@ -28,8 +27,8 @@ export default class Prefab extends Asset
             if (this.isLoaded)
             {
                 const content: string = this._request.responseText;
-                this._data = JSON.parse(content);
-                onLoadCallback();
+                this._data = Encoding.parse(content);
+                this.onLoad.emit();
             }
         };
         this._request.send();

@@ -17,6 +17,9 @@ class SpriteAnimator extends Component
     public static readonly id: ComponentId = 'sprite_animator';
 
     private _sprite: SpriteRenderer;
+
+    private autoplay: boolean;
+
     private _animations: Map<string, SpriteAnimation>;
     private _isPlaying: boolean;
     private _state: PlayingState;
@@ -25,6 +28,7 @@ class SpriteAnimator extends Component
     {
         super();
         this._animations = new Map<string, SpriteAnimation>();
+        this.autoplay = true;
         this._state = new PlayingState();
         this._isPlaying = false;
     }
@@ -71,6 +75,11 @@ class SpriteAnimator extends Component
                 this._state.timer = duration;
                 frame.copy(this._sprite.textureRect);
             }
+        }
+        else if (this.autoplay && this._animations.size > 0) 
+        {
+            const keys: Array<string> = [...this._animations.keys()];
+            this.play(keys[0]);
         }
     }
 
@@ -134,7 +143,8 @@ class SpriteAnimator extends Component
 
         return {
             'type': SpriteAnimator.id,
-            'animations': animations
+            'animations': animations,
+            'autoplay': this.autoplay
         };
     }
 
@@ -155,6 +165,7 @@ class SpriteAnimator extends Component
                         }
                         break;
                     }
+                case 'autoplay': this.autoplay = data[key] as boolean; break;
             }
         }
     }
