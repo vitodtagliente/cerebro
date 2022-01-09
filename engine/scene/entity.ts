@@ -6,11 +6,6 @@ import { Transform, Vector2 } from '../math';
 import Component from "./component";
 import World from './world';
 
-export interface EntitySchema
-{
-
-}
-
 export default class Entity 
 {
     private _asset: string;
@@ -197,7 +192,16 @@ export default class Entity
                         for (const component of components)
                         {
                             const type: string = component['type'];
-
+                            const compConstructor: { new(...args: any[]): Component } = ComponentRegister.main.get(type);
+                            if (compConstructor)
+                            {
+                                const comp: Component = this.addComponent(new compConstructor);
+                                comp.deserialize(component);
+                            }
+                            else 
+                            {
+                                console.error(`Cannot find the component of type[${type}]`);
+                            }
                         }
                         break;
                     }
