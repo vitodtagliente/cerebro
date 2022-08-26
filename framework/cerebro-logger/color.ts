@@ -26,10 +26,12 @@ export default class Color
         White: "\x1b[37m"
     };
 
-    /// Retrieve a decorated text
-    /// @param text - The text
-    /// @param color - The color to use
-    /// @return - The new decorated text
+    /**
+     * Retrieve a decorated text
+     * @param text the text
+     * @param color The color to use
+     * @return The new decorated text
+     */
     public static decorate(text: string, color: string): string
     {
         return `${color}${text}\x1b[0m`;

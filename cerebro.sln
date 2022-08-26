@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.30804.86
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32804.467
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "server", "server\server.njsproj", "{5FF0325B-7C9F-46D0-B7A4-37C19F35C522}"
 EndProject
@@ -18,8 +18,6 @@ EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-netcore", "framework\cerebro-netcore\cerebro-netcore.njsproj", "{A2509514-A89B-4D2B-A921-B5035E8EF390}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-netgame", "framework\cerebro-netgame\cerebro-netgame.njsproj", "{53534898-EDAC-4B73-A6DA-9B5EB732B6C4}"
-EndProject
-Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-web", "framework\cerebro-web\cerebro-web.njsproj", "{20077B88-A882-48ED-A9B9-84780E98B216}"
 EndProject
 Project("{9092AA53-FB77-4645-B42D-1CCCA6BD08BD}") = "cerebro-netshared", "framework\cerebro-netshared\cerebro-netshared.njsproj", "{B4C3933F-C3EB-464C-A50F-54FE691ACC1F}"
 EndProject
@@ -57,10 +55,6 @@ Global
 		{53534898-EDAC-4B73-A6DA-9B5EB732B6C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{53534898-EDAC-4B73-A6DA-9B5EB732B6C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{53534898-EDAC-4B73-A6DA-9B5EB732B6C4}.Release|Any CPU.Build.0 = Release|Any CPU
-		{20077B88-A882-48ED-A9B9-84780E98B216}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{20077B88-A882-48ED-A9B9-84780E98B216}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{20077B88-A882-48ED-A9B9-84780E98B216}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{20077B88-A882-48ED-A9B9-84780E98B216}.Release|Any CPU.Build.0 = Release|Any CPU
 		{B4C3933F-C3EB-464C-A50F-54FE691ACC1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{B4C3933F-C3EB-464C-A50F-54FE691ACC1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B4C3933F-C3EB-464C-A50F-54FE691ACC1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -76,7 +70,6 @@ Global
 		{0D8C151D-7F77-476D-8B8F-F21F12E6F75E} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 		{A2509514-A89B-4D2B-A921-B5035E8EF390} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 		{53534898-EDAC-4B73-A6DA-9B5EB732B6C4} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
-		{20077B88-A882-48ED-A9B9-84780E98B216} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 		{B4C3933F-C3EB-464C-A50F-54FE691ACC1F} = {C3FAB393-A548-41AC-8A62-89CF282FF6A1}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution

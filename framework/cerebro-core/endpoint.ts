@@ -1,7 +1,6 @@
 import Application from "./application";
 import Behaviour from "./behaviour";
 import * as express from 'express';
-import Logger from 'cerebro-logger';
 import { Method, StatusCode } from 'cerebro-http';
 import Router from './router';
 

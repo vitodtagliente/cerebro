@@ -19,5 +19,11 @@ export default class Color {
         Cyan: string;
         White: string;
     };
+    /**
+     * Retrieve a decorated text
+     * @param text the text
+     * @param color The color to use
+     * @return The new decorated text
+     */
     static decorate(text: string, color: string): string;
 }

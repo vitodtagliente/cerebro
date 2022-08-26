@@ -5,6 +5,7 @@ import Router from './router';
 import Service from './service';
 
 import * as HTTP from 'cerebro-http';
+import * as Log from 'cerebro-logger';
 
 export
 {
@@ -15,6 +16,7 @@ export
     Controller,
     Endpoint,
     HTTP,
+    Log,
     Router,
     Service,
 };

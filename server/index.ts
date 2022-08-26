@@ -1,7 +1,5 @@
-import { Server, NetworkProtocol, Client, UserSession, Message } from 'cerebro-netcore';
-import { GameServer } from 'cerebro-netgame';
+import { Application, ApplicationState, Controller, Endpoint, HTTP, Log, Router, Service } from "cerebro-core";
 
-/*
 class FooController extends Controller
 {
     public constructor(app: Application) { super(app); }
@@ -45,14 +43,12 @@ class FooEndpoint extends Endpoint<FooRequest, FooResponse>
 
     protected async serve(request: FooRequest, response: FooResponse): Promise<HTTP.StatusCode>
     {
-        Logger.info("endpoint -> " + request.text);
+        Log.Logger.info("endpoint -> " + request.text);
         response.text = "fffofofofofof";
         return HTTP.StatusCode.OK;
     }
 }
-*/
 
-/*
 const app: Application = new Application();
 app.initialize();
 app.register(FooController);
@@ -63,52 +59,3 @@ const service: Service = app.service(FooService);
 const state: ApplicationState = app.listen(() => {
 
 });
-*/
-
-// async function init(client: Client)
-// {
-//     client.onConnection = async () =>
-//     {
-//         const request: AuthenticationRequest = new AuthenticationRequest;
-//         request.username = 'Vito';
-//
-//         const response: AuthenticationResponse = await client.call(AuthenticationCommandId, request);
-//         console.log(response.foo);
-//
-//         client.close();
-//     };
-// }
-//
-// const server: Server = new Server(NetworkProtocol.WebSockets);
-// server.commands.add(new AuthenticationCommand);
-// server.onListening = async () =>
-// {
-//     const client: Client = new Client(NetworkProtocol.WebSockets);
-//     client.register.add(new AuthenticationCommand);
-//     init(client);
-//     client.connect('127.0.0.1', 6000);
-// };
-// server.listen(6000);
-
-const server: Server = new Server(NetworkProtocol.WebSocket);
-server.components.add(new GameServer(server));
-server.onListening = async () =>
-{
-    /*
-    const testClients: number = 0;
-    for (let i: number = 0; i < testClients; ++i)
-    {
-        const client: Client = new Client(NetworkProtocol.WebSocket);
-        client.components.add(new GameClient(client));
-        client.onConnection = async () =>
-        {
-            const game: GameClient = client.components.find("game") as GameClient;
-            let transform: NetworkMath.Transform = new NetworkMath.Transform;
-            transform.position.x = 6;
-            game.move(transform);
-        };
-        client.connect('localhost', 8080);
-    }
-    */
-};
-server.listen(8080);

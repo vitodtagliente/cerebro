@@ -4,4 +4,5 @@ import Endpoint from './endpoint';
 import Router from './router';
 import Service from './service';
 import * as HTTP from 'cerebro-http';
-export { Application, ApplicationState, ApplicationConfig, DatabaseConfig, Controller, Endpoint, HTTP, Router, Service, };
+import * as Log from 'cerebro-logger';
+export { Application, ApplicationState, ApplicationConfig, DatabaseConfig, Controller, Endpoint, HTTP, Log, Router, Service, };

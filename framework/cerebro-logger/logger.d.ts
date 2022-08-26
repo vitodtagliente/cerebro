@@ -4,6 +4,7 @@ export default class Logger {
     /**
      * Decorate the log level
      * @param level The log level
+     * @return The decorated level
      */
     private static decorateLevel;
     /**
@@ -37,5 +38,10 @@ export default class Logger {
      * @param data The data to log
      */
     static warn(data: any): void;
+    /**
+     * Log the http requests
+     * @param req The http request
+     * @param logFileRequests If true, file requests will be logged too
+     */
     static request(req: any, logFileRequests: any): void;
 }

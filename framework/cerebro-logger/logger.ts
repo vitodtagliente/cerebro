@@ -4,8 +4,10 @@ import Color from './color';
 import Level from './level';
 import Stack from './stack';
 
-/// Retrieve the current date time
-/// @return - The datetime in UTC format
+/**
+ * Retrieve the current date time
+ * @return The datetime in UTC format
+ */
 function getCurrentDateTime() : string
 {
     return new Date().toUTCString();
@@ -18,6 +20,7 @@ export default class Logger
     /**
      * Decorate the log level
      * @param level The log level
+     * @return The decorated level
      */
     private static decorateLevel(level: string): string
     {
@@ -94,9 +97,11 @@ export default class Logger
         Logger.log(Level.Warning, data);
     }
 
-    /// Log an HTTP request
-    /// @param req - The HTTP Request
-    /// @param logFileRequests - If true, file requests will be logged too
+    /**
+     * Log the http requests
+     * @param req The http request
+     * @param logFileRequests If true, file requests will be logged too
+     */
     public static request(req, logFileRequests): void
     {
         const ext = path.extname(req.url);
