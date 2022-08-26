@@ -1,5 +1,11 @@
 import * as mongoDB from "mongodb";
 
+export enum DatabaseStatus
+{
+    Disconnected,
+    Connected
+}
+
 export default class Database
 {
     private static _main: Database = null;
@@ -14,15 +20,25 @@ export default class Database
 
     private _conn: mongoDB.MongoClient = null;
     private _db: mongoDB.Db = null;
+    private _status: DatabaseStatus = DatabaseStatus.Disconnected;
+
+    public get status(): DatabaseStatus { return this._status; }
 
     private constructor() { }
 
     public async connect(connectionString: string, dbname: string): Promise<boolean>
     {
         this._conn = new mongoDB.MongoClient(connectionString);
-        await this._conn.connect();
-        this._db = this._conn.db(dbname);
-        return true;
+        try
+        {
+            await this._conn.connect();
+            this._db = this._conn.db(dbname);
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     public collection(name: string): mongoDB.Collection

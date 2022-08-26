@@ -23,7 +23,7 @@ export declare class ApplicationConfig {
     port?: number;
     secret?: string;
     url?: string;
-    database?: Array<DatabaseConfig>;
+    database?: DatabaseConfig;
     crossOrigins?: Array<string>;
     logRequests?: boolean;
 }

@@ -44,6 +44,7 @@
     <Folder Include="models\" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="config.ts" />
     <TypeScriptCompile Include="controllers\home_controller.ts" />
     <TypeScriptCompile Include="controllers\inventory_controller.ts" />
     <TypeScriptCompile Include="controllers\items_controller.ts" />

@@ -36,7 +36,7 @@ export class ApplicationConfig {
     port?: number = parseInt(process.env.port) || 9000;
     secret?: string = process.env.secret || 'CEREBRO-SECRET';
     url?: string = process.env.URL || "http://localshost:9000";
-    database?: Array<DatabaseConfig> = [new DatabaseConfig()];
+    database?: DatabaseConfig = new DatabaseConfig();
     // allowed cross origins
     crossOrigins?: Array<string> = [
         // default React cross origin
