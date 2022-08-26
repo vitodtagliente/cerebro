@@ -35,6 +35,9 @@
     <Content Include="tsconfig.json" />
   </ItemGroup>
   <ItemGroup>
+    <TypeScriptCompile Include="character.ts">
+      <SubType>Code</SubType>
+    </TypeScriptCompile>
     <TypeScriptCompile Include="item.ts" />
     <TypeScriptCompile Include="stats.ts" />
   </ItemGroup>

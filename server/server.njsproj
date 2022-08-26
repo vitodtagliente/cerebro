@@ -41,11 +41,14 @@
     <Folder Include="controllers\" />
     <Folder Include="assets\" />
     <Folder Include="modules\" />
+    <Folder Include="models\" />
   </ItemGroup>
   <ItemGroup>
     <TypeScriptCompile Include="controllers\home_controller.ts" />
     <TypeScriptCompile Include="controllers\inventory_controller.ts" />
     <TypeScriptCompile Include="controllers\items_controller.ts" />
+    <TypeScriptCompile Include="database.ts" />
+    <TypeScriptCompile Include="models\user.ts" />
     <TypeScriptCompile Include="modules\inventory_module.ts" />
     <TypeScriptCompile Include="modules\item_definition_module.ts" />
   </ItemGroup>
