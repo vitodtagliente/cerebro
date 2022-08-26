@@ -1,4 +1,5 @@
 import { Application, Controller, HTTP, Router } from "cerebro-core";
+import * as Items from "../assets/items"
 
 export default class InventoryController extends Controller
 {
@@ -6,7 +7,7 @@ export default class InventoryController extends Controller
 
     private _getItems(req, res): void
     {
-        res.status(HTTP.StatusCode.OK).send("items");
+        res.status(HTTP.StatusCode.OK).send(Items.default);
     }
 
     public register(router: Router): void

@@ -14,7 +14,8 @@
   "main": "index.js",
   "dependencies": {
     "cerebro-core": "file:../framework/cerebro-core",
-    "debug": "^2.2.0"
+    "debug": "^2.2.0",
+    "libgame": "file:../libgame"
   },
   "devDependencies": {
     "@types/debug": "0.0.30",

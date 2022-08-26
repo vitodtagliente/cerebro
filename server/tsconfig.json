@@ -17,6 +17,7 @@
     { "path": "../framework/cerebro-logger" },
     { "path": "../framework/cerebro-netcore" },
     { "path": "../framework/cerebro-netgame" },
-    { "path": "../framework/cerebro-netshared" }
+    { "path": "../framework/cerebro-netshared" },
+    { "path": "../libgame" }
   ]
 }
