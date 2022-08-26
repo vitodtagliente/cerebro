@@ -1,4 +1,4 @@
-import { Application, ApplicationState, Controller, Endpoint, HTTP, Log, Router, Service } from "cerebro-core";
+import { Application, Controller, Endpoint, HTTP, Log, Router, Service } from "cerebro-core";
 
 class FooController extends Controller
 {
@@ -8,7 +8,7 @@ class FooController extends Controller
     {
         router.register('/', HTTP.Method.GET, (req, res) =>
         {
-            res.status(HTTP.StatusCode.OK).send("Ciao");
+            res.status(HTTP.StatusCode.OK).send("Hello World");
         });
     }
 }
@@ -55,7 +55,6 @@ app.register(FooController);
 app.register(FooService);
 app.register(PooService);
 app.register(FooEndpoint);
-const service: Service = app.service(FooService);
-const state: ApplicationState = app.listen(() => {
+app.listen(() => {
 
 });

@@ -2,7 +2,7 @@
   "name": "cerebro-db",
   "version": "0.0.0",
   "description": "cerebro-db",
-  "main": "app.js",
+  "main": "server.js",
   "author": {
     "name": ""
   },
@@ -11,7 +11,10 @@
     "clean": "tsc --build --clean"
   },
   "devDependencies": {
-    "@types/node": "^14.14.7",
-    "typescript": "^4.5.2"
+    "@types/node": "^8.0.14",
+    "typescript": "^3.2.2"
+  },
+  "dependencies": {
+    "mongoose": "^5.11.18"
   }
 }
