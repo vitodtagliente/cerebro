@@ -36,6 +36,13 @@
     <Content Include="package.json" />
     <Content Include="README.md" />
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="controllers\" />
+  </ItemGroup>
+  <ItemGroup>
+    <TypeScriptCompile Include="controllers\home_controller.ts" />
+    <TypeScriptCompile Include="controllers\inventory_controller.ts" />
+  </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
     <VisualStudio>
