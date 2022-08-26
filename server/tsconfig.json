@@ -12,6 +12,7 @@
   ],
   "references": [
     { "path": "../framework/cerebro-core" },
+    { "path": "../framework/cerebro-db" },
     { "path": "../framework/cerebro-http" },
     { "path": "../framework/cerebro-logger" },
     { "path": "../framework/cerebro-netcore" },
