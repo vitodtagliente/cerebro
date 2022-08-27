@@ -9,6 +9,7 @@ export class CharacterStatus
 export default class Character
 {
     public id: string = "";
+    public userId: string = ""; // if owned by any user
     public name: string = "";
     public health: number = 10;
     public mana: number = 10;
