@@ -5,9 +5,10 @@ import ItemsController from "./controllers/items_controller";
 import Database from "./database";
 import ItemDefinitionModule from "./modules/item_definition_module";
 import config from "./config";
+import UserModule from "./modules/user_module";
 
 Database.main.connect(config.database.connection, config.database.name)
-    .then(success =>
+    .then(status =>
     {
         const app: Application = new Application(config);
         app.initialize();
@@ -18,9 +19,9 @@ Database.main.connect(config.database.connection, config.database.name)
         // static caches loading
         ItemDefinitionModule.load();
         // start the application
-        app.listen(() =>
+        app.listen(async () =>
         {
-
+            console.log(await new UserModule().all());
         });
     })
     .catch(error => Log.Logger.error(`Unable to contact the DB ${config.database.name} at ${config.database.connection}`));

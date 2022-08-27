@@ -25,7 +25,7 @@ export enum ApplicationState
 
 export class DatabaseConfig {
     name?: string = process.env.connectioName || 'default';
-    connection?: string = process.env.connection || 'mongodb://127.0.0.1/overdrive';
+    connection?: string = process.env.connection || 'mongodb://127.0.0.1/cerebro';
     type?: string = process.env.connectionType || 'mongodb';
 }
 

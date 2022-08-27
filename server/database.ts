@@ -3,7 +3,16 @@ import * as mongoDB from "mongodb";
 export enum DatabaseStatus
 {
     Disconnected,
-    Connected
+    Connected,
+    Error
+}
+
+export enum Table
+{
+    Characters = "characters",
+    Inventories = "inventories",
+    Items = "items",
+    Users = "users"
 }
 
 export default class Database
@@ -22,27 +31,33 @@ export default class Database
     private _db: mongoDB.Db = null;
     private _status: DatabaseStatus = DatabaseStatus.Disconnected;
 
+    public get connected(): boolean { return this._status == DatabaseStatus.Connected; }
     public get status(): DatabaseStatus { return this._status; }
 
     private constructor() { }
 
-    public async connect(connectionString: string, dbname: string): Promise<boolean>
+    public async connect(connectionString: string, dbname: string): Promise<DatabaseStatus>
     {
         this._conn = new mongoDB.MongoClient(connectionString);
         try
         {
             await this._conn.connect();
             this._db = this._conn.db(dbname);
-            return true;
+            this._status = DatabaseStatus.Connected;
         }
         catch
         {
-            return false;
+            this._status = DatabaseStatus.Error;
         }
+        return this._status;
     }
 
-    public collection(name: string): mongoDB.Collection
+    public table(name: string): mongoDB.Collection
     {
-        return this._db.collection(name);
+        if (this._status == DatabaseStatus.Connected)
+        {
+            return this._db.collection(name);
+        }
+        return null;
     }
 }

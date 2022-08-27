@@ -49,9 +49,13 @@
     <TypeScriptCompile Include="controllers\inventory_controller.ts" />
     <TypeScriptCompile Include="controllers\items_controller.ts" />
     <TypeScriptCompile Include="database.ts" />
+    <TypeScriptCompile Include="models\model.ts" />
+    <TypeScriptCompile Include="models\model_query.ts" />
     <TypeScriptCompile Include="models\user.ts" />
+    <TypeScriptCompile Include="modules\auth_module.ts" />
     <TypeScriptCompile Include="modules\inventory_module.ts" />
     <TypeScriptCompile Include="modules\item_definition_module.ts" />
+    <TypeScriptCompile Include="modules\user_module.ts" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
   <ProjectExtensions>
